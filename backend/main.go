@@ -6,11 +6,18 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 func main() {
 	// Connect to the database using GORM
-	_, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+	_db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to the database")
+	}
+	DB = _db
+	err = DB.AutoMigrate(&Instructor{})
+	if err != nil {
+		panic("Unable to create tables")
 	}
 
 	// Create routes using gin-gonic and run the server
@@ -20,6 +27,8 @@ func main() {
 			"message": "pong",
 		})
 	})
+	r.POST("/instructor/register", instructorRegister)
+	r.POST("/instructor/login", instructorLogin)
 	err = r.Run("localhost:8080")
 	if err != nil {
 		panic("Failed to run the server")
