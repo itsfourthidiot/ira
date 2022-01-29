@@ -16,7 +16,7 @@ var secretKey []byte
 func verifyToken(c *gin.Context) {
 	token, err := c.Cookie("iraUserCookie")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": "cookie not found",
 		})
 		return
@@ -45,7 +45,10 @@ func main() {
 		panic("Failed to connect to the database")
 	}
 	DB = _db
-	err = DB.AutoMigrate(&Instructor{})
+	err = DB.AutoMigrate(
+		&Instructor{},
+		&Student{},
+	)
 	if err != nil {
 		panic("Unable to create tables")
 	}
@@ -59,8 +62,11 @@ func main() {
 	})
 	r.POST("/instructor/register", instructorRegister)
 	r.POST("/instructor/login", instructorLogin)
+	r.POST("/student/register", studentRegister)
+	r.POST("/student/login", studentLogin)
 	r.Use(verifyToken)
 	r.POST("/instructor/logout", instructorLogout)
+	r.POST("/student/logout", studentLogout)
 	err = r.Run("localhost:8080")
 	if err != nil {
 		panic("Failed to run the server")

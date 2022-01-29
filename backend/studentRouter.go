@@ -7,8 +7,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Instructor registration
-func instructorRegister(c *gin.Context) {
+// Student registration
+func studentRegister(c *gin.Context) {
 	// Parse input request
 	type Req struct {
 		Email    string `json: "email"`
@@ -22,9 +22,9 @@ func instructorRegister(c *gin.Context) {
 		})
 		return
 	}
-	// Check if the instructor with email already exists
-	existingInstructor := Instructor{}
-	result := DB.Where("email = ?", req.Email).First(&existingInstructor)
+	// Check if the student with email already exists
+	existingStudent := Student{}
+	result := DB.Where("email = ?", req.Email).First(&existingStudent)
 	if result.RowsAffected == 1 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "user with email already exists",
@@ -40,22 +40,22 @@ func instructorRegister(c *gin.Context) {
 		return
 	}
 	// Insert into database
-	newInstructor := Instructor{
+	newStudent := Student{
 		Email:    req.Email,
 		Password: string(hashedPassword),
 	}
-	result = DB.Create(&newInstructor)
+	result = DB.Create(&newStudent)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "internal server error",
 		})
 		return
 	}
-	c.JSON(http.StatusOK, newInstructor)
+	c.JSON(http.StatusOK, newStudent)
 }
 
-// Instructor login
-func instructorLogin(c *gin.Context) {
+// Student login
+func studentLogin(c *gin.Context) {
 	type Req struct {
 		Email    string `json: "email"`
 		Password string `json: "password"`
@@ -68,9 +68,9 @@ func instructorLogin(c *gin.Context) {
 		})
 		return
 	}
-	// Check if the instructor exists
-	instructor := Instructor{}
-	res := DB.Where("email = ?", req.Email).First(&instructor)
+	// Check if the student exists
+	student := Student{}
+	res := DB.Where("email = ?", req.Email).First(&student)
 	if res.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "user not found",
@@ -78,15 +78,14 @@ func instructorLogin(c *gin.Context) {
 		return
 	}
 	// Check if the password match
-	err = bcrypt.CompareHashAndPassword([]byte(instructor.Password), []byte(req.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(student.Password), []byte(req.Password))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "wrong password",
 		})
 		return
 	}
-	// Generate token
-	token, err := generateToken(instructor)
+	token, err := generateToken(student)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),
@@ -94,11 +93,11 @@ func instructorLogin(c *gin.Context) {
 		return
 	}
 	c.SetCookie("iraUserCookie", token, 60*60*24, "/", "localhost", false, true)
-	c.JSON(http.StatusOK, instructor)
+	c.JSON(http.StatusOK, student)
 }
 
 // Instructor logout
-func instructorLogout(c *gin.Context) {
+func studentLogout(c *gin.Context) {
 	token, ok := c.Get("token")
 	if !ok {
 		c.JSON(http.StatusUnauthorized, gin.H{
