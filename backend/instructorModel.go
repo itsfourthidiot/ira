@@ -7,3 +7,7 @@ type Instructor struct {
 	Email    string `json:"email" gorm:"unique"`
 	Password string `json:"-"`
 }
+
+func (i Instructor) getUserDetails() string {
+	return i.Email
+}

@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// instructor registration
+// Instructor registration
 func instructorRegister(c *gin.Context) {
 	// Parse input request
 	type Req struct {
@@ -22,7 +22,7 @@ func instructorRegister(c *gin.Context) {
 		})
 		return
 	}
-	// Check if the student with email already exists
+	// Check if the instructor with email already exists
 	existingInstructor := Instructor{}
 	result := DB.Where("email = ?", req.Email).First(&existingInstructor)
 	if result.RowsAffected == 1 {
@@ -54,7 +54,7 @@ func instructorRegister(c *gin.Context) {
 	c.JSON(http.StatusOK, newInstructor)
 }
 
-// Student login
+// Instructor login
 func instructorLogin(c *gin.Context) {
 	type Req struct {
 		Email    string `json: "email"`
@@ -68,7 +68,7 @@ func instructorLogin(c *gin.Context) {
 		})
 		return
 	}
-	// Check if the student exists
+	// Check if the instructor exists
 	instructor := Instructor{}
 	res := DB.Where("email = ?", req.Email).First(&instructor)
 	if res.Error != nil {
@@ -85,5 +85,28 @@ func instructorLogin(c *gin.Context) {
 		})
 		return
 	}
+	// Generate token
+	token, err := generateToken(instructor)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.SetCookie("iraUserCookie", token, 60*60*24, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, instructor)
+}
+
+// Instructor logout
+func instructorLogout(c *gin.Context) {
+	token, ok := c.Get("token")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "user unauthorized",
+		})
+	}
+	c.SetCookie("iraUserCookie", token.(string), -1, "/", "localhost", false, true)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "user logged out successfully",
+	})
 }
