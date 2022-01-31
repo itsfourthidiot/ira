@@ -1,1 +1,14 @@
-<p>search-box works!</p>
+<div class="m-3">
+    <h3>Angular search by filter</h3>
+    <div class="wrap">
+      <div class="search">
+        <input type="text" [(ngModel)]="term" class="searchTerm" placeholder="What are you looking for?">
+      </div>
+  
+      <div *ngFor="let course of courses | filter:term">
+        <p>
+          {{ course.name }}
+        </p>
+      </div>
+    </div>
+  </div>

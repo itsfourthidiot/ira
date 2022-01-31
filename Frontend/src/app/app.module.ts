@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule} from  '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     MatToolbarModule,
     MatButtonModule,
     HttpClientModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    FormsModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]
