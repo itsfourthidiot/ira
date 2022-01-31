@@ -9,8 +9,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MatToolbarModule} from  '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+
 /* Angular material */
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
@@ -27,8 +26,6 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
   declarations: [
     AppComponent,
     NavbarComponent,
-    LoginComponent,
-    RegisterComponent,
     InstructorLoginComponent,
     SearchBoxComponent
   ],
