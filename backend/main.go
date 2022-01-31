@@ -1,6 +1,8 @@
 package main
 
 import (
+	"embed"
+	"io/fs"
 	"net/http"
 	"os"
 	"strings"
@@ -13,6 +15,9 @@ import (
 
 var DB *gorm.DB
 var secretKey []byte
+
+//go:embed static
+var static embed.FS
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -83,15 +88,15 @@ func main() {
 	// Create routes using gin-gonic and run the server
 	r := gin.Default()
 	r.Use(CORSMiddleware())
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
 	r.POST("/instructor/register", instructorRegister)
 	r.POST("/instructor/login", instructorLogin)
 	r.POST("/student/register", studentRegister)
 	r.POST("/student/login", studentLogin)
+	webapp, err := fs.Sub(static, "static")
+	if err != nil {
+		panic(err)
+	}
+	r.StaticFS("/", http.FS(webapp))
 	r.Use(verifyToken)
 	err = r.Run("0.0.0.0:8080")
 	if err != nil {
