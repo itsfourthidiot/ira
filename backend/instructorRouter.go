@@ -11,8 +11,8 @@ import (
 func instructorRegister(c *gin.Context) {
 	// Parse input request
 	type Req struct {
-		Email    string `json: "email"`
-		Password string `json: "password"`
+		Email    string `json:"email" binding:"required"`
+		Password string `json:"password" binding:"required"`
 	}
 	req := Req{}
 	err := c.ShouldBindJSON(&req)
@@ -57,8 +57,8 @@ func instructorRegister(c *gin.Context) {
 // Instructor login
 func instructorLogin(c *gin.Context) {
 	type Req struct {
-		Email    string `json: "email"`
-		Password string `json: "password"`
+		Email    string `json:"email" binding:"required"`
+		Password string `json:"password" binding:"required"`
 	}
 	req := Req{}
 	err := c.ShouldBindJSON(&req)
@@ -93,21 +93,7 @@ func instructorLogin(c *gin.Context) {
 		})
 		return
 	}
-	c.SetCookie("iraUserCookie", token, 60*60*24, "/", "localhost", false, true)
-	c.JSON(http.StatusOK, instructor)
-}
-
-// Instructor logout
-func instructorLogout(c *gin.Context) {
-	token, ok := c.Get("token")
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "user unauthorized",
-		})
-		return
-	}
-	c.SetCookie("iraUserCookie", token.(string), -1, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{
-		"message": "user logged out successfully",
+		"token": token,
 	})
 }
