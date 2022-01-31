@@ -1,4 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,11 +15,11 @@ import { AngularMaterialModule } from './angular-material.module';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InstructorLoginComponent } from './components/instructor-login/instructor-login.component';
+import { SearchBoxComponent } from './components/search-box/search-box.component';
 
-
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { InstructorLoginComponent } from './components/instructor-login/instruct
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    InstructorLoginComponent
+    InstructorLoginComponent,
+    SearchBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,11 @@ import { InstructorLoginComponent } from './components/instructor-login/instruct
     AngularMaterialModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    Ng2SearchPipeModule,
+    FormsModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent],
