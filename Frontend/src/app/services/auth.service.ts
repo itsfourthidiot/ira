@@ -23,7 +23,8 @@ export class AuthService {
 
     // private apiUrl = "http://10.20.106.6:8080/instructor/"
 
-  private apiUrl: string = "http://172.16.109.140:8080/instructor/"
+  // private apiUrl: string = "http://172.16.109.140:8080/instructor/"
+  private apiUrl: string = "http://172.16.109.140:8080/"
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
 
@@ -48,7 +49,7 @@ export class AuthService {
   //     })
   // }
 
-  login(username: string, password: string): Observable<any>{
+  login(username: string, password: string, role: String): Observable<any>{
     console.log("in service");
     console.log(username);
     console.log(password);
@@ -58,7 +59,7 @@ export class AuthService {
     
 
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
-    return this.http.post<any>(this.apiUrl + "login", obj).pipe(
+    return this.http.post<any>(this.apiUrl + role + "/login", obj).pipe(
       tap((res) => {
         if (res){
           localStorage.setItem("ACCESS_TOKEN", res.token);
@@ -84,13 +85,13 @@ export class AuthService {
     // return this.http.post<any>(this.apiUrl + "logout", null, httpOptions);
   }
 
-  register(username: string, password: string): Observable<any>{
+  register(username: string, password: string, role: String): Observable<any>{
 
     var obj = {"email": username, "password": password};
     console.log(obj);
 
     console.log(this.apiUrl + "register");
-    return this.http.post<any>(this.apiUrl + "register", obj);
+    return this.http.post<any>(this.apiUrl + role + "/register", obj);
 
 
   }
