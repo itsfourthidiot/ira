@@ -11,8 +11,8 @@ import (
 func instructorRegister(c *gin.Context) {
 	// Parse input request
 	type Req struct {
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=8,max=20"`
 	}
 	req := Req{}
 	err := c.ShouldBindJSON(&req)
@@ -57,8 +57,8 @@ func instructorRegister(c *gin.Context) {
 // Instructor login
 func instructorLogin(c *gin.Context) {
 	type Req struct {
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=8,max=20"`
 	}
 	req := Req{}
 	err := c.ShouldBindJSON(&req)
