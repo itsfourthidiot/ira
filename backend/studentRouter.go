@@ -11,8 +11,8 @@ import (
 func studentRegister(c *gin.Context) {
 	// Parse input request
 	type Req struct {
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=8,max=20"`
 	}
 	req := Req{}
 	err := c.ShouldBindJSON(&req)
@@ -57,8 +57,8 @@ func studentRegister(c *gin.Context) {
 // Student login
 func studentLogin(c *gin.Context) {
 	type Req struct {
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=8,max=20"`
 	}
 	req := Req{}
 	err := c.ShouldBindJSON(&req)
@@ -80,7 +80,7 @@ func studentLogin(c *gin.Context) {
 	// Check if the password match
 	err = bcrypt.CompareHashAndPassword([]byte(student.Password), []byte(req.Password))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "wrong password",
 		})
 		return
