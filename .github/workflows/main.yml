@@ -28,10 +28,11 @@ jobs:
       run: |
         cd backend
         go build
+        tar -cvf build-file.tar ira
     - uses: actions/upload-artifact@v2
       with:
         name: build-file
-        path: backend/ira        
+        path: backend/build-file.tar
 
   api-testing:
     needs: build
@@ -49,12 +50,14 @@ jobs:
     - name: API testing using Newman
       run: |
         cd backend
+        tar -xvf build-file.tar
         echo "SECRET_KEY=YOURSECRETKEYGOESHERE" >> .env
         ./ira &
         sleep 5
         newman run collections/StudentsCollection.json --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/students-collection.html
+        tar -cvf api-testing-report.tar api-testing-report
         kill -9 `lsof -i:8080 -t`
     - uses: actions/upload-artifact@v2
       with:
         name: api-testing-report
-        path: backend/newman
+        path: backend/api-testing-report.tar
