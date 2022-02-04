@@ -55,6 +55,7 @@ jobs:
         ./ira &
         sleep 5
         newman run collections/StudentsCollection.json --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/students-collection.html
+        newman run collections/InstructorsCollection.json --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/instructors-collection.html
         tar -cvf api-testing-report.tar api-testing-report
         kill -9 `lsof -i:8080 -t`
     - uses: actions/upload-artifact@v2
