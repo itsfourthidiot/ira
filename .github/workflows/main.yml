@@ -1,0 +1,60 @@
+name: ira
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node enviroment
+      uses: actions/setup-node@v2
+      with:
+        node-version: 'lts/fermium'
+    - name: Set up Go environment
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    - name: Build Angular project
+      run: |
+        cd Frontend
+        npm install
+        ./node_modules/.bin/ng build
+    - name: Build go project
+      run: |
+        cd backend
+        go build
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build-file
+        path: backend/ira        
+
+  api-testing:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Newman (Command line collection runner) for API testing and htmlextra reporter
+      run: |
+        npm install -g newman
+        npm install -g newman-reporter-htmlextra
+    - uses: actions/download-artifact@v2
+      with:
+        name: build-file
+        path: backend/ira
+    - name: API testing using Newman
+      run: |
+        cd backend
+        echo "SECRET_KEY=YOURSECRETKEYGOESHERE" >> .env
+        ./ira &
+        sleep 5
+        newman run collections/StudentsCollection.json --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/students-collection.html
+        kill -9 `lsof -i:8080 -t`
+    - uses: actions/upload-artifact@v2
+      with:
+        name: api-testing-report
+        path: backend/newman
