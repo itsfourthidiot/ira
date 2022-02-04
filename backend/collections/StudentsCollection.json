@@ -1,0 +1,349 @@
+{
+	"info": {
+		"_postman_id": "86287cf3-594a-41cb-a404-77d8e73e24cc",
+		"name": "Students",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Student Registration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const atStep = pm.collectionVariables.get(\"atStep\");",
+							"switch(atStep) {",
+							"    case \"noEmail\":",
+							"        console.log(\"Generating a request without email in the body...\");",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectEmailFormat\":",
+							"        console.log(\"Generating a request with incorrect email format...\");",
+							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomUserName}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\"),",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"noPassword\":",
+							"        console.log(\"Generating a request without password in the body...\");",
+							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectPasswordFormat\":",
+							"        console.log(\"Generating a request with incorrect password format...\");",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomCurrencyCode}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\"),",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request body...\");",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\"),",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"alreadyRegisteredEmail\":",
+							"        console.log(\"Generating request body with an already registered email...\");",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
+							"            password: pm.collectionVariables.get(\"registeredPassword\")",
+							"        }));",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const atStep = pm.collectionVariables.get(\"atStep\");",
+							"switch(atStep) {",
+							"    case \"noEmail\":",
+							"        pm.test(\"Email not present in the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"incorrectEmailFormat\");",
+							"            postman.setNextRequest(\"Student Registration\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectEmailFormat\":",
+							"        pm.test(\"Incorrect email format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"noPassword\");",
+							"            postman.setNextRequest(\"Student Registration\");",
+							"        });",
+							"        break;",
+							"    case \"noPassword\":",
+							"        pm.test(\"Password not present in the request body\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"incorrectPasswordFormat\");",
+							"            postman.setNextRequest(\"Student Registration\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectPasswordFormat\":",
+							"        pm.test(\"Incorrect password format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"correctRequest\");",
+							"            postman.setNextRequest(\"Student Registration\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"Correct request\", function(){",
+							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"atStep\", \"alreadyRegisteredEmail\");",
+							"            pm.collectionVariables.set(\"registeredEmail\", pm.collectionVariables.get(\"email\"));",
+							"            pm.collectionVariables.set(\"registeredPassword\", pm.collectionVariables.get(\"password\"));",
+							"            postman.setNextRequest(\"Student Registration\");",
+							"        });",
+							"        break;",
+							"    case \"alreadyRegisteredEmail\":",
+							"        pm.test(\"Email already registered\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"noEmail\");",
+							"            postman.setNextRequest(\"Student Login\");",
+							"        });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const atStep = pm.collectionVariables.get(\"atStep\");",
+							"switch(atStep) {",
+							"    case \"noEmail\":",
+							"        console.log(\"Generating a request without email in the body...\");",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectEmailFormat\":",
+							"        console.log(\"Generating a request with incorrect email format...\");",
+							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomUserName}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\"),",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"noPassword\":",
+							"        console.log(\"Generating a request without password in the body...\");",
+							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectPasswordFormat\":",
+							"        console.log(\"Generating a request with incorrect password format...\");",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomCurrencyCode}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\"),",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"unregisteredEmail\":",
+							"        console.log(\"Generating a request with unregistered email...\");",
+							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"email\"),",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectPassword\":",
+							"        console.log(\"Generating a request with wrong password...\");",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
+							"            password: pm.collectionVariables.get(\"password\")",
+							"        }));",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request body...\");",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
+							"            password: pm.collectionVariables.get(\"registeredPassword\")",
+							"        }));",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const atStep = pm.collectionVariables.get(\"atStep\");",
+							"switch(atStep) {",
+							"    case \"noEmail\":",
+							"        pm.test(\"Email not present in the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"incorrectEmailFormat\");",
+							"            postman.setNextRequest(\"Student Login\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectEmailFormat\":",
+							"        pm.test(\"Incorrect email format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"noPassword\");",
+							"            postman.setNextRequest(\"Student Login\");",
+							"        });",
+							"        break;",
+							"    case \"noPassword\":",
+							"        pm.test(\"Password not present in the request body\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"incorrectPasswordFormat\");",
+							"            postman.setNextRequest(\"Student Login\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectPasswordFormat\":",
+							"        pm.test(\"Incorrect password format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"atStep\", \"unregisteredEmail\");",
+							"            postman.setNextRequest(\"Student Login\");",
+							"        });",
+							"        break;",
+							"    case \"unregisteredEmail\":",
+							"        pm.test(\"Email not registered\", function(){",
+							"            pm.response.to.have.status(404);",
+							"            pm.collectionVariables.set(\"atStep\", \"incorrectPassword\");",
+							"            postman.setNextRequest(\"Student Login\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectPassword\":",
+							"        pm.test(\"Incorrect password\", function(){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"atStep\", \"correctRequest\");",
+							"            postman.setNextRequest(\"Student Login\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"Correct request\", function(){",
+							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"atStep\", \"noEmail\");",
+							"            postman.setNextRequest(null);",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/student"
+		},
+		{
+			"key": "atStep",
+			"value": "noEmail"
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "registeredEmail",
+			"value": ""
+		},
+		{
+			"key": "registeredPassword",
+			"value": ""
+		},
+		{
+			"key": "requestBody",
+			"value": ""
+		}
+	]
+}
