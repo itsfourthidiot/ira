@@ -80,7 +80,7 @@ func instructorLogin(c *gin.Context) {
 	// Check if the password match
 	err = bcrypt.CompareHashAndPassword([]byte(instructor.Password), []byte(req.Password))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "wrong password",
 		})
 		return
