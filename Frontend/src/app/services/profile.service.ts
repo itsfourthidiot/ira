@@ -8,7 +8,7 @@ export class ProfileService {
 
   constructor() { }
 
-  defaultType = "student";
+  defaultType = "guest";
   private type = new BehaviorSubject(this.defaultType);
   currentType = this.type.asObservable();
 

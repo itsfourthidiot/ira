@@ -14,8 +14,13 @@
       <span flex></span>
 
       <div>
-        <a mat-button [routerLink]="'/studentLogin'"> Student Login</a>
-        <a *ngIf="type=='instructor'" mat-button [routerLink]="'/instructorLogin'"> Instructor Login</a>
+        <a *ngIf="type=='guest'" mat-button [routerLink]="'/studentLogin'"> Student Login</a>
+        <a *ngIf="type=='guest'" mat-button [routerLink]="'/instructorLogin'"> Instructor Login</a>
+        
+        <a *ngIf="type=='instructor'" mat-button [routerLink]=""> My Courses</a>
+        <a *ngIf="type=='instructor'" mat-button [routerLink]=""> Drafts</a>
+        <a *ngIf="type=='instructor'" mat-button [routerLink]=""> Create New Course</a>
+        <a *ngIf="type=='instructor'" mat-button [routerLink]="'/'"> Logout</a>
       </div>
     </mat-toolbar-row>
   

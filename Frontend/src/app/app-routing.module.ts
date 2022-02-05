@@ -4,13 +4,14 @@ import { InstructorLoginComponent } from './components/instructor-login/instruct
 import { StudentLoginComponent } from './components/student-login/student-login.component';
 import { AuthGuard } from './services/auth.guard'
 import { InstrDashboardComponent } from './components/instr-dashboard/instr-dashboard.component';
+import { GuestDashboardComponent } from './components/guest-dashboard/guest-dashboard.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'instructorLogin' },
+  { path: '', pathMatch: 'full', redirectTo: '', component: GuestDashboardComponent },
   // { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
   { path: 'instructorLogin', component: InstructorLoginComponent},
   { path: 'studentLogin', component: StudentLoginComponent},
-  { path: 'instrDashboard', component: InstrDashboardComponent}
+  { path: 'instrDashboard', component: InstrDashboardComponent},
 ];
 
 @NgModule({
