@@ -24,7 +24,7 @@ describe('Instructor login pg', () => {
     const password = "burger1244"
 
     it('New Instructor should be able to register', ()=>{
-        cy.visit('/instructorLogin');
+        cy.visit('/studentLogin');
         // cy.get('[name=registerlabel]').click();
         cy.get('div[role=tab]').eq(1).click();
         cy.get('[name=newUsername]').type(`${username}`);
@@ -36,7 +36,7 @@ describe('Instructor login pg', () => {
 
     it('Instructor should be able to login', ()=>{
 
-        cy.visit('/instructorLogin');
+        cy.visit('/studentLogin');
         cy.get('[name=username]').type(`${username}`);
         cy.get('[name=password]').type(`${password}`);
         cy.get('[name=loginbutton]').click();

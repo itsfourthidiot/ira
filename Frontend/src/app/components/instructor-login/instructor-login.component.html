@@ -1,15 +1,18 @@
-<p>instructor-login works!</p>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <h1>Instructor Login</h1>
+</div>
+
 <div class="login-wrapper align-center" fxLayout="row" fxLayoutAlign="center center">
-    <mat-tab-group animationDuration="0ms">
+    <mat-tab-group  label="Instructor Login " animationDuration="0ms">
       <mat-tab label="Login">
         <form class="example-form" (ngSubmit)="onLogin()">
             <mat-card-content>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Username" name="username" [(ngModel)] = "username" />
+                <input matInput placeholder="email" name="username" [(ngModel)] = "username" email/>
               </mat-form-field>
       
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Password" name="password" [(ngModel)]= "password" >
+                <input matInput type="password" placeholder="Password" name="password" [(ngModel)]= "password" >
               </mat-form-field>
             </mat-card-content>
             <button mat-stroked-button color="accent" name= "loginbutton" class="btn-block" type="submit">Log in</button>
@@ -21,17 +24,17 @@
           
 
       </mat-tab>
-      <mat-tab label="Register">
+      <mat-tab name="registerlabel" label="Register">
         <form class="example-form" (ngSubmit)="onRegister()">
   
             <mat-card-content>
       
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Email" name="newUsername" [(ngModel)] = "newUsername">
+                <input matInput placeholder="email" name="newUsername" [(ngModel)] = "newUsername" email>
               </mat-form-field>
       
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Password" name="newPassword" [(ngModel)] = "newPassword">
+                <input matInput type="password" placeholder="Password" name="newPassword" [(ngModel)] = "newPassword">
               </mat-form-field>
       
               <!-- <mat-form-field class="example-full-width">
@@ -44,7 +47,7 @@
       
             </mat-card-content>
       
-            <button mat-stroked-button color="accent" class="btn-block" type="submit">Register</button>
+            <button mat-stroked-button color="accent" name="registerbutton" class="btn-block" type="submit">Register</button>
       
           </form>
 

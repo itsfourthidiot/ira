@@ -44,7 +44,7 @@ export class StudentLoginComponent implements OnInit {
   onRegister(){
     this.authService.register(this.newUsername, this.newPassword, "student").subscribe(
       (res) => {
-        alert(res);
+        alert(res.email + " registered successfully");
       }
     )
 
