@@ -5,11 +5,11 @@ import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
-  selector: 'app-instructor-login',
-  templateUrl: './instructor-login.component.html',
-  styleUrls: ['./instructor-login.component.css']
+  selector: 'app-student-login',
+  templateUrl: './student-login.component.html',
+  styleUrls: ['./student-login.component.css']
 })
-export class InstructorLoginComponent implements OnInit {
+export class StudentLoginComponent implements OnInit {
 
   username!: string;
   password!: string;
@@ -26,7 +26,7 @@ export class InstructorLoginComponent implements OnInit {
 
     console.log("login");
     //console.log(this.username + "--" + this.password);
-    this.authService.login(this.username, this.password, "instructor").subscribe(
+    this.authService.login(this.username, this.password, "student").subscribe(
       (res) => {
         alert("logged in successfully");
         // this.router.navigateByUrl('login');
@@ -42,7 +42,7 @@ export class InstructorLoginComponent implements OnInit {
   }
 
   onRegister(){
-    this.authService.register(this.newUsername, this.newPassword, "instructor").subscribe(
+    this.authService.register(this.newUsername, this.newPassword, "student").subscribe(
       (res) => {
         alert(res.email + " registered successfully");
       }

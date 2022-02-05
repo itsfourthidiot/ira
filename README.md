@@ -1,4 +1,4 @@
-![example workflow](https://github.com/fourth-idiot/test/actions/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/fourth-idiot/ira/actions/workflows/main.yml/badge.svg)
 
 # Ira : The e-learning platform
 Course project for the graduate level course CEN5035 - Software Engineering.
