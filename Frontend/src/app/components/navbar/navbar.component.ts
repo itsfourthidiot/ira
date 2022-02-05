@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ProfileService } from 'src/app/services/profile.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  subscription: Subscription = new Subscription;
+  type: string= "";
+
+  constructor(private profile: ProfileService) { }
 
   ngOnInit(): void {
+    this.subscription = this.profile.currentType.subscribe(
+      type => this.type = type
+    )
   }
 
 }

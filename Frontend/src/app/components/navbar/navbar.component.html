@@ -14,13 +14,8 @@
       <span flex></span>
 
       <div>
-        <a mat-button [routerLink]="'/create-contact'"> Student Login </a>
-        <a mat-button [routerLink]="'/create-activity'"> Create Activity </a>
-        <a mat-button [routerLink]="'/login'">Login</a>
-        <a mat-button [routerLink]="'/register'"> Register</a>
-        <a mat-button [routerLink]="'/instructorLogin'"> Instructor Login</a>
         <a mat-button [routerLink]="'/studentLogin'"> Student Login</a>
-
+        <a *ngIf="type=='instructor'" mat-button [routerLink]="'/instructorLogin'"> Instructor Login</a>
       </div>
     </mat-toolbar-row>
   
