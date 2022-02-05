@@ -23,9 +23,11 @@ export class InstructorLoginComponent implements OnInit {
   }
 
   onLogin(){
+    //check if token is set
+    //navigate to instructor dashboard
+    this.router.navigateByUrl('instrDashboard');
 
     console.log("login");
-    //console.log(this.username + "--" + this.password);
     this.authService.login(this.username, this.password, "instructor").subscribe(
       (res) => {
         alert("logged in successfully");

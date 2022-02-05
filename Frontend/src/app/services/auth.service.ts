@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of , EMPTY, BehaviorSubject} from 'rxjs';
+import { Observable, Subscription , EMPTY, BehaviorSubject} from 'rxjs';
 import {tap} from 'rxjs/operators'
 import { NONE_TYPE } from '@angular/compiler';
 import { Router } from '@angular/router';
-import { User } from '../user';
+import { ProfileService } from './profile.service';
 
 var AuthorizationString = "Bearer "+ localStorage.getItem("ACCESS_TOKEN")
 var headers_object = new HttpHeaders({'Content-Type' : 'application/json', 'Authorization' : AuthorizationString})
@@ -12,8 +12,6 @@ var headers_object = new HttpHeaders({'Content-Type' : 'application/json', 'Auth
 const httpOptions = {
   headers: headers_object
 }
-
-
 
 
 @Injectable({
@@ -27,11 +25,16 @@ export class AuthService {
   //private apiUrl: string = "http://172.16.109.140:8080/"
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
-
+  subscription: Subscription = new Subscription;
+  type: string= "";
   constructor(
     private http: HttpClient,
-    public router: Router
+    public router: Router,
+    private profile: ProfileService
   ) {
+    this.subscription = this.profile.currentType.subscribe(
+      type => this.type = type
+    )
   }
 
   // authSubject  =  new  BehaviorSubject(false);
@@ -57,6 +60,8 @@ export class AuthService {
     var obj = {"email": username, "password": password};
     console.log(obj);
     
+    //change type according to logged in user
+    this.profile.changeType("instructor");
 
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
     return this.http.post<any>(this.apiUrl + role + "/login", obj).pipe(
