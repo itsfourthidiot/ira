@@ -21,13 +21,15 @@ import { SearchBoxComponent } from './components/search-box/search-box.component
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { StudentLoginComponent } from './components/student-login/student-login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     InstructorLoginComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    StudentLoginComponent
   ],
   imports: [
     BrowserModule,
