@@ -1,0 +1,26 @@
+<!-- <div class="example-form-field" fxLayout="column" fxFill fxLayoutAlign="center center">
+    <mat-form-field  appearance="fill" fxLayoutAlign="center center">
+        <mat-label >Course Description</mat-label>
+        <input matInput type="textarea" [(ngModel)]="description">
+    </mat-form-field>
+      
+
+</div> -->
+
+{{courseId}}
+
+<div class="example-form-field" fxLayout="column" fxFill fxLayoutAlign="center center">
+
+<form class="example-form">
+    <!-- <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Favorite food</mat-label>
+      <input matInput placeholder="Ex. Pizza" value="Sushi">
+    </mat-form-field> -->
+  
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Add/Edit course description</mat-label>
+      <textarea matInput name="description" [(ngModel)]="description"></textarea>
+    </mat-form-field>
+    <button mat-stroked-button color="green" class="btn-block" (click)="updateDesc" >Update</button>
+  </form>
+</div>
