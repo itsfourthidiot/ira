@@ -23,6 +23,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { StudentLoginComponent } from './components/student-login/student-login.component';
 import { GuestDashboardComponent } from './components/guest-dashboard/guest-dashboard.component';
+//import { CourseDescriptionComponent } from './course-description/course-description.component';
+import { CourseDescriptionComponent } from './components/course-description/course-description.component';
+import { CourseDetailsComponent } from './components/course-details/course-details.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,9 @@ import { GuestDashboardComponent } from './components/guest-dashboard/guest-dash
     InstructorLoginComponent,
     SearchBoxComponent,
     StudentLoginComponent,
-    GuestDashboardComponent
+    GuestDashboardComponent,
+    CourseDescriptionComponent,
+    CourseDetailsComponent
   ],
   imports: [
     BrowserModule,
