@@ -54,12 +54,13 @@ func verifyToken(c *gin.Context) {
 		})
 		return
 	}
-	_, err := validateToken(token)
+	email, err := validateToken(token)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "user unauthorized",
 		})
 	}
+	c.Set("email", email)
 	c.Next()
 }
 
@@ -96,6 +97,7 @@ func main() {
 	err = DB.AutoMigrate(
 		&Instructor{},
 		&Student{},
+		&Course{},
 	)
 	if err != nil {
 		panic("Unable to create tables")
@@ -120,6 +122,7 @@ func main() {
 	}
 	r.Use(staticHandler(webapp))
 	r.Use(verifyToken)
+	r.POST("/course/create", courseCreate)
 	err = r.Run("0.0.0.0:8080")
 	if err != nil {
 		panic("Failed to run the server")
