@@ -63,6 +63,22 @@ func verifyToken(c *gin.Context) {
 	c.Next()
 }
 
+func staticHandler(webapp fs.FS) gin.HandlerFunc {
+	directory := http.FS(webapp)
+	fileserver := http.FileServer(directory)
+	return func(c *gin.Context) {
+		_, err := directory.Open(c.Request.URL.Path)
+		if err != nil {
+			c.Request.URL.Path = "/"
+			fileserver.ServeHTTP(c.Writer, c.Request)
+			c.Abort()
+		} else {
+			fileserver.ServeHTTP(c.Writer, c.Request)
+			c.Abort()
+		}
+	}
+}
+
 func main() {
 	//load env variables
 	err := godotenv.Load()
@@ -88,15 +104,21 @@ func main() {
 	// Create routes using gin-gonic and run the server
 	r := gin.Default()
 	r.Use(CORSMiddleware())
-	r.POST("/instructor/register", instructorRegister)
-	r.POST("/instructor/login", instructorLogin)
-	r.POST("/student/register", studentRegister)
-	r.POST("/student/login", studentLogin)
+	instructorRoutes := r.Group("/instructor")
+	{
+		instructorRoutes.POST("/register", instructorRegister)
+		instructorRoutes.POST("/login", instructorLogin)
+	}
+	studentRoutes := r.Group("/student")
+	{
+		studentRoutes.POST("/register", studentRegister)
+		studentRoutes.POST("/login", studentLogin)
+	}
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
 	}
-	r.StaticFS("/", http.FS(webapp))
+	r.Use(staticHandler(webapp))
 	r.Use(verifyToken)
 	err = r.Run("0.0.0.0:8080")
 	if err != nil {
