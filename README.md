@@ -3,6 +3,8 @@
 # Ira : The e-learning platform
 Course project for the graduate level course CEN5035 - Software Engineering.
 
+![Ira](https://user-images.githubusercontent.com/89497585/154884309-59e3adf1-8522-4059-9978-f3013c1a2577.png)
+
 ## Team Members
 * Bodke, Gauri Pandharinath
 * Hadkar, Prasad Ramakant
