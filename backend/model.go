@@ -39,3 +39,17 @@ type Course struct {
 	PublishedAt  *time.Time `json:"publishedAt"`
 	InstructorID uint       `json:"instructorId"`
 }
+
+type Module struct {
+	gorm.Model
+	Title     string `json:"title" gorm:"not null"`
+	Type      string `json:"type"`
+	IsPrivate bool   `json:"isPrivate"`
+	Video     Video
+}
+
+type Video struct {
+	gorm.Model
+	Url      string `json:"url"`
+	ModuleID uint   `json:"moduleId"`
+}

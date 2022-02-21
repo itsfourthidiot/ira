@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"io/fs"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
@@ -15,6 +18,7 @@ import (
 
 var DB *gorm.DB
 var secretKey []byte
+var client *s3.Client
 
 //go:embed static
 var static embed.FS
@@ -88,6 +92,13 @@ func main() {
 	}
 	secretKey = []byte(os.Getenv("SECRET_KEY"))
 
+	// Configure AWS client
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic("configuration error, " + err.Error())
+	}
+	client = s3.NewFromConfig(cfg)
+
 	// Connect to the database using GORM
 	_db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 	if err != nil {
@@ -98,6 +109,8 @@ func main() {
 		&Instructor{},
 		&Student{},
 		&Course{},
+		&Module{},
+		&Video{},
 	)
 	if err != nil {
 		panic("Unable to create tables")
@@ -116,13 +129,18 @@ func main() {
 		studentRoutes.POST("/register", studentRegister)
 		studentRoutes.POST("/login", studentLogin)
 	}
+	r.POST("/course/create", courseCreate)
+	moduleRoutes := r.Group("/module")
+	moduleRoutes.Use(verifyToken)
+	{
+		moduleRoutes.POST("/video", videoModuleCreate)
+		// Routes for text and quiz module to be added
+	}
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
 	}
 	r.Use(staticHandler(webapp))
-	r.Use(verifyToken)
-	r.POST("/course/create", courseCreate)
 	err = r.Run("0.0.0.0:8080")
 	if err != nil {
 		panic("Failed to run the server")
