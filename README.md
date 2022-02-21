@@ -6,10 +6,10 @@ Course project for the graduate level course CEN5035 - Software Engineering.
 ![Ira](https://user-images.githubusercontent.com/89497585/154884309-59e3adf1-8522-4059-9978-f3013c1a2577.png)
 
 ## Team Members
-* Bodke, Gauri Pandharinath
-* Hadkar, Prasad Ramakant
-* Lawande, Swara Jitendra
-* Saoji, Nikhil Mukesh
+* Bodke, Gauri Pandharinath ([GauriBodke](https://github.com/GauriBodke))
+* Hadkar, Prasad Ramakant ([prasadhbk222](https://github.com/prasadhbk222))
+* Lawande, Swara Jitendra ([swara9](https://github.com/swara9))
+* Saoji, Nikhil Mukesh ([fourth-idiot](https://github.com/fourth-idiot))
 
 ## Project Topic and Motivation
 Ira will be an e-learning platform. Name of the platform *Ira* comes from the name of Hindu goddess Saraswati (Goddess of wisdom and knowledge). Using this platform, instructors can share their knowledge with the world without worrying about the difficulties involved in hosting a platform of their own. On the other hand, students can learn at their own pace, have lifetime access to the courses, select courses from the plethora of available options, and can gain knowledge about wide range of topics as per their interests.
