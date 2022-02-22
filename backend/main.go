@@ -116,13 +116,17 @@ func main() {
 		studentRoutes.POST("/register", studentRegister)
 		studentRoutes.POST("/login", studentLogin)
 	}
+	courseRoutes := r.Group("/course")
+	courseRoutes.Use(verifyToken)
+	{
+		courseRoutes.POST("/create", courseCreate)
+		courseRoutes.PUT("/updateDescription", courseDescriptionUpdate)
+	}
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
 	}
 	r.Use(staticHandler(webapp))
-	r.Use(verifyToken)
-	r.POST("/course/create", courseCreate)
 	err = r.Run("0.0.0.0:8080")
 	if err != nil {
 		panic("Failed to run the server")
