@@ -98,6 +98,7 @@ func main() {
 		&Instructor{},
 		&Student{},
 		&Course{},
+		&Enrollment{},
 	)
 	if err != nil {
 		panic("Unable to create tables")
@@ -121,7 +122,9 @@ func main() {
 	{
 		courseRoutes.POST("/create", courseCreate)
 		courseRoutes.PUT("/updateDescription", courseDescriptionUpdate)
+		courseRoutes.GET("/getDescription", getDescription)
 	}
+	r.POST("/enroll", verifyToken, enrollCourse)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
