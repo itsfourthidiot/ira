@@ -16,14 +16,19 @@ export class CourseDescriptionComponent implements OnInit {
     // send a get request to update course description
     this.courseService.getCourseDescriptionById(this.courseId).subscribe(
       (data) => {
-        this.description = data;
+        this.description = data.description;
       }
     )
   }
 
   updateDesc(){
     // send a put request using description
-
+    console.log("update button");
+    this.courseService.updateCourseDescriptionById(this.courseId, this.description).subscribe(
+      (data) => {
+        this.description = data.description;
+      }
+    )
   }
 
 }
