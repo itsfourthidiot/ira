@@ -124,7 +124,7 @@ func main() {
 		courseRoutes.PUT("/updateDescription", courseDescriptionUpdate)
 		courseRoutes.GET("/getDescription", getDescription)
 	}
-	r.POST("/enroll", verifyToken, enrollCourse)
+// 	r.POST("/enroll", verifyToken, enrollCourse)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
