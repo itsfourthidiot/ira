@@ -7,6 +7,7 @@ import { InstrDashboardComponent } from './components/instr-dashboard/instr-dash
 import { GuestDashboardComponent } from './components/guest-dashboard/guest-dashboard.component';
 import { CourseDescriptionComponent } from './components/course-description/course-description.component';
 import { CourseDetailsComponent } from './components/course-details/course-details.component';
+import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '', component: GuestDashboardComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'studentLogin', component: StudentLoginComponent},
   { path: 'instrDashboard', component: InstrDashboardComponent},
   { path: 'courseDescription', component: CourseDescriptionComponent},
-  { path: 'courseDetails', component: CourseDetailsComponent}
+  { path: 'courseDetails', component: CourseDetailsComponent},
+  { path: 'userCourseDetails', component: UserCourseDetailsComponent}
 ];
 
 @NgModule({
