@@ -98,7 +98,7 @@ func main() {
 		&Instructor{},
 		&Student{},
 		&Course{},
-		&Enrollment{},
+		// &Enrollment{},
 	)
 	if err != nil {
 		panic("Unable to create tables")
