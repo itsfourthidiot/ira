@@ -26,4 +26,14 @@ export class CourseService {
     console.log(obj);
     return this.httpclient.put<any>(this.apiUrl + "updateDescription", obj);
   }
+
+  checkEnrollMent(courseId:string): Observable<boolean>{
+    return this.httpclient.get<any>(this.apiUrl + "checkEnrollMent" + "?courseId=" + courseId);
+
+  }
+
+  studentEnroll(courseId: string): Observable<boolean>{
+    var obj = {"courseId" : courseId};
+    return this.httpclient.post<any>(this.apiUrl + "studentEnrol", obj);
+  }
 }
