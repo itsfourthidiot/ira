@@ -1,36 +1,35 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <h1>Instructor Login</h1>
+  <h1>Student Login</h1>
 </div>
 
 <div class="login-wrapper align-center" fxLayout="row" fxLayoutAlign="center center">
-    <mat-tab-group  label="Instructor Login " animationDuration="0ms">
+    <mat-tab-group animationDuration="0ms">
       <mat-tab label="Login">
         <form class="example-form" (ngSubmit)="onLogin()">
             <mat-card-content>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="email" name="username" [(ngModel)] = "username" email/>
+                <input matInput type="email" placeholder="email" name="username" [(ngModel)] = "username" />
               </mat-form-field>
       
               <mat-form-field class="example-full-width">
                 <input matInput type="password" placeholder="Password" name="password" [(ngModel)]= "password" >
               </mat-form-field>
             </mat-card-content>
-            <button mat-stroked-button color="accent" name= "loginbutton" class="btn-block" type="submit">Log in</button>
+            <button mat-stroked-button color="accent" name="loginbutton" class="btn-block" type="submit">Log in</button>
            
             <!-- <button mat-stroked-button color="accent" class="btn-block">Log in</button> -->
         </form>
-
         <button mat-stroked-button color="accent" class="btn-block" (click)="onLogout()">Log out</button>
           
 
       </mat-tab>
-      <mat-tab name="registerlabel" label="Register">
+      <mat-tab label="Register">
         <form class="example-form" (ngSubmit)="onRegister()">
   
             <mat-card-content>
       
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="email" name="newUsername" [(ngModel)] = "newUsername" email>
+                <input matInput type="email" placeholder="Email" name="newUsername" [(ngModel)] = "newUsername">
               </mat-form-field>
       
               <mat-form-field class="example-full-width">

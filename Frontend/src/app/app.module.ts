@@ -21,13 +21,26 @@ import { SearchBoxComponent } from './components/search-box/search-box.component
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { StudentLoginComponent } from './components/student-login/student-login.component';
+import { GuestDashboardComponent } from './components/guest-dashboard/guest-dashboard.component';
+//import { CourseDescriptionComponent } from './course-description/course-description.component';
+import { CourseDescriptionComponent } from './components/course-description/course-description.component';
+import { CourseDetailsComponent } from './components/course-details/course-details.component';
+import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
+import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     InstructorLoginComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    StudentLoginComponent,
+    GuestDashboardComponent,
+    CourseDescriptionComponent,
+    CourseDetailsComponent,
+    UserCourseDetailsComponent,
+    UserCourseDescriptionComponent
   ],
   imports: [
     BrowserModule,

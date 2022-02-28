@@ -1,36 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
 import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
-  selector: 'app-instructor-login',
-  templateUrl: './instructor-login.component.html',
-  styleUrls: ['./instructor-login.component.css']
+  selector: 'app-student-login',
+  templateUrl: './student-login.component.html',
+  styleUrls: ['./student-login.component.css']
 })
-export class InstructorLoginComponent implements OnInit {
+export class StudentLoginComponent implements OnInit {
 
   username!: string;
   password!: string;
   newUsername!: string;
   newPassword!: string;
+  returnUrl!: string;
 
   // constructor(private instructorService: InstructorService, private router: Router) { }
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, 
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onLogin(){
-    //check if token is set
-    //navigate to instructor dashboard
-    this.router.navigateByUrl('instrDashboard');
 
     console.log("login");
-    this.authService.login(this.username, this.password, "instructor").subscribe(
+    //console.log(this.username + "--" + this.password);
+    this.authService.login(this.username, this.password, "student").subscribe(
       (res) => {
         alert("logged in successfully");
+        this.router.navigateByUrl(this.returnUrl);
         // this.router.navigateByUrl('login');
       }
     );
@@ -44,7 +47,7 @@ export class InstructorLoginComponent implements OnInit {
   }
 
   onRegister(){
-    this.authService.register(this.newUsername, this.newPassword, "instructor").subscribe(
+    this.authService.register(this.newUsername, this.newPassword, "student").subscribe(
       (res) => {
         alert(res.email + " registered successfully");
       }
