@@ -23,9 +23,9 @@ func (i Instructor) getUserDetails() string {
 
 type Student struct {
 	gorm.Model
-	Email    string `json:"email" gorm:"unique"`
-	Password string `json:"-"`
-	// Enrollments []Enrollment
+	Email       string `json:"email" gorm:"unique"`
+	Password    string `json:"-"`
+	Enrollments []Enrollment
 }
 
 func (s Student) getUserDetails() string {
@@ -39,12 +39,12 @@ type Course struct {
 	IsPublished  bool       `json:"isPublished" gorm:"default:false"`
 	PublishedAt  *time.Time `json:"publishedAt"`
 	InstructorID uint       `json:"instructorId"`
-	// Enrollments  []Enrollment
+	Enrollments  []Enrollment
 }
 
-// type Enrollment struct {
-// 	gorm.Model
-// 	StudentID uint `json:"studentId" gorm:"primaryKey"`
-// 	CourseID  uint `json:"courseId" gorm:"primaryKey"`
-// 	Enrolled_on *time.Time
-// }
+type Enrollment struct {
+	gorm.Model
+	StudentID   uint `json:"studentId" gorm:"primaryKey"`
+	CourseID    uint `json:"courseId" gorm:"primaryKey"`
+	Enrolled_on *time.Time
+}
