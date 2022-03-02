@@ -10,6 +10,7 @@ export class CourseDescriptionComponent implements OnInit {
 
   @Input() courseId! : string
   description = ""
+
   constructor(private courseService : CourseService) { }
 
   ngOnInit(): void {
@@ -19,6 +20,8 @@ export class CourseDescriptionComponent implements OnInit {
         this.description = data.description;
       }
     )
+
+    
   }
 
   updateDesc(){
