@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -15,11 +15,15 @@ export class StudentLoginComponent implements OnInit {
   password!: string;
   newUsername!: string;
   newPassword!: string;
+  returnUrl!: string;
 
   // constructor(private instructorService: InstructorService, private router: Router) { }
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, 
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onLogin(){
@@ -29,6 +33,7 @@ export class StudentLoginComponent implements OnInit {
     this.authService.login(this.username, this.password, "student").subscribe(
       (res) => {
         alert("logged in successfully");
+        this.router.navigateByUrl(this.returnUrl);
         // this.router.navigateByUrl('login');
       }
     );

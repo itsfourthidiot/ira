@@ -111,6 +111,7 @@ func main() {
 		&Course{},
 		&Module{},
 		&Video{},
+		&Enrollment{},
 	)
 	if err != nil {
 		panic("Unable to create tables")
@@ -123,19 +124,22 @@ func main() {
 	{
 		instructorRoutes.POST("/register", instructorRegister)
 		instructorRoutes.POST("/login", instructorLogin)
+		instructorRoutes.POST("/course", verifyToken, courseCreate)
+		instructorRoutes.POST("/course/:courseId/module/video", verifyToken, videoModuleCreate)
 	}
 	studentRoutes := r.Group("/student")
 	{
 		studentRoutes.POST("/register", studentRegister)
 		studentRoutes.POST("/login", studentLogin)
 	}
-	r.POST("/course/create", courseCreate)
-	moduleRoutes := r.Group("/module")
-	moduleRoutes.Use(verifyToken)
+	courseRoutes := r.Group("/course")
+	courseRoutes.Use(verifyToken)
 	{
-		moduleRoutes.POST("/video", videoModuleCreate)
-		// Routes for text and quiz module to be added
+
+		courseRoutes.PUT("/updateDescription", courseDescriptionUpdate)
+		courseRoutes.GET("/getDescription", getDescription)
 	}
+	// 	r.POST("/enroll", verifyToken, enrollCourse)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)

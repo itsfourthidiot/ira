@@ -19,7 +19,7 @@ const httpOptions = {
 })
 export class AuthService {
 
-  private apiUrl = "http://10.20.106.6:8080/"
+  private apiUrl = "http://10.20.106.43:8080/"
 
   // private apiUrl: string = "http://172.16.109.140:8080/instructor/"
   //private apiUrl: string = "http://172.16.109.140:8080/"

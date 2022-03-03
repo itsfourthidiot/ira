@@ -26,6 +26,8 @@ import { GuestDashboardComponent } from './components/guest-dashboard/guest-dash
 //import { CourseDescriptionComponent } from './course-description/course-description.component';
 import { CourseDescriptionComponent } from './components/course-description/course-description.component';
 import { CourseDetailsComponent } from './components/course-details/course-details.component';
+import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
+import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { CourseDetailsComponent } from './components/course-details/course-detai
     StudentLoginComponent,
     GuestDashboardComponent,
     CourseDescriptionComponent,
-    CourseDetailsComponent
+    CourseDetailsComponent,
+    UserCourseDetailsComponent,
+    UserCourseDescriptionComponent
   ],
   imports: [
     BrowserModule,

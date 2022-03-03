@@ -21,7 +21,6 @@ func videoModuleCreate(c *gin.Context) {
 		Title     string                `form:"title" binding:"required,min=1"`
 		File      *multipart.FileHeader `form:"file" binding:"required"`
 		IsPrivate string                `form:"isPrivate" binding:"required,oneof=true false"`
-		CourseId  string                `form:"courseId" binding:"required,number"`
 	}
 	req := Req{}
 	err := c.ShouldBind(&req)
@@ -40,11 +39,18 @@ func videoModuleCreate(c *gin.Context) {
 		})
 		return
 	}
+	courseId, err := strconv.Atoi(c.Param("courseId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect parameters",
+		})
+		return
+	}
 	course := Course{}
 	dbRes := DB.Model(&Course{}).Select("courses.*").
 		Joins("inner join instructors on courses.instructor_id = instructors.id").
 		Where("instructors.email = ?", email).
-		Where("courses.id = ?", req.CourseId).
+		Where("courses.id = ?", courseId).
 		First(&course)
 	if dbRes.RowsAffected == 0 {
 		c.JSON(http.StatusNotFound, gin.H{
