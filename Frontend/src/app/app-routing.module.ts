@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'studentLogin', component: StudentLoginComponent},
   { path: 'instrDashboard', component: InstrDashboardComponent},
   { path: 'courseDescription', component: CourseDescriptionComponent},
-  { path: 'courseDetails', component: CourseDetailsComponent},
+  { path: 'courseDetails/:courseID', component: CourseDetailsComponent},
   { path: 'userCourseDetails', component: UserCourseDetailsComponent}
 ];
 

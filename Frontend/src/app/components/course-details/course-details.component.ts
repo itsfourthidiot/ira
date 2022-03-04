@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from 'src/app/services/course.service';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-course-details',
@@ -10,22 +12,18 @@ export class CourseDetailsComponent implements OnInit {
 
   id = "1"
   enrolled = false
-  constructor(private courseService : CourseService) { }
+  constructor(
+    private courseService : CourseService,
+    private router : Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    // check if user is enrolled for the given course using courseID and token
-    // this.courseService.checkEnrollMent(this.id).subscribe(
-    //   (data) => {
-    //     this.enrolled = data
-    //   }
-    // )
-    
-
-
+    this.activatedRoute.params.subscribe(params => {
+      this.id = params.courseID;
+      console.log("courseId is "+params.courseID);
+    });
   }
 
-  // enroll(){
-
-  // }
 
 }
