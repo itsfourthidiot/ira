@@ -150,3 +150,17 @@ func getDescription(c *gin.Context) {
 	// c.String(http.StatusOK, "Hello %s %s", firstname, lastname)
 
 }
+
+func listAllCourses(c *gin.Context) {
+	var courses []Course
+	result := DB.Where("is_published = 1").Find(&courses)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"courses": courses,
+	})
+}
