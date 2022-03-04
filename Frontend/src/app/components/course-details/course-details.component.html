@@ -1,3 +1,16 @@
-<app-course-description [courseId]="id"></app-course-description>
+<!-- Hello Course Details -->
+<!-- <app-course-description [courseId]="id"></app-course-description> -->
 
 <!-- <button mat-stroked-button color="green" class="btn-block" (click)="enroll()" >Enroll</button> -->
+<mat-sidenav-container class = "tp-container">
+    <mat-sidenav mode = "side" opened>
+       <section class = "tp-section">
+          <span>File</span>
+       </section>
+       <section class = "tp-section">
+          <span>Edit</span>
+       </section>
+    </mat-sidenav>
+<mat-sidenav-content>
+    <router-outlet></router-outlet>
+</mat-sidenav-content>

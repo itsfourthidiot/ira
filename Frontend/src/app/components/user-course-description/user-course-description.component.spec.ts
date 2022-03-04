@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserCourseDescriptionComponent } from './user-course-description.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('UserCourseDescriptionComponent', () => {
   let component: UserCourseDescriptionComponent;
@@ -8,7 +10,11 @@ describe('UserCourseDescriptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserCourseDescriptionComponent ]
+      declarations: [ UserCourseDescriptionComponent ],
+      imports:[
+        HttpClientTestingModule,
+        RouterTestingModule
+      ]
     })
     .compileComponents();
   });
