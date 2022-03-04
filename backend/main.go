@@ -111,20 +111,26 @@ func main() {
 	{
 		instructorRoutes.POST("/register", instructorRegister)
 		instructorRoutes.POST("/login", instructorLogin)
+		instructorRoutes.GET("/course/:courseID/description", verifyToken, getDescription)
+		instructorRoutes.PUT("/course/:courseID/description", verifyToken, courseDescriptionUpdate)
 		instructorRoutes.POST("/course", verifyToken, courseCreate)
 	}
 	studentRoutes := r.Group("/student")
 	{
 		studentRoutes.POST("/register", studentRegister)
 		studentRoutes.POST("/login", studentLogin)
+		studentRoutes.GET("/course/:courseID/enroll", verifyToken, checkEnrollCourse)
+		studentRoutes.POST("/course/:courseID/enroll", verifyToken, enrollCourse)
+		studentRoutes.GET("/courses", verifyToken, studentCourses)
 	}
 	courseRoutes := r.Group("/course")
 	courseRoutes.Use(verifyToken)
 	{
-		courseRoutes.PUT("/updateDescription", courseDescriptionUpdate)
-		courseRoutes.GET("/getDescription", getDescription)
+		courseRoutes.POST("/create", courseCreate)
+		// courseRoutes.PUT("/updateDescription", courseDescriptionUpdate)
+		// courseRoutes.GET("/getDescription", getDescription)
 	}
-	// 	r.POST("/enroll", verifyToken, enrollCourse)
+	r.POST("/enroll", verifyToken, enrollCourse)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
