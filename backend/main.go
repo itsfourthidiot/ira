@@ -113,6 +113,7 @@ func main() {
 		instructorRoutes.POST("/login", instructorLogin)
 		instructorRoutes.GET("/course/:courseID/description", verifyToken, getDescription)
 		instructorRoutes.PUT("/course/:courseID/description", verifyToken, courseDescriptionUpdate)
+		instructorRoutes.POST("/course", verifyToken, courseCreate)
 	}
 	studentRoutes := r.Group("/student")
 	{
