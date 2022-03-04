@@ -19,7 +19,9 @@ const routes: Routes = [
   { path: 'courseDescription', component: CourseDescriptionComponent},
   { path: 'courseDetails', component: CourseDetailsComponent},
   { path: 'userCourseDetails', component: UserCourseDetailsComponent},
-  { path: 'studentDashboard/:email', component: StudentDashboardComponent}
+  { path: 'studentDashboard/:email', component: StudentDashboardComponent},
+  { path: 'courseDetails/:courseID', component: CourseDetailsComponent},
+  { path: 'userCourseDetails', component: UserCourseDetailsComponent}
 ];
 
 @NgModule({

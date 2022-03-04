@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "10d1f123-a51c-4cb9-a51a-781b192c58b5",
+		"name": "Courses",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CourseCreation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase){",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without JWT token in the header...\");",
+							"        pm.collectionVariables.set(\"title\", pm.variables.replaceIn(\"{{$randomWords}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            title: pm.collectionVariables.get(\"title\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        console.log(\"Creating an instructor...\");",
+							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"        pm.sendRequest({",
+							"            url: pm.collectionVariables.get(\"instructorRegistrationUrl\"),",
+							"            method: 'POST',",
+							"            header: {",
+							"                'content-type': 'application/json'",
+							"            },",
+							"            body: {",
+							"                mode: 'raw',",
+							"                raw: JSON.stringify({",
+							"                    email: pm.collectionVariables.get(\"email\"),",
+							"                    password: pm.collectionVariables.get(\"password\")",
+							"                })",
+							"            }",
+							"        }, function (err, res) {",
+							"            console.log(\"Logging in as an instructor...\");",
+							"            pm.sendRequest({",
+							"                url: pm.collectionVariables.get(\"instructorLoginUrl\"),",
+							"                method: 'POST',",
+							"                header: {",
+							"                    'content-type': 'application/json'",
+							"                },",
+							"                body: {",
+							"                    mode: 'raw',",
+							"                    raw: JSON.stringify({",
+							"                        email: pm.collectionVariables.get(\"email\"),",
+							"                        password: pm.collectionVariables.get(\"password\")",
+							"                    })",
+							"                }",
+							"            }, function (err, res) {",
+							"                console.log(\"Generating a request with incorrect title format...\");",
+							"                pm.collectionVariables.set(\"jwtToken\", res.json()[\"token\"]);",
+							"                pm.collectionVariables.set(\"title\", \"\");",
+							"                pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"                    title: pm.collectionVariables.get(\"title\")",
+							"                }));",
+							"            });",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request body...\");",
+							"        pm.collectionVariables.set(\"title\", pm.variables.replaceIn(\"{{$randomWords}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            title: pm.collectionVariables.get(\"title\")",
+							"        }));",
+							"        break;",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"console.log(currentCase);",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the request header\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectTitleFormat\");",
+							"            postman.setNextRequest(\"CourseCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        pm.test(\"Incorrect title format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"CourseCreation\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"Correct request\", function(){",
+							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            pm.collectionVariables.set(\"jwtToken\", null);",
+							"            postman.setNextRequest(null);",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/instructor/course",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"instructor",
+						"course"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "currentCase",
+			"value": "noToken"
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "jwtToken",
+			"value": ""
+		},
+		{
+			"key": "title",
+			"value": ""
+		},
+		{
+			"key": "requestBody",
+			"value": ""
+		},
+		{
+			"key": "instructorRegistrationUrl",
+			"value": "http://localhost:8080/instructor/register"
+		},
+		{
+			"key": "instructorLoginUrl",
+			"value": "http://localhost:8080/instructor/login"
+		},
+		{
+			"key": "currentcase",
+			"value": ""
+		}
+	]
+}

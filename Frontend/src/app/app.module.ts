@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatProgressBarModule } from '@angular/material/progress-bar'
+// import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { InstructorLoginComponent } from './components/instructor-login/instructor-login.component';
@@ -30,6 +30,9 @@ import { CourseDetailsComponent } from './components/course-details/course-detai
 import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
 import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
+import { CourseTitleDialogComponent } from './components/course-title-dialog/course-title-dialog.component';
+import { InstrDashboardComponent } from './components/instr-dashboard/instr-dashboard.component';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { StudentDashboardComponent } from './components/student-dashboard/studen
     CourseDetailsComponent,
     UserCourseDetailsComponent,
     UserCourseDescriptionComponent,
-    StudentDashboardComponent
+    StudentDashboardComponent,
+    CourseTitleDialogComponent,
+    InstrDashboardComponent
   ],
   imports: [
     BrowserModule,
