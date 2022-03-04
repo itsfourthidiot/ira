@@ -21,7 +21,7 @@ export class CourseDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.id = params.courseID;
-      console.log("courseId is "+params.courseID);
+      console.log("courseId is "+ params.courseID);
     });
   }
 

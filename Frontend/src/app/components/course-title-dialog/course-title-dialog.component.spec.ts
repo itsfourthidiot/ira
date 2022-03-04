@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CourseTitleDialogComponent } from './course-title-dialog.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 describe('CourseTitleDialogComponent', () => {
   let component: CourseTitleDialogComponent;
@@ -8,7 +11,14 @@ describe('CourseTitleDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CourseTitleDialogComponent ]
+      declarations: [ CourseTitleDialogComponent ],
+      imports:[
+        HttpClientTestingModule,
+        RouterTestingModule
+      ],
+      providers: [
+        { provide: MatDialogRef, useValue: {} }
+      ]
     })
     .compileComponents();
   });
