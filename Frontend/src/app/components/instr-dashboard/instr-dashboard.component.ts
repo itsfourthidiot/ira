@@ -29,14 +29,15 @@ export class InstrDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       let newTitle = result;
-      console.log(newTitle)
-      //create new empty course with new title 
-      //call createCourse api which will return courseID
-      //navigate to courseDetailspage
-
+      if(newTitle){
+        console.log(newTitle)
+        //create new empty course with new title 
+        //call createCourse api which will return courseID
+        //navigate to courseDetailspage
+        this.router.navigate([`/courseDetails/${newTitle}`]);
+      } 
     });
   }
 
-  // this.router.navigate([`/courseDetails/${this.id}`]);
 
 }
