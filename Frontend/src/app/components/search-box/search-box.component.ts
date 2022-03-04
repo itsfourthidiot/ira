@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http-service.service';
-import { Course } from 'src/app/interfaces/Course';
+import { Course } from 'src/app/models/Course';
 
 @Component({
   selector: 'app-search-box',

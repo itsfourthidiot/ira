@@ -1,16 +1,18 @@
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ICourseService } from './course.service.interface';
-
+import { apiUrls } from '../constants/mockApiConstants';
+import { Course } from '../models/Course';
+import { allCourses } from 'src/assets/data/allCourses';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService implements ICourseService{
 
-  private apiUrl = "http://10.20.106.43:8080/course/"
+  private baseUrl = apiUrls.baseUrl;
 
   constructor(
     private httpclient: HttpClient,
@@ -19,21 +21,28 @@ export class CourseService implements ICourseService{
 
   getCourseDescriptionById(id:string): Observable<any>{
     console.log("get description of course with course id :" + id);
-    return this.httpclient.get<any>(this.apiUrl + "getDescription" + "?courseId=" + id);
+    return this.httpclient.get<any>(this.baseUrl + "getDescription" + "?courseId=" + id);
   }
 
   updateCourseDescriptionById(id:string, description:string): Observable<any>{
     var obj = {"courseId": id, "description": description};
     console.log(obj);
-    return this.httpclient.put<any>(this.apiUrl + "updateDescription", obj);
+    return this.httpclient.put<any>(this.baseUrl + "updateDescription", obj);
   }
 
   checkEnrollMent(courseId:string): Observable<boolean>{
-    return this.httpclient.get<any>(this.apiUrl + "checkEnrollMent" + "?courseId=" + courseId);
+    return this.httpclient.get<any>(this.baseUrl + "checkEnrollMent" + "?courseId=" + courseId);
   }
 
   studentEnroll(courseId: string): Observable<boolean>{
     var obj = {"courseId" : courseId};
-    return this.httpclient.post<any>(this.apiUrl + "studentEnrol", obj);
+    return this.httpclient.post<any>(this.baseUrl + "studentEnrol", obj);
+  }
+
+  getAllCourses(): Observable<Course[]>{
+    let url = this.baseUrl +apiUrls.getAllCourses;
+    console.log(url);
+    // return this.httpclient.get<Course[]>(apiUrls.getAllCourses);
+    return of(allCourses)
   }
 }

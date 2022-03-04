@@ -28,6 +28,7 @@ import { CourseDetailsComponent } from './components/course-details/course-detai
 import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
 import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
 import { CourseTitleDialogComponent } from './components/course-title-dialog/course-title-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { CourseTitleDialogComponent } from './components/course-title-dialog/cou
     MatAutocompleteModule,
   ],
   providers: [
+    ...environment.providers,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -1,3 +1,3 @@
 export const apiUrls = {
-    getAllCourses : '../../assets/data/courses.json'
+    getAllCourses : '../../assets/data/courses.json'    
 }
