@@ -28,6 +28,7 @@ import { CourseDescriptionComponent } from './components/course-description/cour
 import { CourseDetailsComponent } from './components/course-details/course-details.component';
 import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
 import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
+import { CourseTitleDialogComponent } from './components/course-title-dialog/course-title-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { UserCourseDescriptionComponent } from './components/user-course-descrip
     CourseDetailsComponent,
     UserCourseDetailsComponent,
     UserCourseDescriptionComponent,
-    InstrDashboardComponent
+    InstrDashboardComponent,
+    CourseTitleDialogComponent
   ],
   imports: [
     BrowserModule,
