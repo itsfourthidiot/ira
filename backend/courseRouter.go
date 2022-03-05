@@ -87,8 +87,8 @@ func courseDescriptionUpdate(c *gin.Context) {
 	course := Course{}
 	result := DB.Model(&Course{}).Select("courses.*").Joins("inner join instructors on courses.instructor_id = instructors.id").Where("instructors.email = ?", email).Where("courses.id = ?", CourseId).First(&course)
 	if result.RowsAffected == 0 {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "course not found",
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorised access for this course",
 		})
 		return
 	}
@@ -139,8 +139,8 @@ func getDescription(c *gin.Context) {
 
 	result = DB.Model(&Course{}).Select("courses.*").Joins("inner join instructors on courses.instructor_id = instructors.id").Where("instructors.email = ?", email).Where("courses.id = ?", course.ID).First(&course)
 	if result.RowsAffected == 0 {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "course not found",
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorised access for this course",
 		})
 		return
 	}
