@@ -27,6 +27,7 @@ export class StudentDashboardComponent implements OnInit {
       this.authService.getStudentDashBoard(this.email).subscribe(
         (res) => {
           this.currentStudentDb = res;
+          console.log(this.currentStudentDb)
           this.courses = res.courses;
         }
       )
