@@ -29,11 +29,17 @@ export class StudentLoginComponent implements OnInit {
   onLogin(){
 
     console.log("login");
+    var email = this.username
     //console.log(this.username + "--" + this.password);
     this.authService.login(this.username, this.password, "student").subscribe(
       (res) => {
-        alert("logged in successfully");
-        this.router.navigateByUrl(this.returnUrl);
+        console.log("logged in successfully");
+        if (this.returnUrl !== '/'){
+          this.router.navigateByUrl(this.returnUrl);
+        }
+        console.log("before sending to user dashboard" + email);
+        this.router.navigateByUrl(`/studentDashboard/${email}`);
+
         // this.router.navigateByUrl('login');
       }
     );

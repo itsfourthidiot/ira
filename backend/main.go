@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"io/fs"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
@@ -15,6 +18,7 @@ import (
 
 var DB *gorm.DB
 var secretKey []byte
+var client *s3.Client
 
 //go:embed static
 var static embed.FS
@@ -88,6 +92,13 @@ func main() {
 	}
 	secretKey = []byte(os.Getenv("SECRET_KEY"))
 
+	// Configure AWS client
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic("configuration error, " + err.Error())
+	}
+	client = s3.NewFromConfig(cfg)
+
 	// Connect to the database using GORM
 	_db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 	if err != nil {
@@ -98,6 +109,8 @@ func main() {
 		&Instructor{},
 		&Student{},
 		&Course{},
+		&Module{},
+		&Video{},
 		&Enrollment{},
 	)
 	if err != nil {
@@ -111,9 +124,10 @@ func main() {
 	{
 		instructorRoutes.POST("/register", instructorRegister)
 		instructorRoutes.POST("/login", instructorLogin)
+		instructorRoutes.POST("/course", verifyToken, courseCreate)
+		instructorRoutes.POST("/course/:courseId/module/video", verifyToken, videoModuleCreate)
 		instructorRoutes.GET("/course/:courseID/description", verifyToken, getDescription)
 		instructorRoutes.PUT("/course/:courseID/description", verifyToken, courseDescriptionUpdate)
-		instructorRoutes.POST("/course", verifyToken, courseCreate)
 	}
 	studentRoutes := r.Group("/student")
 	{
@@ -123,14 +137,8 @@ func main() {
 		studentRoutes.POST("/course/:courseID/enroll", verifyToken, enrollCourse)
 		studentRoutes.GET("/courses", verifyToken, studentCourses)
 	}
-	courseRoutes := r.Group("/course")
-	courseRoutes.Use(verifyToken)
-	{
-		courseRoutes.POST("/create", courseCreate)
-		// courseRoutes.PUT("/updateDescription", courseDescriptionUpdate)
-		// courseRoutes.GET("/getDescription", getDescription)
-	}
 	r.POST("/enroll", verifyToken, enrollCourse)
+	r.GET("/courses", listAllCourses)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)

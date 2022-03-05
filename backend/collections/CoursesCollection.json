@@ -56,6 +56,7 @@
 							"            }, function (err, res) {",
 							"                console.log(\"Generating a request with incorrect title format...\");",
 							"                pm.collectionVariables.set(\"jwtToken\", res.json()[\"token\"]);",
+							"                pm.collectionVariables.set(\"registeredJwtToken\", res.json()[\"token\"]);",
 							"                pm.collectionVariables.set(\"title\", \"\");",
 							"                pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
 							"                    title: pm.collectionVariables.get(\"title\")",
@@ -81,7 +82,6 @@
 					"script": {
 						"exec": [
 							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
-							"console.log(currentCase);",
 							"switch(currentCase) {",
 							"    case \"noToken\":",
 							"        pm.test(\"Token not present in the request header\", function (){",
@@ -100,9 +100,11 @@
 							"    case \"correctRequest\":",
 							"        pm.test(\"Correct request\", function(){",
 							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"courseId\", pm.response.json()[\"ID\"]); ",
+							"            pm.collectionVariables.set(\"registeredCourseId\", pm.response.json()[\"ID\"]);",
 							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
 							"            pm.collectionVariables.set(\"jwtToken\", null);",
-							"            postman.setNextRequest(null);",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
 							"        });",
 							"        break;",
 							"}"
@@ -141,6 +143,229 @@
 					"path": [
 						"instructor",
 						"course"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VideoModuleCreation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const title = {",
+							"    \"key\": \"title\",",
+							"    \"type\": \"text\",",
+							"    \"value\": pm.variables.replaceIn(\"{{$randomWords}}\"),",
+							"}",
+							"",
+							"const correctFile = {",
+							"    \"key\": \"file\",",
+							"    \"type\": \"file\",",
+							"    \"src\": \"/home/fourth-idiot/data/courses/cen5035-software-engineering/ira/backend/collections/correctFile.mkv\"",
+							"}",
+							"",
+							"const incorrectFile = {",
+							"    \"key\": \"file\",",
+							"    \"type\": \"file\",",
+							"    \"src\": \"/home/fourth-idiot/data/courses/cen5035-software-engineering/ira/backend/collections/incorrectFile.txt\"",
+							"}",
+							"",
+							"const isPrivate = {",
+							"    \"key\": \"isPrivate\",",
+							"    \"type\": \"text\",",
+							"    \"value\": String(pm.variables.replaceIn(\"{{$randomBoolean}}\")),",
+							"}",
+							"",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase){",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without JWT token in the header...\");",
+							"        break;",
+							"    case \"noTitle\":",
+							"        console.log(\"Generating a request with no title in the request body\");",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"registeredJwtToken\"));",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"noFile\":",
+							"        console.log(\"Generating a request with no file in the request body\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"noIsPrivate\":",
+							"        console.log(\"Generating a request with no isPrivate in the request body\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, correctFile]",
+							"        }",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        console.log(\"Generating a request with incorrect title format\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [",
+							"                {",
+							"                    \"key\": \"title\",",
+							"                    \"type\": \"text\",",
+							"                    \"value\": \"\"",
+							"                },",
+							"                correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"incorrectIsPrivateFormat\":",
+							"        console.log(\"Generating a request with incorrect isPrivate format\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [",
+							"                title, correctFile,",
+							"                {",
+							"                    \"key\": \"isPrivate\",",
+							"                    \"type\": \"text\",",
+							"                    \"value\": \"\",",
+							"                }",
+							"            ]",
+							"        }",
+							"        break;",
+							"    case \"courseNotPresent\":",
+							"        console.log(\"Generating a request with course not present for an instructor\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"courseId\") + 1);",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"incorrectFileFormat\":",
+							"        console.log(\"Generating a request with course not present for an instructor\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"registeredCourseId\"));",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, incorrectFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the request header\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noTitle\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"noTitle\":",
+							"        pm.test(\"Title not present in the the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noFile\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"noFile\":",
+							"        pm.test(\"File not present in the the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noIsPrivate\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"noIsPrivate\":",
+							"        pm.test(\"isPrivate not present in the the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectTitleFormat\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        pm.test(\"Incorrect title format\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectIsPrivateFormat\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectIsPrivateFormat\":",
+							"        pm.test(\"Incorrect isPrivate format\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"courseNotPresent\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"courseNotPresent\":",
+							"        pm.test(\"Course not present for an instructor\", function (){",
+							"            pm.response.to.have.status(404);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectFileFormat\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectFileFormat\":",
+							"        pm.test(\"Incorrect file format for video module\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"correct request for video module creation\", function (){",
+							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            postman.setNextRequest(null);",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/instructor/course/:courseId/module/video",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"instructor",
+						"course",
+						":courseId",
+						"module",
+						"video"
+					],
+					"variable": [
+						{
+							"key": "courseId",
+							"value": "{{courseId}}"
+						}
 					]
 				}
 			},
@@ -189,6 +414,10 @@
 			"value": ""
 		},
 		{
+			"key": "registeredJwtToken",
+			"value": ""
+		},
+		{
 			"key": "title",
 			"value": ""
 		},
@@ -205,7 +434,11 @@
 			"value": "http://localhost:8080/instructor/login"
 		},
 		{
-			"key": "currentcase",
+			"key": "courseId",
+			"value": ""
+		},
+		{
+			"key": "registeredCourseId",
 			"value": ""
 		}
 	]

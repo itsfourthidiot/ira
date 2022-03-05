@@ -1,0 +1,8 @@
+.example-card {
+    max-width: 400px;
+  }
+
+  mat-progress-bar{
+      width: 100%;
+      background-color: blue;
+  }

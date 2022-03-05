@@ -1,0 +1,24 @@
+<h1>{{email}}</h1>
+
+
+<div class="row card-group">
+    <div class="col-4"  *ngFor="let course of courses">
+        <mat-card class="example-card">
+            <img mat-card-image src="assets/CourseImages/SE_img.png" alt="Course Image">
+            <mat-card-title>{{course.title}}</mat-card-title>
+            <!-- <mat-card-subtitle></mat-card-subtitle> -->
+            <mat-card-content>
+                <p>{{course.description}}</p>                
+            </mat-card-content>
+            
+            <!-- <mat-card-actions>
+              <button mat-button>LIKE</button>
+              <button mat-button>SHARE</button>
+            </mat-card-actions> -->
+            <mat-card-footer>
+                <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+            </mat-card-footer>
+          </mat-card>
+          
+    </div>
+</div>

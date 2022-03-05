@@ -47,11 +47,18 @@ jobs:
       with:
         name: build-file
         path: backend
-    - name: API testing using Newman
+    - name: Setup environment to run backend server
       run: |
         cd backend
         tar -xvf build-file.tar
-        echo "SECRET_KEY=YOURSECRETKEYGOESHERE" >> .env
+        echo "SECRET_KEY=$SECRET_KEY" >> .env
+        echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
+        echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
+        echo "AWS_REGION=$AWS_REGION" >> .env
+        echo "AWS_BUCKET=$AWS_BUCKET" >> .env
+    - name: API testing using Newman
+      run: |
+        cd backend
         ./ira &
         sleep 5
         newman run collections/StudentsCollection.json --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/students-collection.html
