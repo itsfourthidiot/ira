@@ -1,5 +1,12 @@
 ### * Front End
-
+* Frontend demo URL:
+* Added Create Course button and modal in Instructor Dashboard [#33](https://github.com/fourth-idiot/ira/issues/33)
+* Created course details component with dynamic url [#33](https://github.com/fourth-idiot/ira/issues/33)
+* Populated student dashboard with enrolled courses  [#14](https://github.com/fourth-idiot/ira/issues/14)
+* Instructor can add course description [#6](https://github.com/fourth-idiot/ira/issues/6)
+* Instructor can update course description [#6](https://github.com/fourth-idiot/ira/issues/6)
+* Wrote Unit Tests using Karma Jasmine
+* Wrote automation tests using Cypress
 ***
 
 ### * Backend
