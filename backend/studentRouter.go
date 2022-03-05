@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -132,6 +131,7 @@ func studentCourses(c *gin.Context) {
 }
 
 func checkEnrollCourse(c *gin.Context) {
+
 	courseId, err := strconv.Atoi(c.Param("courseID"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -144,6 +144,7 @@ func checkEnrollCourse(c *gin.Context) {
 	if !courseExist(courseId, c) {
 		return
 	}
+
 	// check if course is published
 	if !isPublished(courseId, c) {
 		return
@@ -165,16 +166,17 @@ func checkEnrollCourse(c *gin.Context) {
 		})
 		return
 	}
+
 	studentID := student.ID
 	c.JSON(http.StatusOK, gin.H{
-		"isEnrolled": isEnrolled(studentID, courseId, c),
+		"isEnrolled": isEnrolled(studentID, courseId),
 	})
 
 }
 
 func enrollCourse(c *gin.Context) {
 	courseId, err := strconv.Atoi(c.Param("courseID"))
-	fmt.Println(courseId)
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "course not found",
@@ -211,7 +213,12 @@ func enrollCourse(c *gin.Context) {
 	studentID := student.ID
 
 	// Check if student is already enrolled
-	if isEnrolled(studentID, courseId, c) {
+	if isEnrolled(studentID, courseId) {
+		if result.RowsAffected == 1 {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Already Registered",
+			})
+		}
 		return
 	} else {
 		newEnroll := Enrollment{

@@ -16,8 +16,9 @@ func isPublished(newCourseId int, c *gin.Context) bool {
 		})
 		return false
 	}
-	// return true
-	return published.IsPublished
+	// for time being
+	return true
+	// return published.IsPublished
 }
 func courseExist(newCourseId int, c *gin.Context) bool {
 
@@ -33,15 +34,11 @@ func courseExist(newCourseId int, c *gin.Context) bool {
 	return true
 }
 
-func isEnrolled(newStudentId uint, newCourseId int, c *gin.Context) bool {
+func isEnrolled(newStudentId uint, newCourseId int) bool {
 
 	alreadyEnrolled := Enrollment{}
 	result := DB.Where("course_id = ? AND student_id=?", newCourseId, newStudentId).First(&alreadyEnrolled)
-	if result.RowsAffected == 1 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Already Registered",
-		})
-	}
+
 	return result.RowsAffected == 1
 }
 
