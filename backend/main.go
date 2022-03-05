@@ -138,6 +138,7 @@ func main() {
 		studentRoutes.GET("/courses", verifyToken, studentCourses)
 	}
 	r.POST("/enroll", verifyToken, enrollCourse)
+	r.GET("/courses", listAllCourses)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
