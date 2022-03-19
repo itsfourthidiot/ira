@@ -32,12 +32,3 @@ export const allCourses: Course[] =  [
         "instructorId": "486"
     }
 ]
-
-CreatedAt: string,
-UpdatedAt: string,
-DeletedAt: string,
-title: string,
-description: string,
-isPublished: boolean,
-publishedAt: string,
-instructorId: string,
