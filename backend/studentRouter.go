@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -95,4 +96,142 @@ func studentLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
 	})
+}
+
+func studentCourses(c *gin.Context) {
+	var courses []Course
+	// getting student id
+	email, ok := c.Get("email")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	student := Student{}
+	result := DB.Where("email = ?", email).First(&student)
+
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "student not found",
+		})
+		return
+	}
+
+	result = DB.Model(&Course{}).Select("courses.*").Joins("inner join enrollments on courses.id = enrollments.course_id").Where("enrollments.student_id = ?", student.ID).Find(&courses)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course  not found",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"courses": courses,
+	})
+}
+
+func checkEnrollCourse(c *gin.Context) {
+
+	courseId, err := strconv.Atoi(c.Param("courseID"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not found",
+		})
+		return
+
+	}
+	// check if course is valid
+	if !courseExist(courseId, c) {
+		return
+	}
+
+	// check if course is published
+	if !isPublished(courseId, c) {
+		return
+	}
+
+	// Get student ID
+	email, ok := c.Get("email")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	student := Student{}
+	result := DB.Where("email = ?", email).First(&student)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+
+	studentID := student.ID
+	c.JSON(http.StatusOK, gin.H{
+		"isEnrolled": isEnrolled(studentID, courseId),
+	})
+
+}
+
+func enrollCourse(c *gin.Context) {
+	courseId, err := strconv.Atoi(c.Param("courseID"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not found",
+		})
+		return
+
+	}
+
+	// Check if the course is valid
+	if !courseExist(courseId, c) {
+		return
+	}
+	// check if course is Published
+	if !isPublished(courseId, c) {
+		return
+	}
+
+	// Get student ID
+	email, ok := c.Get("email")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	student := Student{}
+	result := DB.Where("email = ?", email).First(&student)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	studentID := student.ID
+
+	// Check if student is already enrolled
+	if isEnrolled(studentID, courseId) {
+		if result.RowsAffected == 1 {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Already Registered",
+			})
+		}
+		return
+	} else {
+		newEnroll := Enrollment{
+			StudentID: studentID,
+			CourseID:  uint(courseId),
+		}
+		result := DB.Create(&newEnroll)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "internal server error",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, newEnroll)
+	}
 }

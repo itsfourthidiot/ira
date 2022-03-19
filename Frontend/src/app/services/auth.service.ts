@@ -19,7 +19,7 @@ const httpOptions = {
 })
 export class AuthService {
 
-  private apiUrl = "http://10.20.106.43:8080/"
+  private apiUrl = "http://10.192.239.204:8080/"
 
   // private apiUrl: string = "http://172.16.109.140:8080/instructor/"
   //private apiUrl: string = "http://172.16.109.140:8080/"
@@ -99,6 +99,12 @@ export class AuthService {
     return this.http.post<any>(this.apiUrl + role + "/register", obj);
 
 
+  }
+
+  getStudentDashBoard(username: string): Observable<any>{
+    //let api = `${this.apiUrl}/student-dashboard/${username}`;
+    let api = `${this.apiUrl}student/courses`;
+    return this.http.get(api);
   }
 
 

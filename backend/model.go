@@ -48,3 +48,17 @@ type Enrollment struct {
 	CourseID    uint `json:"courseId" gorm:"primaryKey"`
 	Enrolled_on *time.Time
 }
+
+type Module struct {
+	gorm.Model
+	Title     string `json:"title" gorm:"not null"`
+	Type      string `json:"type"`
+	IsPrivate bool   `json:"isPrivate"`
+	Video     Video
+}
+
+type Video struct {
+	gorm.Model
+	Url      string `json:"url"`
+	ModuleID uint   `json:"moduleId"`
+}
