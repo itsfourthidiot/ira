@@ -1,4 +1,5 @@
 import { Observable } from "rxjs";
+import { Course } from "../models/Course";
 
 export interface ICourseService{
     getCourseDescriptionById(id:string): Observable<any>;
@@ -8,4 +9,8 @@ export interface ICourseService{
     checkEnrollMent(courseId:string): Observable<boolean>;
     
     studentEnroll(courseId: string): Observable<boolean>;
+
+    getAllCourses(): Observable<Course[]>;
+
+    createNewCourse(title: string): Observable<any>;
 }

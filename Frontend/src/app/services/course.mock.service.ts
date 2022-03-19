@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ICourseService } from './course.service.interface';
-import { apiUrls } from '../constants/mockApiConstants';
+import { apiUrls } from '../constants/mockCourseData';
 import { Course } from '../models/Course';
-import { allCourses } from 'src/assets/data/allCourses';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +17,10 @@ export class CourseService implements ICourseService{
     private httpclient: HttpClient,
     private router: Router
   ) { }
+
+  createNewCourse(title: string): Observable<any> {
+    return of(apiUrls.createCourse);
+  }
 
   getCourseDescriptionById(id:string): Observable<any>{
     console.log("get description of course with course id :" + id);
@@ -43,6 +46,6 @@ export class CourseService implements ICourseService{
     let url = this.baseUrl +apiUrls.getAllCourses;
     console.log(url);
     // return this.httpclient.get<Course[]>(apiUrls.getAllCourses);
-    return of(allCourses)
+    return of(apiUrls.getAllCourses);
   }
 }

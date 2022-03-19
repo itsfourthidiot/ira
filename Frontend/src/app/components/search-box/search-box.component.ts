@@ -16,13 +16,13 @@ export class SearchBoxComponent implements OnInit {
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
-      this.httpService.getAllCourses()
-      .subscribe(
-        response => {
-          console.log(response);
-          this.courses = response;
-        }
-      )
+      // this.httpService.getAllCourses()
+      // .subscribe(
+      //   response => {
+      //     console.log(response);
+      //     this.courses = response;
+      //   }
+      // )
       
   }
 

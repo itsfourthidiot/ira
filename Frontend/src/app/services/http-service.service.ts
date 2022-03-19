@@ -12,7 +12,4 @@ export class HttpService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCourses(): Observable<Course[]>{
-    return this.http.get<Course[]>(apiUrls.getAllCourses);
-  }
 }
