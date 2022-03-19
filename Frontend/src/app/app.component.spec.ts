@@ -27,8 +27,4 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app.title).toEqual('Frontend');
   });
-<<<<<<< HEAD
-
-=======
->>>>>>> 8c71316f4f27f1fa7d5a464a913e0f0bf039a679
 });
