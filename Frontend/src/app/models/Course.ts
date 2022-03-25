@@ -1,4 +1,5 @@
 export interface Course{
+    ID: number,
     CreatedAt: string,
     UpdatedAt: string,
     DeletedAt: string,
