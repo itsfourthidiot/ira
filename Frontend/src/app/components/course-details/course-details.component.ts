@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseService } from 'src/app/services/course.service';
+import { CourseService } from 'src/app/services/course.mock.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
@@ -23,6 +23,12 @@ export class CourseDetailsComponent implements OnInit {
       this.id = params.courseID;
       console.log("courseId is "+ params.courseID);
     });
+
+    this.courseService.getAllCourses().subscribe(
+      (data) => {
+        console.log(data);
+      }
+    )   
   }
 
 

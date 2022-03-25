@@ -1,3 +1,6 @@
 export const apiUrls = {
-    getAllCourses : '../../assets/data/courses.json'
+    baseUrl : 'http://10.20.106.43:8080',
+    updateDescription : '/course/updateDescription',
+    createCourses : '/instructor/course'
+
 }

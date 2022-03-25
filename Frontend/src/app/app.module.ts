@@ -31,6 +31,7 @@ import { UserCourseDetailsComponent } from './components/user-course-details/use
 import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
 import { CourseTitleDialogComponent } from './components/course-title-dialog/course-title-dialog.component';
+import { environment } from 'src/environments/environment';
 import { InstrDashboardComponent } from './components/instr-dashboard/instr-dashboard.component';
 
 
@@ -67,6 +68,7 @@ import { InstrDashboardComponent } from './components/instr-dashboard/instr-dash
     HttpClientModule
   ],
   providers: [
+    ...environment.providers,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

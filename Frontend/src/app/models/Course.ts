@@ -1,5 +1,4 @@
 export interface Course{
-
     CreatedAt: string,
     UpdatedAt: string,
     DeletedAt: string,
@@ -8,6 +7,4 @@ export interface Course{
     isPublished: boolean,
     publishedAt: string,
     instructorId: string,
-
-
 }
