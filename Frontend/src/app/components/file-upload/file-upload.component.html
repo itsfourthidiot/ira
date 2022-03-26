@@ -8,7 +8,7 @@
       <mat-error *ngIf="videoTitleControl.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
 
-    <div #videoUpload class="col-sm-3">
+    <div #videoUpload class="col-sm-5">
       <input required type="file" class="file-input"
             (change)="onFileSelected($event)" #fileUpload>
 
@@ -35,9 +35,9 @@
       </div>
     </div>
         
-    <mat-checkbox class="col-sm-2" [formControl]="isPrivateControl">Is Private</mat-checkbox>
+    <mat-checkbox class="col-sm-1" [formControl]="isPrivateControl">Is Private</mat-checkbox>
 
-    <button class="col-sm-2" mat-raised-button color="primary" (click) = "uploadFile()">Upload</button>
+    <button class="col-sm-1" mat-raised-button color="primary" (click) = "uploadFile()">Upload</button>
 
   </form>
 </div>
