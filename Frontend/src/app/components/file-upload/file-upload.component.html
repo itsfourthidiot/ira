@@ -1,0 +1,42 @@
+
+<div class="example-container">
+  <form [formGroup]="options">
+ 
+    <mat-form-field appearance="standard" [floatLabel]="videoTitleControl.value">
+      <mat-label>Video Title</mat-label>
+      <input matInput [formControl]="videoTitleControl" required placeholder="Add Title">
+      <mat-error *ngIf="videoTitleControl.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <div #videoUpload>
+      <input type="file" class="file-input"
+            (change)="onFileSelected($event)" #fileUpload>
+    
+      <div class="file-upload">
+    
+        {{fileName || "Select video to upload."}}
+    
+          <button mat-mini-fab color="primary" class="upload-btn"
+            (click)="fileUpload.click()">
+              <mat-icon>attach_file</mat-icon>
+          </button>
+      </div>
+    
+      <div class="progress">
+    
+        <mat-progress-bar class="progress-bar" mode="determinate"
+                          [value]="uploadProgress" *ngIf="uploadProgress">
+    
+        </mat-progress-bar>
+    
+        <mat-icon class="cancel-upload" (click)="cancelUpload()" 
+                  *ngIf="uploadProgress">delete_forever</mat-icon>
+    
+      </div>
+    </div>
+        
+    <mat-checkbox [formControl]="isPrivateControl">Is Private</mat-checkbox>
+
+  </form>
+</div>
+

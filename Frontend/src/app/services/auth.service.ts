@@ -52,7 +52,7 @@ export class AuthService {
   //     })
   // }
 
-  login(username: string, password: string, role: String): Observable<any>{
+  login(username: string, password: string, role: string): Observable<any>{
     console.log("in service");
     console.log(username);
     console.log(password);
@@ -61,7 +61,7 @@ export class AuthService {
     console.log(obj);
     
     //change type according to logged in user
-    this.profile.changeType("instructor");
+    this.profile.changeType(role);
 
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
     return this.http.post<any>(this.apiUrl + role + "/login", obj).pipe(
