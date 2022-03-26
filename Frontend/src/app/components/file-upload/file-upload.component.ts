@@ -41,6 +41,8 @@ export class FileUploadComponent implements OnInit {
       // this.videoTitleControl.setValue(file.name);
       this.fileName = this.file.name;
       console.log(this.fileName)
+      this.uploadProgress = 20;
+
     }        
   }
 
@@ -55,7 +57,6 @@ export class FileUploadComponent implements OnInit {
           // finalize(() => this.reset())
         ).subscribe(event => {     
           console.log(event); 
-          this.uploadProgress = 20;
           if (event.type == HttpEventType.UploadProgress) {
             this.uploadProgress = Math.round(100 * (event.loaded / event.total));
           }

@@ -1,3 +1,9 @@
 .file-input {
     display: none;
-  }
+}
+form{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: 2px solid powderblue;
+}
