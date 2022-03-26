@@ -9,9 +9,9 @@
     </mat-form-field>
 
     <div #videoUpload>
-      <input type="file" class="file-input"
+      <input required type="file" class="file-input"
             (change)="onFileSelected($event)" #fileUpload>
-    
+
       <div class="file-upload">
     
         {{fileName || "Select video to upload."}}
@@ -36,6 +36,8 @@
     </div>
         
     <mat-checkbox [formControl]="isPrivateControl">Is Private</mat-checkbox>
+
+    <button mat-raised-button color="primary" (click) = "uploadFile()">Upload</button>
 
   </form>
 </div>

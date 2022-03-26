@@ -13,6 +13,7 @@ import { HttpService } from 'src/app/services/http-service.mock.service';
 export class FileUploadComponent implements OnInit {
 
   fileName: string| null = null;
+  file: File| null= null;
   uploadProgress: number|null = null;
   uploadSub: Subscription|null = null;
   options: FormGroup;
@@ -33,27 +34,36 @@ export class FileUploadComponent implements OnInit {
 
  
   onFileSelected(event: any) {
-    console.log("upload called");
-    const file:File = event.target.files[0];
-    if (file) {
+    this.file = event.target.files[0];
+    console.log("new file selected");
+    // const file:File = event.target.files[0];
+    if (this.file) {
       // this.videoTitleControl.setValue(file.name);
-      this.fileName = file.name;
+      this.fileName = this.file.name;
       console.log(this.fileName)
-      const formData = new FormData();
-      formData.append("file", file);
-      this.uploadSub = this.http.uploadFile(event)
-      .pipe(
-        // finalize(() => this.reset())
-      ).subscribe(event => {     
-        console.log(event); 
-        this.uploadProgress = 20;
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-        }
-      })
     }        
   }
 
+  uploadFile(){
+    const formData = new FormData();
+    if(this.file){
+      formData.append("file", this.file);
+      formData.append("title", this.videoTitleControl.value);
+      formData.append("isPrivate", this.isPrivateControl.value);
+      this.uploadSub = this.http.uploadFile(formData)
+        .pipe(
+          // finalize(() => this.reset())
+        ).subscribe(event => {     
+          console.log(event); 
+          this.uploadProgress = 20;
+          if (event.type == HttpEventType.UploadProgress) {
+            this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+          }
+        })
+    }
+    
+  }
+  
   cancelUpload() {
     if(this.uploadSub){
       this.uploadSub.unsubscribe();
@@ -64,6 +74,7 @@ export class FileUploadComponent implements OnInit {
   reset() {
     this.uploadProgress = null;
     this.fileName = null;
+    this.file = null;
   }
 
   getErrorMessage() : string { 

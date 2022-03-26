@@ -17,7 +17,7 @@ export class HttpService implements IHttpService{
 
 
   uploadFile(formData: FormData): Observable<any> { 
-    console.log("Mock file upload invoked for: "+ formData)
+    console.log("Mock file upload invoked for: "+ formData.get("isPrivate"));
     return of(apiUrls.uploadVideo);
   }
 
