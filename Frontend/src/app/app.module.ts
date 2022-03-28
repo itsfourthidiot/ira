@@ -33,6 +33,7 @@ import { StudentDashboardComponent } from './components/student-dashboard/studen
 import { CourseTitleDialogComponent } from './components/course-title-dialog/course-title-dialog.component';
 import { environment } from 'src/environments/environment';
 import { InstrDashboardComponent } from './components/instr-dashboard/instr-dashboard.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { InstrDashboardComponent } from './components/instr-dashboard/instr-dash
     UserCourseDescriptionComponent,
     StudentDashboardComponent,
     CourseTitleDialogComponent,
-    InstrDashboardComponent
+    InstrDashboardComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,
