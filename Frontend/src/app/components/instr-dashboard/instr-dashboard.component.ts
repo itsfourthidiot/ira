@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseTitleDialogComponent } from '../course-title-dialog/course-title-dialog.component';
+import { CourseService } from 'src/app/services/course.service';
 
 @Component({
   selector: 'app-instr-dashboard',
@@ -12,7 +13,8 @@ export class InstrDashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private courseService: CourseService
     ) { }
 
   ngOnInit(): void {

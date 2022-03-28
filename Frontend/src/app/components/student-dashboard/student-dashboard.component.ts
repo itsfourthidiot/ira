@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+// import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.mock.service';
+
 import { ActivatedRoute } from '@angular/router';
 import { Course } from 'src/app/models/Course';
 
@@ -27,7 +29,9 @@ export class StudentDashboardComponent implements OnInit {
       this.authService.getStudentDashBoard(this.email).subscribe(
         (res) => {
           this.currentStudentDb = res;
+          console.log(this.currentStudentDb)
           this.courses = res.courses;
+          console.log("courses" + this.courses)
         }
       )
     });
