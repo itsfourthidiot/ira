@@ -24,16 +24,15 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { StudentLoginComponent } from './components/student-login/student-login.component';
 import { GuestDashboardComponent } from './components/guest-dashboard/guest-dashboard.component';
-//import { CourseDescriptionComponent } from './course-description/course-description.component';
-import { CourseDescriptionComponent } from './components/course-description/course-description.component';
-import { CourseDetailsComponent } from './components/course-details/course-details.component';
+// import { CourseDescriptionComponent } from './components/course-description/course-description.component';
+// import { CourseDetailsComponent } from './components/course-details/course-details.component';
 import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
 import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
 import { CourseTitleDialogComponent } from './components/course-title-dialog/course-title-dialog.component';
 import { environment } from 'src/environments/environment';
 import { InstrDashboardComponent } from './components/instr-dashboard/instr-dashboard.component';
-import { FileUploadComponent } from './components/course-details/file-upload/file-upload.component';
+// import { FileUploadComponent } from './components/course-details/file-upload/file-upload.component';
 
 
 @NgModule({
@@ -44,14 +43,14 @@ import { FileUploadComponent } from './components/course-details/file-upload/fil
     SearchBoxComponent,
     StudentLoginComponent,
     GuestDashboardComponent,
-    CourseDescriptionComponent,
-    CourseDetailsComponent,
+    // CourseDescriptionComponent,
+    // CourseDetailsComponent,
     UserCourseDetailsComponent,
     UserCourseDescriptionComponent,
     StudentDashboardComponent,
     CourseTitleDialogComponent,
-    InstrDashboardComponent,
-    FileUploadComponent
+    InstrDashboardComponent
+    // FileUploadComponent
   ],
   imports: [
     BrowserModule,
