@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseTitleDialogComponent } from '../course-title-dialog/course-title-dialog.component';
 import { CourseService } from 'src/app/services/course.mock.service';
+import { HttpService } from 'src/app/services/http-service.mock.service';
 
 @Component({
   selector: 'app-instr-dashboard',
@@ -11,15 +12,24 @@ import { CourseService } from 'src/app/services/course.mock.service';
 })
 export class InstrDashboardComponent implements OnInit {
 
+  
+  id:number = 1;
+  publishedCourses: any[] = []; 
+  upublishedCourses: any[] = []; 
+
   constructor(
     private router: Router,
     public dialog: MatDialog,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private httpService: HttpService
     ) { }
 
   ngOnInit(): void {
+    this.httpService.getInstrCourses()
+    .subscribe(response =>{
+      console.log(response);
+    });
   }
-  id:number = 1;
 
   openModal(){
     console.log("Opened");

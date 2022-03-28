@@ -18,10 +18,17 @@ export class HttpService implements IHttpService{
 
   constructor(private http: HttpClient) { }
 
+  getInstrCourses(): Observable<any> {
+    let url = this.baseUrl+apiUrls.instrCourses;
+    return this.http.get<any>(url);
+  }
 
-  uploadFile(formData: FormData): Observable<any> {   
+
+  uploadFile(formData: FormData, courseID: string): Observable<any> {   
       //change url
-      return this.http.post("/api/thumbnail-upload", formData, {
+      let urlStr = apiUrls.uploadVideo.replace('<courseId>', courseID)
+      let url = this.baseUrl+urlStr;
+      return this.http.post(url, formData, {
         reportProgress: true,
         observe: 'events'
     });

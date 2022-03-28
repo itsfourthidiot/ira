@@ -3,6 +3,7 @@ import { createCourse } from "src/assets/data/createCourse";
 import { uploadVideo } from "src/assets/data/uploadVideo";
 import { loginResponse } from "src/assets/data/loginResponse";
 import { registerResponse } from "src/assets/data/registerResponse";
+import { instrCourses } from "src/assets/data/instructorCourses";
 
 export const apiUrls = {
     baseUrl : '../../assets/data/',
@@ -10,5 +11,6 @@ export const apiUrls = {
     createCourse : createCourse,
     uploadVideo : uploadVideo,     
     login : loginResponse,
-    register: registerResponse
+    register : registerResponse,
+    instrCourses :  instrCourses
 }

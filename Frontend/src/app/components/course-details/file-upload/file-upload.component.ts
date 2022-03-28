@@ -4,6 +4,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { HttpService } from 'src/app/services/http-service.mock.service'; 
+import { ActivatedRoute } from '@angular/router';
+import { SharedService } from '../services/shared.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -19,10 +21,13 @@ export class FileUploadComponent implements OnInit {
   options: FormGroup;
   isPrivateControl = new FormControl(false);
   videoTitleControl = new FormControl('', [Validators.required]);
+  courseID: string = "";
 
   constructor(
     private http: HttpService,
-    fb: FormBuilder) {
+    fb: FormBuilder,
+    private sharedService: SharedService
+    ) {
       this.options = fb.group({
         videoTitle : this.videoTitleControl,
         isPrivate: this.isPrivateControl,
@@ -30,6 +35,8 @@ export class FileUploadComponent implements OnInit {
     }
 
   ngOnInit(): void {
+      this.courseID = this.sharedService.courseID;
+      console.log("courseId is "+ this.courseID);
   }
 
  
@@ -52,7 +59,7 @@ export class FileUploadComponent implements OnInit {
       formData.append("file", this.file);
       formData.append("title", this.videoTitleControl.value);
       formData.append("isPrivate", this.isPrivateControl.value);
-      this.uploadSub = this.http.uploadFile(formData)
+      this.uploadSub = this.http.uploadFile(formData, this.courseID)
         .pipe(
           finalize(() => this.reset())
         ).subscribe(event => {     
