@@ -7,3 +7,11 @@ form{
   justify-content: space-between;
   border: 2px solid powderblue;
 }
+
+#videoUpload{
+  padding-top: 0.75em !important;
+}
+
+mat-checkbox{
+  padding-top: 10px !important;
+}

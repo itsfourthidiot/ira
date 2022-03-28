@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseTitleDialogComponent } from '../course-title-dialog/course-title-dialog.component';
-import { CourseService } from 'src/app/services/course.service';
+import { CourseService } from 'src/app/services/course.mock.service';
 
 @Component({
   selector: 'app-instr-dashboard',
@@ -34,6 +34,11 @@ export class InstrDashboardComponent implements OnInit {
       if(newTitle){
         console.log(newTitle)
         //create new empty course with new title 
+        this.courseService.createNewCourse(newTitle)
+        .subscribe(event => {     
+          console.log(event); 
+          
+        });
         //call createCourse api which will return courseID
         //navigate to courseDetailspage
         this.router.navigate([`/courseDetails/${newTitle}`]);

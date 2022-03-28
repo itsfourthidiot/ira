@@ -41,7 +41,7 @@ export class FileUploadComponent implements OnInit {
       // this.videoTitleControl.setValue(file.name);
       this.fileName = this.file.name;
       console.log(this.fileName)
-      this.uploadProgress = 20;
+      // this.uploadProgress = 20;
 
     }        
   }
@@ -54,7 +54,7 @@ export class FileUploadComponent implements OnInit {
       formData.append("isPrivate", this.isPrivateControl.value);
       this.uploadSub = this.http.uploadFile(formData)
         .pipe(
-          // finalize(() => this.reset())
+          finalize(() => this.reset())
         ).subscribe(event => {     
           console.log(event); 
           if (event.type == HttpEventType.UploadProgress) {
@@ -74,8 +74,8 @@ export class FileUploadComponent implements OnInit {
 
   reset() {
     this.uploadProgress = null;
-    this.fileName = null;
-    this.file = null;
+    // this.fileName = null;
+    // this.file = null;
   }
 
   getErrorMessage() : string { 
