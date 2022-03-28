@@ -2,6 +2,9 @@
 <!-- <app-course-description [courseId]="id"></app-course-description> -->
 
 <!-- <button mat-stroked-button color="green" class="btn-block" (click)="enroll()" >Enroll</button> -->
+<div>
+  {{courseID}}
+</div>
 <mat-sidenav-container class = "tp-container">
     <mat-sidenav mode = "side" opened>
        <section class = "tp-section">
@@ -12,7 +15,6 @@
        </section>
     </mat-sidenav>
 <mat-sidenav-content>
-   <!-- <app-file-upload></app-file-upload> -->
    <router-outlet></router-outlet>
 </mat-sidenav-content>
 

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from 'src/app/services/course.mock.service';
-import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { FileUploadComponent } from './file-upload/file-upload.component';
+import { SharedService } from './services/shared.service';
 
 @Component({
   selector: 'app-course-details',
@@ -11,18 +10,19 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 })
 export class CourseDetailsComponent implements OnInit {
 
-  id = "1"
+  courseID = "1"
   enrolled = false
   constructor(
     private courseService : CourseService,
-    private router : Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      this.id = params.courseID;
+      this.courseID = params.courseID;
       console.log("courseId is "+ params.courseID);
+      this.sharedService.courseID = this.courseID;
     });
 
     this.courseService.getAllCourses().subscribe(
