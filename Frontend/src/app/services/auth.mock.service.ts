@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subscription , EMPTY, BehaviorSubject} from 'rxjs';
+import { Observable, Subscription , EMPTY, BehaviorSubject, of} from 'rxjs';
 import {tap} from 'rxjs/operators'
 import { NONE_TYPE } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { IAuthService } from './auth.service.interface';
-import { apiUrls } from '../constants/apiConstants';
+import { apiUrls } from '../constants/mockCourseData';
 
 
 var AuthorizationString = "Bearer "+ localStorage.getItem("ACCESS_TOKEN")
@@ -22,7 +22,7 @@ const httpOptions = {
 })
 export class AuthService implements IAuthService {
 
-  private apiUrl = apiUrls.baseUrl;
+  private apiUrl = apiUrls.baseUrl + "/";
 
   // private apiUrl: string = "http://172.16.109.140:8080/instructor/"
   //private apiUrl: string = "http://172.16.109.140:8080/"
@@ -67,14 +67,22 @@ export class AuthService implements IAuthService {
     this.profile.changeType(role);
 
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
-    return this.http.post<any>(this.apiUrl + "/" + role + "/login", obj).pipe(
+    // return this.http.post<any>(apiUrls.baseUrl + role + "/login", obj).pipe(
+    //   tap((res) => {
+    //     if (res){
+    //       localStorage.setItem("ACCESS_TOKEN", res.token);
+    //       // localStorage.set("ACCESS_TOKEN", res.token);
+    //       // this.authSubject.next(true);
+    //     }
+    //   })
+    // );
+    return of(apiUrls.login).pipe(
       tap((res) => {
-        if (res){
+      if (res){
           localStorage.setItem("ACCESS_TOKEN", res.token);
-          // localStorage.set("ACCESS_TOKEN", res.token);
-          // this.authSubject.next(true);
         }
       })
+
     );
   }
 
@@ -99,15 +107,18 @@ export class AuthService implements IAuthService {
     console.log(obj);
 
     console.log(this.apiUrl + "register");
-    return this.http.post<any>(this.apiUrl + "/" + role + "/register", obj);
+    return of(apiUrls.register)
+    //return this.http.post<any>(this.apiUrl + role + "/register", obj);
 
 
   }
 
   getStudentDashBoard(username: string): Observable<any>{
-    //let api = `${this.apiUrl}/student-dashboard/${username}`;
-    let api = `${this.apiUrl}/student/courses`;
-    return this.http.get(api);
+
+    // console.log(apiUrls.baseUrl + apiUrls.getAllCourses);
+    return of(apiUrls.getAllCourses);
+    // let api = `${this.apiUrl}student/courses`;
+    // return this.http.get(api);
   }
 
 
