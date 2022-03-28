@@ -118,3 +118,94 @@ func videoModuleCreate(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, newVideo)
 }
+
+func quizModuleCreate(c *gin.Context) {
+	type OptionStruct struct {
+		Content   string `json:"content" binding:"required"`
+		IsCorrect bool   `json:"isCorrect" binding:"required"`
+	}
+
+	type QuestionStruct struct {
+		Content string          `json:"content" binding:"required"`
+		Options []*OptionStruct `json:"options" binding:"required"`
+	}
+
+	type Req struct {
+		// Module object with json list
+		// CourseID  string            `json:"courseId" binding:"required,min=1"`
+		Title     string            `json:"title" binding:"required,min=1"`
+		Questions []*QuestionStruct `json:"questions" binding:"required"`
+	}
+
+	req := Req{}
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect parameters",
+		})
+		return
+	}
+	// Add entry to database
+	// Create new Module
+	courseId, _ := strconv.Atoi(c.Param("courseId"))
+	fmt.Println(courseId)
+	newModule := Module{
+		Title:     req.Title,
+		Type:      "quiz",
+		IsPrivate: true,
+		CourseID:  uint(courseId),
+	}
+	result := DB.Create(&newModule)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	// Create new Quiz
+	// numQuestions, _ := strconv.Atoi(len(req.Questions))
+	newQuiz := Quiz{
+		ModuleID:       newModule.ID,
+		NumOfQuestions: len(req.Questions),
+	}
+	result = DB.Create(&newQuiz)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+
+	// Add questions
+
+	for _, quest := range req.Questions {
+		questions := Question{}
+		questions.QuizID = newQuiz.ID
+		questions.Content = quest.Content
+		result = DB.Create(&questions)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "internal server error",
+			})
+			return
+		}
+		// Add options
+		for _, opt := range quest.Options {
+			options := Option{}
+			options.QuestionID = questions.ID
+			options.Content = opt.Content
+			options.IsCorrect = opt.IsCorrect
+			result = DB.Create(&options)
+			if result.Error != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error": "internal server error",
+				})
+				return
+			}
+
+		}
+
+	}
+
+	c.JSON(http.StatusOK, req)
+}
