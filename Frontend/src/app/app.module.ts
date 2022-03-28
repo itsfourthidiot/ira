@@ -33,7 +33,7 @@ import { StudentDashboardComponent } from './components/student-dashboard/studen
 import { CourseTitleDialogComponent } from './components/course-title-dialog/course-title-dialog.component';
 import { environment } from 'src/environments/environment';
 import { InstrDashboardComponent } from './components/instr-dashboard/instr-dashboard.component';
-import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { FileUploadComponent } from './components/course-details/file-upload/file-upload.component';
 
 
 @NgModule({
@@ -65,7 +65,6 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     ReactiveFormsModule,
     HttpClientModule,
     Ng2SearchPipeModule,
-    FormsModule,
     MatAutocompleteModule,
     HttpClientModule
   ],

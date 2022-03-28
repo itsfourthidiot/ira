@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from 'src/app/services/course.mock.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @Component({
   selector: 'app-course-details',
