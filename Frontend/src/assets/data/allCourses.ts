@@ -1,7 +1,9 @@
 import { Course } from '../../app/models/Course';
 
-export const allCourses: Course[] =  [
+export const allCourses: any =  {
+    "courses" : [
     {
+        "ID": 1,
         "CreatedAt": "03-10-2022",
         "UpdatedAt" : "03-18-2022",
         "DeletedAt" : "",
@@ -12,6 +14,7 @@ export const allCourses: Course[] =  [
         "instructorId": "1234"
     },
     {
+        "ID": 2,
         "CreatedAt": "03-10-2022",
         "UpdatedAt" : "03-18-2022",
         "DeletedAt" : "",
@@ -22,6 +25,7 @@ export const allCourses: Course[] =  [
         "instructorId": "521"
     },
     {
+        "ID": 3,
         "CreatedAt": "01-10-2022",
         "UpdatedAt" : "02-14-2022",
         "DeletedAt" : "",
@@ -32,3 +36,4 @@ export const allCourses: Course[] =  [
         "instructorId": "486"
     }
 ]
+}

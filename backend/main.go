@@ -112,6 +112,10 @@ func main() {
 		&Module{},
 		&Video{},
 		&Enrollment{},
+		&Quiz{},
+		&Question{},
+		&Option{},
+		&Score{},
 	)
 	if err != nil {
 		panic("Unable to create tables")
@@ -126,6 +130,7 @@ func main() {
 		instructorRoutes.POST("/login", instructorLogin)
 		instructorRoutes.POST("/course", verifyToken, courseCreate)
 		instructorRoutes.POST("/course/:courseId/module/video", verifyToken, videoModuleCreate)
+		instructorRoutes.POST("/course/:courseId/module/quiz", quizModuleCreate)
 		instructorRoutes.GET("/course/:courseID/description", verifyToken, getDescription)
 		instructorRoutes.PUT("/course/:courseID/description", verifyToken, courseDescriptionUpdate)
 	}

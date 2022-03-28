@@ -26,6 +26,7 @@ type Student struct {
 	Email       string `json:"email" gorm:"unique"`
 	Password    string `json:"-"`
 	Enrollments []Enrollment
+	Scores      []Score
 }
 
 func (s Student) getUserDetails() string {
@@ -40,6 +41,7 @@ type Course struct {
 	PublishedAt  *time.Time `json:"publishedAt"`
 	InstructorID uint       `json:"instructorId"`
 	Enrollments  []Enrollment
+	Modules      []Module
 }
 
 type Enrollment struct {
@@ -54,11 +56,38 @@ type Module struct {
 	Title     string `json:"title" gorm:"not null"`
 	Type      string `json:"type"`
 	IsPrivate bool   `json:"isPrivate"`
+	CourseID  uint   `json:"courseId"`
 	Video     Video
+	Quiz      Quiz
 }
 
 type Video struct {
 	gorm.Model
 	Url      string `json:"url"`
 	ModuleID uint   `json:"moduleId"`
+}
+type Quiz struct {
+	gorm.Model
+	ModuleID       uint `json:"moduleId"`
+	NumOfQuestions int  `json:"numOfQuestions"`
+	Questions      []Question
+}
+type Question struct {
+	gorm.Model
+	QuizID  uint   `json:"quizId"`
+	Content string `json:"content" gorm:"not null"`
+	Options []Option
+}
+
+type Option struct {
+	gorm.Model
+	QuestionID uint   `json:"questionId"`
+	Content    string `json:"content" gorm:"not null"`
+	IsCorrect  bool   `json:"isCorrect" gorm:"default:false"`
+}
+type Score struct {
+	gorm.Model
+	StudentID  uint `json:"studentId"`
+	QuizID     uint `json:"quizId"`
+	ScoreValue uint `json:"scoreValue"`
 }

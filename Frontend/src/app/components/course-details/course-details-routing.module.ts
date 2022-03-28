@@ -12,11 +12,11 @@ const routes: Routes = [
       },
       {
         path: 'curriculum', component: FileUploadComponent
-      }
+      },
       // { path: 'balance', loadChildren: () => import(`./balance/balance.module`).then(m => m.BalanceModule) },
-      // {
-      //   path: '', redirectTo: 'apply', pathMatch: 'full'
-      // }
+      {
+        path: '', redirectTo: 'description', pathMatch: 'full'
+      }
       // { path: '**', component: Page404leavesComponent }
     ]
   }
