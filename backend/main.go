@@ -141,6 +141,7 @@ func main() {
 		studentRoutes.GET("/course/:courseID/enroll", verifyToken, checkEnrollCourse)
 		studentRoutes.POST("/course/:courseID/enroll", verifyToken, enrollCourse)
 		studentRoutes.GET("/courses", verifyToken, studentCourses)
+		studentRoutes.POST("/course/:courseID/module/quiz/score", scoreCalculation)
 	}
 	r.POST("/enroll", verifyToken, enrollCourse)
 	r.GET("/courses", listAllCourses)

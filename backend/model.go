@@ -68,15 +68,15 @@ type Video struct {
 }
 type Quiz struct {
 	gorm.Model
-	ModuleID       uint `json:"moduleId"`
-	NumOfQuestions int  `json:"numOfQuestions"`
-	Questions      []Question
+	ModuleID       uint       `json:"moduleId"`
+	NumOfQuestions int        `json:"numOfQuestions"`
+	Questions      []Question `json:"questions"`
 }
 type Question struct {
 	gorm.Model
-	QuizID  uint   `json:"quizId"`
-	Content string `json:"content" gorm:"not null"`
-	Options []Option
+	QuizID  uint     `json:"quizId"`
+	Content string   `json:"content" gorm:"not null"`
+	Options []Option `json:"options"`
 }
 
 type Option struct {
