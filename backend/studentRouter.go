@@ -52,7 +52,7 @@ func studentRegister(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, newStudent)
+	c.JSON(http.StatusCreated, newStudent)
 }
 
 // Student login
