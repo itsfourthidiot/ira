@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CourseDetailsComponent } from './course-details.component';
 import { CourseDescriptionComponent } from './course-description/course-description.component';
-import { FileUploadComponent } from './curriculum/file-upload/file-upload.component';
 
 const routes: Routes = [
   {
@@ -13,8 +12,6 @@ const routes: Routes = [
       {
         path: 'curriculum', loadChildren: () => import(`./curriculum/curriculum.module`).then(m => m.CurriculumModule)
       },
-
-      // { path: 'balance', loadChildren: () => import(`./balance/balance.module`).then(m => m.BalanceModule) },
       {
         path: '', redirectTo: 'description', pathMatch: 'full'
       }
