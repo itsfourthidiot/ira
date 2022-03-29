@@ -27,7 +27,11 @@ export class InstrDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.httpService.getInstrCourses()
     .subscribe(response =>{
-      console.log(response);
+      console.log(response)
+      this.publishedCourses = response.courses.published;      
+      this.upublishedCourses = response.courses.unpublished;
+      console.log("Unpublished Courses \n"+this.upublishedCourses);
+
     });
   }
 

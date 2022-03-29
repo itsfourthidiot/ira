@@ -19,14 +19,9 @@ export class HttpService implements IHttpService{
     return of(apiUrls.instrCourses);
   }
 
-
   uploadFile(formData: FormData, courseID: string): Observable<any> { 
     console.log("Mock file upload invoked for course: "+ courseID);
     return of(apiUrls.uploadVideo);
   }
-
-  // getFiles(): Observable<any> {
-  //   return this.http.get(`${this.baseUrl}/files`);
-  // }
 
 }
