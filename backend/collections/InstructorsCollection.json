@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ef2c16f1-e4b4-4d7a-a33c-034e89fa2a12",
+		"_postman_id": "7be57902-bf66-4a76-b267-09ae6d038b1d",
 		"name": "Instructors",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -102,7 +102,7 @@
 							"        break;",
 							"    case \"correctRequest\":",
 							"        pm.test(\"Correct request\", function(){",
-							"            pm.response.to.have.status(200);",
+							"            pm.response.to.have.status(201);",
 							"            pm.collectionVariables.set(\"currentcase\", \"alreadyRegisteredEmail\");",
 							"            pm.collectionVariables.set(\"registeredEmail\", pm.collectionVariables.get(\"email\"));",
 							"            pm.collectionVariables.set(\"registeredPassword\", pm.collectionVariables.get(\"password\"));",
@@ -321,33 +321,27 @@
 	"variable": [
 		{
 			"key": "baseurl",
-			"value": "http://localhost:8080/instructor",
-			"type": "string"
+			"value": "http://localhost:8080/instructor"
 		},
 		{
 			"key": "currentcase",
-			"value": "noEmail",
-			"type": "string"
+			"value": "noEmail"
 		},
 		{
 			"key": "email",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
 			"key": "password",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
 			"key": "registeredEmail",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
 			"key": "registeredPassword",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
 			"key": "requestBody",

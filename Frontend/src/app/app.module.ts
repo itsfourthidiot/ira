@@ -24,9 +24,6 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { StudentLoginComponent } from './components/student-login/student-login.component';
 import { GuestDashboardComponent } from './components/guest-dashboard/guest-dashboard.component';
-//import { CourseDescriptionComponent } from './course-description/course-description.component';
-import { CourseDescriptionComponent } from './components/course-description/course-description.component';
-import { CourseDetailsComponent } from './components/course-details/course-details.component';
 import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
 import { UserCourseDescriptionComponent } from './components/user-course-description/user-course-description.component';
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
@@ -43,8 +40,6 @@ import { InstrDashboardComponent } from './components/instr-dashboard/instr-dash
     SearchBoxComponent,
     StudentLoginComponent,
     GuestDashboardComponent,
-    CourseDescriptionComponent,
-    CourseDetailsComponent,
     UserCourseDetailsComponent,
     UserCourseDescriptionComponent,
     StudentDashboardComponent,
@@ -63,7 +58,6 @@ import { InstrDashboardComponent } from './components/instr-dashboard/instr-dash
     ReactiveFormsModule,
     HttpClientModule,
     Ng2SearchPipeModule,
-    FormsModule,
     MatAutocompleteModule,
     HttpClientModule
   ],

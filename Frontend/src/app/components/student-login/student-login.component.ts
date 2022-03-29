@@ -42,8 +42,10 @@ export class StudentLoginComponent implements OnInit {
         console.log("before sending to user dashboard" + email);
         this.router.navigateByUrl(`/studentDashboard/${email}`);
 
-        // this.router.navigateByUrl('login');
+        this.router.navigateByUrl('login');
       }
+      // this.router.navigateByUrl(`/studentDashboard/swara@gmail.com`);
+
     );
 
     this.username = '';

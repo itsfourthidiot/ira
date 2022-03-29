@@ -51,7 +51,7 @@ func instructorRegister(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, newInstructor)
+	c.JSON(http.StatusCreated, newInstructor)
 }
 
 // Instructor login
@@ -95,5 +95,42 @@ func instructorLogin(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
+	})
+}
+
+func instructorCourses(c *gin.Context) {
+	// Get the instructor object
+	email, ok := c.Get("email")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	instructor := Instructor{}
+	result := DB.Where("email = ?", email).First(&instructor)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "instructor not found",
+		})
+		return
+	}
+	// Get all course corresponding to that instructor
+	var courses []Course
+	result = DB.Model(&Course{}).Where("courses.instructor_id = ?", instructor.ID).Find(&courses)
+	publishedCourses := make([]Course, 0)
+	unpublishedCourses := make([]Course, 0)
+	for _, course := range courses {
+		if course.IsPublished {
+			publishedCourses = append(publishedCourses, course)
+		} else {
+			unpublishedCourses = append(unpublishedCourses, course)
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"courses": gin.H{
+			"published":   publishedCourses,
+			"unpublished": unpublishedCourses,
+		},
 	})
 }
