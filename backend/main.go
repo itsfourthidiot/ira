@@ -133,6 +133,7 @@ func main() {
 		instructorRoutes.POST("/course/:courseId/module/quiz", quizModuleCreate)
 		instructorRoutes.GET("/course/:courseID/description", verifyToken, getDescription)
 		instructorRoutes.PUT("/course/:courseID/description", verifyToken, courseDescriptionUpdate)
+		instructorRoutes.GET("/courses", verifyToken, instructorCourses)
 	}
 	studentRoutes := r.Group("/student")
 	{

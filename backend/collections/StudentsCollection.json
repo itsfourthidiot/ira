@@ -100,7 +100,7 @@
 							"        break;",
 							"    case \"correctRequest\":",
 							"        pm.test(\"Correct request\", function(){",
-							"            pm.response.to.have.status(200);",
+							"            pm.response.to.have.status(201);",
 							"            pm.collectionVariables.set(\"atStep\", \"alreadyRegisteredEmail\");",
 							"            pm.collectionVariables.set(\"registeredEmail\", pm.collectionVariables.get(\"email\"));",
 							"            pm.collectionVariables.set(\"registeredPassword\", pm.collectionVariables.get(\"password\"));",
