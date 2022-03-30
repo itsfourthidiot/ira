@@ -206,6 +206,60 @@ func quizModuleCreate(c *gin.Context) {
 		}
 
 	}
+	DB.Preload("Quiz.Questions.Options").Find(&newModule)
+	c.JSON(http.StatusOK, newModule)
+}
 
-	c.JSON(http.StatusOK, req)
+func scoreCalculation(c *gin.Context) {
+	// validate student
+	// student response
+	// on submit score will be shown
+	type Req struct {
+		// Module object with json list
+		StudentID uint `json:"studentId" binding:"required,min=1"`
+		QuizID    uint `json:"quizId" binding:"required,min=1"`
+		// OptionID  uint   `json:"quizId" binding:"required,min=1"`
+		Response []uint `json:"response" binding:"required"`
+	}
+	req := Req{}
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect parameters",
+		})
+		return
+	}
+	count := 0
+	for _, opt := range req.Response {
+		options := Option{}
+		result := DB.Where("id=?", opt).Find(&options)
+		// fmt.Println(options)
+		// fmt.Println(111111111)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "internal server error",
+			})
+			return
+		}
+		if options.IsCorrect {
+			count += 1
+		}
+	}
+	// update scores Table in to db
+	newScore := Score{
+		StudentID:  req.StudentID,
+		QuizID:     req.QuizID,
+		ScoreValue: uint(count),
+	}
+	// newScore.StudentID = req.StudentID
+	// newScore.QuizID = req.QuizID
+	// newScore.ScoreValue = uint(count)
+	result := DB.Create(&newScore)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, newScore)
 }
