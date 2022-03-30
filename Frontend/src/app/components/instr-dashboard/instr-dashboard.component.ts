@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CourseTitleDialogComponent } from '../course-title-dialog/course-title-dialog.component';
 import { CourseService } from 'src/app/services/course.mock.service';
 import { HttpService } from 'src/app/services/http-service.mock.service';
+import { SharedService } from '../course-details/services/shared.service';
 
 @Component({
   selector: 'app-instr-dashboard',
@@ -15,19 +16,34 @@ export class InstrDashboardComponent implements OnInit {
   
   id:number = 1;
   publishedCourses: any[] = []; 
-  upublishedCourses: any[] = []; 
+  unpublishedCourses: any[] = []; 
+  panelOpenState = true;
+  showDrafts = false;
+  showPublished = false;
 
   constructor(
     private router: Router,
     public dialog: MatDialog,
     private courseService: CourseService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private sharedService: SharedService
     ) { }
 
   ngOnInit(): void {
+    this.panelOpenState = true;
     this.httpService.getInstrCourses()
     .subscribe(response =>{
-      console.log(response);
+      console.log(response)
+      this.publishedCourses = response.courses.published;      
+      this.unpublishedCourses = response.courses.unpublished;
+      if(this.publishedCourses.length!=0){
+        this.showPublished = true;
+      }
+      if(this.unpublishedCourses.length!=0){
+        this.showDrafts = true;
+      }
+      console.log("Unpublished Courses \n"+this.unpublishedCourses);
+
     });
   }
 
@@ -43,18 +59,23 @@ export class InstrDashboardComponent implements OnInit {
       let newTitle = result;
       if(newTitle){
         console.log(newTitle)
-        //create new empty course with new title 
         this.courseService.createNewCourse(newTitle)
         .subscribe(event => {     
-          console.log(event); 
-          
+          console.log(event);        
+          //navigate to courseDetailspage
+          this.sharedService.courseID = event.ID;
+          this.sharedService.courseTitle = newTitle;          
+          this.router.navigate([`/courseDetails/${event.ID}`]);   
         });
-        //call createCourse api which will return courseID
-        //navigate to courseDetailspage
-        this.router.navigate([`/courseDetails/${newTitle}`]);
+        
       } 
     });
   }
 
 
+  openCourse(courseID: string, courseTitle: string){
+    this.sharedService.courseID = courseID;
+    this.sharedService.courseTitle = courseTitle;   
+    this.router.navigate([`/courseDetails/${courseID}`]);
+  }
 }
