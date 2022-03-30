@@ -96,6 +96,7 @@ func videoModuleCreate(c *gin.Context) {
 		Title:     req.Title,
 		Type:      "video",
 		IsPrivate: isPrivate,
+		CourseID:  uint(courseId),
 	}
 	dbRes = DB.Create(&newModule)
 	if dbRes.Error != nil {
@@ -104,9 +105,9 @@ func videoModuleCreate(c *gin.Context) {
 		})
 		return
 	}
-	url := awsRes.Location
+	key := awsRes.Key
 	newVideo := Video{
-		Url:      url,
+		Key:      key,
 		ModuleID: newModule.ID,
 	}
 	dbRes = DB.Create(&newVideo)
@@ -148,7 +149,6 @@ func quizModuleCreate(c *gin.Context) {
 	// Add entry to database
 	// Create new Module
 	courseId, _ := strconv.Atoi(c.Param("courseId"))
-	fmt.Println(courseId)
 	newModule := Module{
 		Title:     req.Title,
 		Type:      "quiz",

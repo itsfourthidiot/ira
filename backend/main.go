@@ -58,13 +58,14 @@ func verifyToken(c *gin.Context) {
 		})
 		return
 	}
-	email, err := validateToken(token)
+	email, role, err := validateToken(token)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "user unauthorized",
 		})
 	}
 	c.Set("email", email)
+	c.Set("role", role)
 	c.Next()
 }
 
@@ -145,6 +146,8 @@ func main() {
 	}
 	r.POST("/enroll", verifyToken, enrollCourse)
 	r.GET("/courses", listAllCourses)
+	r.GET("/course/:courseId", getCourseDetails)
+	r.GET("/course/:courseId/module/:moduleId", verifyToken, getModuleDetails)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
