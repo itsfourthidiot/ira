@@ -28,22 +28,28 @@ export class QuizzComponent implements OnInit {
 
   addQuestion(){
     const question = this.renderer.createElement('div');
+    this.renderer.setAttribute(question, "id", "wrapper")
     const questionText = this.renderer.createElement('input');
     this.renderer.setAttribute(questionText, "placeholder", "Enter question")
+    this.renderer.setAttribute(questionText, "class", "mainQuestion")
     const option1 = this.renderer.createElement('input');
     this.renderer.setAttribute(option1, "placeholder", "Enter option 1")
+    this.renderer.setAttribute(option1, "class", "option")
     const isCorrect1 = this.renderer.createElement('input');
     this.renderer.setAttribute(isCorrect1, "type", "checkbox");
     const option2 = this.renderer.createElement('input');
     this.renderer.setAttribute(option2, "placeholder", "Enter option 2")
+    this.renderer.setAttribute(option2, "class", "option")
     const isCorrect2 = this.renderer.createElement('input');
     this.renderer.setAttribute(isCorrect2, "type", "checkbox");
     const option3 = this.renderer.createElement('input');
     this.renderer.setAttribute(option3, "placeholder", "Enter option 3")
+    this.renderer.setAttribute(option3, "class", "option")
     const isCorrect3 = this.renderer.createElement('input');
     this.renderer.setAttribute(isCorrect3, "type", "checkbox");
     const option4 = this.renderer.createElement('input');
     this.renderer.setAttribute(option4, "placeholder", "Enter option 4");
+    this.renderer.setAttribute(option4, "class", "option")
     const isCorrect4 = this.renderer.createElement('input');
     this.renderer.setAttribute(isCorrect4, "type", "checkbox");
     this.renderer.appendChild(question, questionText);
@@ -55,6 +61,9 @@ export class QuizzComponent implements OnInit {
     this.renderer.appendChild(question, isCorrect3);
     this.renderer.appendChild(question, option4);
     this.renderer.appendChild(question, isCorrect4);
+    const spacer = this.renderer.createElement('div')
+    this.renderer.setAttribute(spacer, "class", "spacer")
+    this.renderer.appendChild(question, spacer);
     this.renderer.appendChild(this.questions.nativeElement, question)
     console.log("inside add question")
   }

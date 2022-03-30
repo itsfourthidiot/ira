@@ -1,10 +1,9 @@
 <p>quizz works!</p>
 <h2>This is a new quiz</h2>
 <input type="text" placeholder="Enter quiz title" name="title" [(ngModel)]="title"/>
-{{title}}
 <div id="questionsId" #questions>
 
 </div>
 
-<button (click)="addQuestion()">Add Question</button>
-<button (click)="submitQuiz()">Submit Quiz</button>
+<button class="button" (click)="addQuestion()">Add Question</button>
+<button class="button" (click)="submitQuiz()">Submit Quiz</button>
