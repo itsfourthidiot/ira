@@ -1,3 +1,13 @@
 button{
     margin: 1%;
 }
+.example-card {
+    max-width: 400px;
+    margin-left: 15px;
+}
+
+mat-expansion-panel{
+    margin-right: 10%;
+    margin-left: 15px;
+
+}

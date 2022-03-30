@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
-import { AuthService } from 'src/app/services/auth.service';
+// import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth.mock.service';
+
 
 
 @Component({
@@ -40,8 +42,10 @@ export class StudentLoginComponent implements OnInit {
         console.log("before sending to user dashboard" + email);
         this.router.navigateByUrl(`/studentDashboard/${email}`);
 
-        // this.router.navigateByUrl('login');
+        this.router.navigateByUrl('login');
       }
+      // this.router.navigateByUrl(`/studentDashboard/swara@gmail.com`);
+
     );
 
     this.username = '';

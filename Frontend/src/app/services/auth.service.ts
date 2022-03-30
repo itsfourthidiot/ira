@@ -5,6 +5,9 @@ import {tap} from 'rxjs/operators'
 import { NONE_TYPE } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { ProfileService } from './profile.service';
+import { IAuthService } from './auth.service.interface';
+import { apiUrls } from '../constants/apiConstants';
+
 
 var AuthorizationString = "Bearer "+ localStorage.getItem("ACCESS_TOKEN")
 var headers_object = new HttpHeaders({'Content-Type' : 'application/json', 'Authorization' : AuthorizationString})
@@ -17,9 +20,9 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements IAuthService {
 
-  private apiUrl = "http://10.192.239.204:8080/"
+  private apiUrl = apiUrls.baseUrl;
 
   // private apiUrl: string = "http://172.16.109.140:8080/instructor/"
   //private apiUrl: string = "http://172.16.109.140:8080/"
@@ -52,7 +55,7 @@ export class AuthService {
   //     })
   // }
 
-  login(username: string, password: string, role: String): Observable<any>{
+  login(username: string, password: string, role: string): Observable<any>{
     console.log("in service");
     console.log(username);
     console.log(password);
@@ -61,10 +64,10 @@ export class AuthService {
     console.log(obj);
     
     //change type according to logged in user
-    this.profile.changeType("instructor");
+    this.profile.changeType(role);
 
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
-    return this.http.post<any>(this.apiUrl + role + "/login", obj).pipe(
+    return this.http.post<any>(this.apiUrl + "/" + role + "/login", obj).pipe(
       tap((res) => {
         if (res){
           localStorage.setItem("ACCESS_TOKEN", res.token);
@@ -96,14 +99,14 @@ export class AuthService {
     console.log(obj);
 
     console.log(this.apiUrl + "register");
-    return this.http.post<any>(this.apiUrl + role + "/register", obj);
+    return this.http.post<any>(this.apiUrl + "/" + role + "/register", obj);
 
 
   }
 
   getStudentDashBoard(username: string): Observable<any>{
     //let api = `${this.apiUrl}/student-dashboard/${username}`;
-    let api = `${this.apiUrl}student/courses`;
+    let api = `${this.apiUrl}/student/courses`;
     return this.http.get(api);
   }
 

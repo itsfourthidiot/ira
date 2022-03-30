@@ -11,17 +11,25 @@ import (
 type authClaims struct {
 	jwt.StandardClaims
 	Email string `json:"email"`
+	Role  string `json:"role"`
 }
 
 func generateToken(user User) (string, error) {
-	email := user.getUserDetails()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS512, authClaims{
+	email, role := user.getUserDetails()
+	claims := authClaims{
+		Email: email,
+		Role:  role,
 		StandardClaims: jwt.StandardClaims{
-			Subject:   email,
 			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
 		},
-		Email: email,
-	})
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
+	// token := jwt.NewWithClaims(jwt.SigningMethodHS512, authClaims{
+	// 	StandardClaims: jwt.StandardClaims{
+	// 		ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+	// 	},
+	// 	Email: email,
+	// })
 	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
 		return "", err
@@ -29,7 +37,7 @@ func generateToken(user User) (string, error) {
 	return tokenString, nil
 }
 
-func validateToken(tokenString string) (string, error) {
+func validateToken(tokenString string) (string, string, error) {
 	var claims authClaims
 	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -38,11 +46,12 @@ func validateToken(tokenString string) (string, error) {
 		return secretKey, nil
 	})
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	if !token.Valid {
-		return "", errors.New("invalid token")
+		return "", "", errors.New("invalid token")
 	}
 	email := claims.Email
-	return email, nil
+	role := claims.Role
+	return email, role, nil
 }
