@@ -3,5 +3,6 @@ export const apiUrls = {
     updateDescription : '/course/updateDescription',
     createCourses : '/instructor/course',
     instrCourses : '/instructor/courses',
-    uploadVideo : '/instructor/course/<courseId>/module/video'
+    uploadVideo : '/instructor/course/<courseId>/module/video',
+    uploadQuiz : '/instructor/course/<courseId>/module/quiz'
 }
