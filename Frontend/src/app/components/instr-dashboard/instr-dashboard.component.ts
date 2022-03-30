@@ -16,7 +16,10 @@ export class InstrDashboardComponent implements OnInit {
   
   id:number = 1;
   publishedCourses: any[] = []; 
-  upublishedCourses: any[] = []; 
+  unpublishedCourses: any[] = []; 
+  panelOpenState = true;
+  showDrafts = false;
+  showPublished = false;
 
   constructor(
     private router: Router,
@@ -27,12 +30,19 @@ export class InstrDashboardComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.panelOpenState = true;
     this.httpService.getInstrCourses()
     .subscribe(response =>{
       console.log(response)
       this.publishedCourses = response.courses.published;      
-      this.upublishedCourses = response.courses.unpublished;
-      console.log("Unpublished Courses \n"+this.upublishedCourses);
+      this.unpublishedCourses = response.courses.unpublished;
+      if(this.publishedCourses.length!=0){
+        this.showPublished = true;
+      }
+      if(this.unpublishedCourses.length!=0){
+        this.showDrafts = true;
+      }
+      console.log("Unpublished Courses \n"+this.unpublishedCourses);
 
     });
   }
