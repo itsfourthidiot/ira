@@ -6,7 +6,6 @@ import { registerResponse } from "src/assets/data/registerResponse";
 import { instrCourses } from "src/assets/data/instructorCourses";
 
 export const apiUrls = {
-    baseUrl : '../../assets/data/',
     getAllCourses : allCourses,
     createCourse : createCourse,
     uploadVideo : uploadVideo,     

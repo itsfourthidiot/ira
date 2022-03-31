@@ -9,7 +9,6 @@ import { IHttpService } from './http-service.service.interface';
 
 export class HttpService implements IHttpService{
 
-  baseUrl: string = apiUrls.baseUrl;
   fileName:string = "";
   
   constructor() { }

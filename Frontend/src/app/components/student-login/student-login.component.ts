@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
-// import { AuthService } from 'src/app/services/auth.service';
 import { AuthService } from 'src/app/services/auth.mock.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 
 
@@ -22,7 +22,8 @@ export class StudentLoginComponent implements OnInit {
   // constructor(private instructorService: InstructorService, private router: Router) { }
   constructor(private authService: AuthService, 
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -39,10 +40,9 @@ export class StudentLoginComponent implements OnInit {
         if (this.returnUrl !== '/'){
           this.router.navigateByUrl(this.returnUrl);
         }
+        this.sharedService.role = "student";
         console.log("before sending to user dashboard" + email);
         this.router.navigateByUrl(`/studentDashboard/${email}`);
-
-        this.router.navigateByUrl('login');
       }
       // this.router.navigateByUrl(`/studentDashboard/swara@gmail.com`);
 

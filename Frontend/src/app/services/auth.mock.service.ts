@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subscription , EMPTY, BehaviorSubject, of} from 'rxjs';
-import {tap} from 'rxjs/operators'
+import { tap} from 'rxjs/operators'
 import { NONE_TYPE } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { IAuthService } from './auth.service.interface';
 import { apiUrls } from '../constants/mockCourseData';
+import { SharedService } from './shared.service';
 
 
 var AuthorizationString = "Bearer "+ localStorage.getItem("ACCESS_TOKEN")
@@ -22,10 +23,8 @@ const httpOptions = {
 })
 export class AuthService implements IAuthService {
 
-  private apiUrl = apiUrls.baseUrl + "/";
+  private apiUrl = "/";
 
-  // private apiUrl: string = "http://172.16.109.140:8080/instructor/"
-  //private apiUrl: string = "http://172.16.109.140:8080/"
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   subscription: Subscription = new Subscription;
@@ -33,7 +32,8 @@ export class AuthService implements IAuthService {
   constructor(
     private http: HttpClient,
     public router: Router,
-    private profile: ProfileService
+    private profile: ProfileService,
+    private sharedService: SharedService
   ) {
     this.subscription = this.profile.currentType.subscribe(
       type => this.type = type
@@ -96,6 +96,7 @@ export class AuthService implements IAuthService {
   }
 
   logOut(){
+    this.sharedService.role = "guest";
     localStorage.removeItem("ACCESS_TOKEN");
     // this.authSubject.next(false);
     // return this.http.post<any>(this.apiUrl + "logout", null, httpOptions);

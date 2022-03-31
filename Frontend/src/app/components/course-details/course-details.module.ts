@@ -6,11 +6,13 @@ import { AngularMaterialModule } from 'src/app/angular-material.module';
 import { CourseDetailsRoutingModule } from './course-details-routing.module';
 import { CourseDescriptionComponent } from './course-description/course-description.component';
 import { CourseDetailsComponent } from './course-details.component';
+import { ModuleComponent } from './module/module.component';
 
 @NgModule({
   declarations: [
     CourseDetailsComponent,
-    CourseDescriptionComponent
+    CourseDescriptionComponent,
+    ModuleComponent
   ],
   imports: [
     CommonModule,
