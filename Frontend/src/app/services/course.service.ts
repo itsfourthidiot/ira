@@ -49,4 +49,12 @@ export class CourseService implements ICourseService{
     var obj = {"courseId" : courseId};
     return this.httpclient.post<any>(this.baseUrl + "studentEnrol", obj);
   }
+
+  getCourseDetails(courseId: string): Observable<any>{
+    return this.httpclient.get<any>(this.baseUrl + apiUrls.getCourseDetails + courseId)
+  }
+
+  publishCourse(courseId: string): Observable<any>{
+    return this.httpclient.put<any>(this.baseUrl + apiUrls.publishCourse, null)
+  }
 }

@@ -21,3 +21,21 @@
  mat-sidenav{
     width: 19%;
  }
+
+ .mat-success {
+   background-color: green;
+   color: #fff;
+}
+
+.container {
+ height: 200px;
+ position: relative;
+}
+
+.vertical-center {
+ margin: 0;
+ position: absolute;
+ top: 50%;
+ -ms-transform: translateY(-50%);
+ transform: translateY(-50%);
+}

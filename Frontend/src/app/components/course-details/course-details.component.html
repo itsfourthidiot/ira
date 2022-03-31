@@ -2,6 +2,7 @@
 <div>
   {{courseTitle}}
 </div>
+
 <mat-sidenav-container class = "tp-container">
     <mat-sidenav mode = "side" opened>
        <section class = "tp-section">
@@ -13,6 +14,13 @@
     </mat-sidenav>
 <mat-sidenav-content>
    <router-outlet></router-outlet>
+   <div class="container">
+    <div class="vertical-center">
+      <button mat-stroked-button *ngIf="!isPublished" (click)="publishCourse()" color="success">Publish Course</button>
+    </div>
+  </div>
 </mat-sidenav-content>
+
+
 
 

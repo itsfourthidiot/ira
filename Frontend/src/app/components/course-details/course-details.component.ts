@@ -14,6 +14,7 @@ export class CourseDetailsComponent implements OnInit {
   courseTitle = ""
   enrolled = false
   role = ""
+  isPublished = false;
 
   constructor(
     private courseService : CourseService,
@@ -26,6 +27,11 @@ export class CourseDetailsComponent implements OnInit {
     this.courseID = this.sharedService.courseID;
     this.courseTitle = this.sharedService.courseTitle;
     this.role = this.sharedService.role;
+    // this.courseService.getCourseDetails(this.courseID).subscribe(
+    //   (data) => {
+    //     this.isPublished = data.isPublished;
+    //   }
+    // )
     this.courseService.getAllCourses().subscribe(
       (data) => {
         console.log(data);
@@ -42,5 +48,13 @@ export class CourseDetailsComponent implements OnInit {
     else{
       this.router.navigate(['./module/1'], {relativeTo: this.route});  
     }
+  }
+
+  publishCourse(){
+    this.courseService.publishCourse(this.courseID).subscribe(
+      (data) => {
+        this.isPublished = data?.isPublished
+      }
+    )
   }
 }
