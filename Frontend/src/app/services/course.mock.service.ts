@@ -44,4 +44,12 @@ export class CourseService implements ICourseService{
   getAllCourses(): Observable<any>{
     return of(apiUrls.getAllCourses);
   }
+
+  getCourseDetails(courseId: string): Observable<any>{
+    return of(apiUrls.getCourseDetails);
+  }
+
+  publishCourse(courseId: string): Observable<any>{
+    return of(apiUrls.publishCourse);
+  }
 }

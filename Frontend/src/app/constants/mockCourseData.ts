@@ -5,6 +5,8 @@ import { loginResponse } from "src/assets/data/loginResponse";
 import { registerResponse } from "src/assets/data/registerResponse";
 import { instrCourses } from "src/assets/data/instructorCourses";
 import { uploadQuiz } from "src/assets/data/uploadQuiz";
+import { CourseDetails } from "src/assets/data/getCourseDetails";
+import { publishCourse } from "src/assets/data/publishCourse";
 
 export const apiUrls = {
     getAllCourses : allCourses,
@@ -13,5 +15,7 @@ export const apiUrls = {
     login : loginResponse,
     register : registerResponse,
     instrCourses :  instrCourses,
-    uploadQuiz : uploadQuiz
+    uploadQuiz : uploadQuiz,
+    getCourseDetails : CourseDetails,
+    publishCourse : publishCourse
 }

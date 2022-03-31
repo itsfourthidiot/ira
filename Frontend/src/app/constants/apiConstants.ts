@@ -5,5 +5,7 @@ export const apiUrls = {
     instrCourses : '/instructor/courses',
     uploadVideo : '/instructor/course/<courseId>/module/video',
     getAllCourses : '/courses',
-    uploadQuiz : '/instructor/course/<courseId>/module/quiz'
+    uploadQuiz : '/instructor/course/<courseId>/module/quiz',
+    getCourseDetails : '/courses/<courseId>',
+    publishCourse : 'instructor/course/<courseId>/publish'
 }

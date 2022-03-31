@@ -29,8 +29,4 @@ export class HttpService implements IHttpService{
     return of(apiUrls.uploadQuiz);
   }
 
-  // getFiles(): Observable<any> {
-  //   return this.http.get(`${this.baseUrl}/files`);
-  // }
-
 }
