@@ -15,7 +15,9 @@ export class CourseDetailsComponent implements OnInit {
   enrolled = false
   role = ""
   isPublished = false;
-
+  hideIcon = false;
+  modules: any[] = [];
+  module1: string = "";
   constructor(
     private courseService : CourseService,
     private sharedService: SharedService,
@@ -27,26 +29,31 @@ export class CourseDetailsComponent implements OnInit {
     this.courseID = this.sharedService.courseID;
     this.courseTitle = this.sharedService.courseTitle;
     this.role = this.sharedService.role;
-    // this.courseService.getCourseDetails(this.courseID).subscribe(
-    //   (data) => {
-    //     this.isPublished = data.isPublished;
-    //   }
-    // )
-    this.courseService.getAllCourses().subscribe(
+    this.hideIcon = false;
+    console.log("hideIcon  "+this.hideIcon)
+    this.courseService.getCourseDetails(this.courseID).subscribe(
       (data) => {
-        console.log(data);
+        this.modules = data.modules
+        if(this.modules.length==0){
+          console.log("LENGTH "+ this.modules.length )
+          this.hideIcon = true;
+        }else{
+          this.module1 = this.modules[0].ID;
+        }
+        // this.isPublished = data.isPublished;
       }
-    )   
+    )
+  
   }
 
   loadCurriculum(){
-
     console.log("load Curriculum")
     if(this.role == "instructor"){
       this.router.navigate([`./curriculum`], {relativeTo: this.route});
     }
     else{
-      this.router.navigate(['./module/1'], {relativeTo: this.route});  
+      //load first item from module
+      this.router.navigate([`./module/${this.module1}`], {relativeTo: this.route});  
     }
   }
 
@@ -56,5 +63,16 @@ export class CourseDetailsComponent implements OnInit {
         this.isPublished = data?.isPublished
       }
     )
+  }
+
+  loadModule(moduleID:string){
+    console.log("loadModule called!!!!!!!!!!!!!!")
+    console.log(this.route)
+    // if(this.role == "instructor"){
+    //   this.router.navigate([`.././module/${moduleID}`], {relativeTo: this.route});
+    // }
+    // else{
+      this.router.navigate([`.././module/${moduleID}`], {relativeTo: this.route});
+    // }
   }
 }

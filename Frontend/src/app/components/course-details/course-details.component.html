@@ -8,11 +8,30 @@
        <section class = "tp-section">
          <a [routerLink]="'description'" mat-button routerLinkActive="active"> Description </a>
        </section>
-       <section class = "tp-section">
-         <a (click)="loadCurriculum()" mat-button routerLinkActive="active"> Curriculum </a>
-       </section>
+
+       <mat-expansion-panel hideToggle="false">
+          <mat-expansion-panel-header>
+            <mat-panel-title (click)="loadCurriculum()">
+              Curriculum
+            </mat-panel-title>            
+          </mat-expansion-panel-header>    
+          
+          <div class="moduleLink"  *ngFor="let module of modules">
+            <a (click) = "loadModule(module.ID)" mat-button class="moduleItem" routerLinkActive="active">             
+              {{module.title}} 
+              <mat-icon  aria-hidden="false" aria-label="Example home icon">
+                <div *ngIf="module.type=='video'">videocam</div>        
+                <div *ngIf="module.type=='quiz'">quiz</div>
+              </mat-icon>  
+            </a>
+          </div>  
+               
+        </mat-expansion-panel>
+
+
     </mat-sidenav>
-<mat-sidenav-content>
+
+  <mat-sidenav-content>
    <router-outlet></router-outlet>
    <div class="container">
     <div class="vertical-center">
