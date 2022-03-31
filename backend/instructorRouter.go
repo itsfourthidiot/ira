@@ -118,6 +118,12 @@ func instructorCourses(c *gin.Context) {
 	// Get all course corresponding to that instructor
 	var courses []Course
 	result = DB.Model(&Course{}).Where("courses.instructor_id = ?", instructor.ID).Find(&courses)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
 	publishedCourses := make([]Course, 0)
 	unpublishedCourses := make([]Course, 0)
 	for _, course := range courses {
