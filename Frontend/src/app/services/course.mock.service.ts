@@ -27,18 +27,19 @@ export class CourseService implements ICourseService{
   }
 
   updateCourseDescriptionById(id:string, description:string): Observable<any>{
-    var obj = {"courseId": id, "description": description};
-    console.log(obj);
-    return this.httpclient.put<any>("updateDescription", obj);
+    // var obj = {"courseId": id, "description": description};
+    // console.log(obj);
+    return of(apiUrls.updateDescription)
   }
 
-  checkEnrollMent(courseId:string): Observable<boolean>{
-    return this.httpclient.get<any>("checkEnrollMent" + "?courseId=" + courseId);
+  checkEnrollMent(courseId:string): Observable<any>{
+    return of(apiUrls.checkEnroll);
   }
 
-  studentEnroll(courseId: string): Observable<boolean>{
-    var obj = {"courseId" : courseId};
-    return this.httpclient.post<any>("studentEnrol", obj);
+  studentEnroll(courseId: string): Observable<any>{
+    // var obj = {"courseId" : courseId};
+    // return this.httpclient.post<any>("studentEnrol", obj);
+    return of(apiUrls.studentEnroll)
   }
 
   getAllCourses(): Observable<any>{

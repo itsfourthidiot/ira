@@ -27,7 +27,7 @@ export class UserCourseDetailsComponent implements OnInit {
     // check if user is enrolled for the given course using courseID and token
     this.courseService.checkEnrollMent(this.id).subscribe(
       (data) => {
-        this.enrolled = data
+        this.enrolled = data.isEnrolled
       }
     )
   }
@@ -36,14 +36,11 @@ export class UserCourseDetailsComponent implements OnInit {
     if (this.authService.isLoggedIn){
       this.courseService.studentEnroll(this.id).subscribe(
         (data) => {
-          this.enrolled = data;
-          this.showCourseContent = data;
-          if (data === false){
-
-          }
 
         }
       )
+      this.enrolled = true;
+      this.showCourseContent = true;
     } else {
       this.router.navigate(['studentLogin'], {queryParams: {returnUrl : this.router.routerState.snapshot.url}})
     }

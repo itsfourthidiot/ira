@@ -13,4 +13,8 @@ export interface ICourseService{
     getAllCourses(): Observable<any>;
 
     createNewCourse(title: string): Observable<any>;
+
+    getCourseDetails(courseId: string): Observable<any>;
+
+    publishCourse(courseId: string): Observable<any>;
 }

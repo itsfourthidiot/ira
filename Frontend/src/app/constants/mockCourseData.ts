@@ -7,6 +7,10 @@ import { instrCourses } from "src/assets/data/instructorCourses";
 import { uploadQuiz } from "src/assets/data/uploadQuiz";
 import { CourseDetails } from "src/assets/data/getCourseDetails";
 import { publishCourse } from "src/assets/data/publishCourse";
+import { studentEnroll } from "src/assets/data/studentEnroll";
+import { checkEnroll } from "src/assets/data/checkEnroll";
+import { updateDescription } from "src/assets/data/updateDescription";
+import { CourseDescription } from "src/assets/data/CourseDescription";
 
 export const apiUrls = {
     getAllCourses : allCourses,
@@ -17,5 +21,9 @@ export const apiUrls = {
     instrCourses :  instrCourses,
     uploadQuiz : uploadQuiz,
     getCourseDetails : CourseDetails,
-    publishCourse : publishCourse
+    publishCourse : publishCourse,
+    studentEnroll : studentEnroll,
+    checkEnroll : checkEnroll,
+    updateDescription : updateDescription,
+    getCourseDescription : CourseDescription
 }
