@@ -121,6 +121,7 @@ func videoModuleCreate(c *gin.Context) {
 }
 
 func quizModuleCreate(c *gin.Context) {
+
 	type OptionStruct struct {
 		Content   string `json:"content" binding:"required"`
 		IsCorrect bool   `json:"isCorrect" binding:"required"`
@@ -146,9 +147,35 @@ func quizModuleCreate(c *gin.Context) {
 		})
 		return
 	}
+	email, _ := c.Get("email")
+	courseId, err := strconv.Atoi(c.Param("courseId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect parameters",
+		})
+		return
+	}
+	course := Course{}
+	dbRes := DB.Model(&Course{}).Select("courses.*").
+		Joins("inner join instructors on courses.instructor_id = instructors.id").
+		Where("instructors.email = ?", email).
+		Where("courses.id = ?", courseId).
+		First(&course)
+	if dbRes.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "course not found",
+		})
+		return
+	}
 	// Add entry to database
 	// Create new Module
-	courseId, _ := strconv.Atoi(c.Param("courseId"))
+
+	courseId, _ = strconv.Atoi(c.Param("courseId"))
+
+	// courseId, _ := strconv.Atoi(c.Param("courseId"))
+
+	// fmt.Println(courseId)
+
 	newModule := Module{
 		Title:     req.Title,
 		Type:      "quiz",

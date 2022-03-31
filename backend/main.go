@@ -131,7 +131,7 @@ func main() {
 		instructorRoutes.POST("/login", instructorLogin)
 		instructorRoutes.POST("/course", verifyToken, courseCreate)
 		instructorRoutes.POST("/course/:courseId/module/video", verifyToken, videoModuleCreate)
-		instructorRoutes.POST("/course/:courseId/module/quiz", quizModuleCreate)
+		instructorRoutes.POST("/course/:courseId/module/quiz", verifyToken, quizModuleCreate)
 		instructorRoutes.GET("/course/:courseID/description", verifyToken, getDescription)
 		instructorRoutes.PUT("/course/:courseID/description", verifyToken, courseDescriptionUpdate)
 		instructorRoutes.GET("/courses", verifyToken, instructorCourses)

@@ -48,7 +48,7 @@ type Enrollment struct {
 	gorm.Model
 	StudentID   uint `json:"studentId" gorm:"primaryKey"`
 	CourseID    uint `json:"courseId" gorm:"primaryKey"`
-	Enrolled_on *time.Time
+	Enrolled_on time.Time
 }
 
 type Module struct {
