@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
 //import { AuthService } from 'src/app/services/auth.service';
 import { AuthService } from 'src/app/services/auth.mock.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 
 
@@ -19,7 +20,11 @@ export class InstructorLoginComponent implements OnInit {
   newPassword!: string;
 
   // constructor(private instructorService: InstructorService, private router: Router) { }
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private sharedService: SharedService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -27,13 +32,13 @@ export class InstructorLoginComponent implements OnInit {
   onLogin(){
     //check if token is set
     //navigate to instructor dashboard
-    this.router.navigateByUrl('instrDashboard');
 
     console.log("login");
     this.authService.login(this.username, this.password, "instructor").subscribe(
       (res) => {
         alert("logged in successfully");
-        // this.router.navigateByUrl('login');
+        this.sharedService.role = "instructor";
+        this.router.navigateByUrl('instrDashboard');
       }
     );
 
@@ -55,7 +60,4 @@ export class InstructorLoginComponent implements OnInit {
     this.newUsername = '';
     this.newPassword = '';
   }
-
-
-
 }

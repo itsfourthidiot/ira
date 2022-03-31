@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { HttpService } from 'src/app/services/http-service.mock.service'; 
-import { SharedService } from '../../services/shared.service';
+import { SharedService } from '../../../../services/shared.service';
 
 @Component({
   selector: 'app-file-upload',

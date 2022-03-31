@@ -10,7 +10,6 @@ import { Question } from '../models/Question';
 
 export class HttpService implements IHttpService{
 
-  baseUrl: string = apiUrls.baseUrl;
   fileName:string = "";
   
   constructor() { }

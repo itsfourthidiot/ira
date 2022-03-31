@@ -2,7 +2,7 @@ import { Option } from './../../../../models/Option';
 import { Question } from './../../../../models/Question';
 import { Component, Renderer2, OnInit, ElementRef, ViewChild, AfterViewInit, VERSION } from '@angular/core';
 import { HttpService } from 'src/app/services/http-service.mock.service'; 
-import { SharedService } from '../../services/shared.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-quizz',

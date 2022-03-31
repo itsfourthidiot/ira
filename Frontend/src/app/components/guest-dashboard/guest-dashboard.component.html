@@ -1,1 +1,8 @@
-<p>guest-dashboard works!</p>
+<div class="row card-group">
+    <div class="col-4 course"  *ngFor="let course of allCourses">
+        <mat-card (click) = "openCourse(course.ID, course.title)" class="example-card">
+            <img mat-card-image src="assets/CourseImages/SE_img.png" alt="Course Image">
+            <mat-card-title>{{course.title}}</mat-card-title>
+        </mat-card>         
+    </div>
+</div>
