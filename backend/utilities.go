@@ -17,8 +17,8 @@ func isPublished(newCourseId int, c *gin.Context) bool {
 		return false
 	}
 	// for time being
-	return true
-	// return published.IsPublished
+	// return true
+	return published.IsPublished
 }
 func courseExist(newCourseId int, c *gin.Context) bool {
 

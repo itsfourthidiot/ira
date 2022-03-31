@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -118,6 +119,12 @@ func instructorCourses(c *gin.Context) {
 	// Get all course corresponding to that instructor
 	var courses []Course
 	result = DB.Model(&Course{}).Where("courses.instructor_id = ?", instructor.ID).Find(&courses)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
 	publishedCourses := make([]Course, 0)
 	unpublishedCourses := make([]Course, 0)
 	for _, course := range courses {
@@ -133,4 +140,49 @@ func instructorCourses(c *gin.Context) {
 			"unpublished": unpublishedCourses,
 		},
 	})
+}
+
+func publishCourse(c *gin.Context) {
+	// Get the instructor object
+	email, ok := c.Get("email")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	CourseId, err := strconv.Atoi(c.Param("courseID"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not found",
+		})
+		return
+
+	}
+	course := Course{}
+	result := DB.Model(&Course{}).Select("courses.*").Joins("inner join instructors on courses.instructor_id = instructors.id").Where("instructors.email = ?", email).Where("courses.id = ?", CourseId).First(&course)
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorised access for this course",
+		})
+		return
+	}
+	// check if already published
+	if isPublished(CourseId, c) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course already published",
+		})
+		return
+	}
+	// Publishing course
+	course.IsPublished = true
+	res := DB.Save(&course)
+	if res.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, course)
+
 }

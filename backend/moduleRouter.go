@@ -121,6 +121,7 @@ func videoModuleCreate(c *gin.Context) {
 }
 
 func quizModuleCreate(c *gin.Context) {
+
 	type OptionStruct struct {
 		Content   string `json:"content" binding:"required"`
 		IsCorrect bool   `json:"isCorrect" binding:"required"`
@@ -146,9 +147,31 @@ func quizModuleCreate(c *gin.Context) {
 		})
 		return
 	}
+	email, _ := c.Get("email")
+	courseId, err := strconv.Atoi(c.Param("courseId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect parameters",
+		})
+		return
+	}
+	course := Course{}
+	dbRes := DB.Model(&Course{}).Select("courses.*").
+		Joins("inner join instructors on courses.instructor_id = instructors.id").
+		Where("instructors.email = ?", email).
+		Where("courses.id = ?", courseId).
+		First(&course)
+	if dbRes.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "course not found",
+		})
+		return
+	}
 	// Add entry to database
 	// Create new Module
-	courseId, _ := strconv.Atoi(c.Param("courseId"))
+
+	// courseId, _ = strconv.Atoi(c.Param("courseId"))
+
 	newModule := Module{
 		Title:     req.Title,
 		Type:      "quiz",
@@ -163,7 +186,7 @@ func quizModuleCreate(c *gin.Context) {
 		return
 	}
 	// Create new Quiz
-	// numQuestions, _ := strconv.Atoi(len(req.Questions))
+
 	newQuiz := Quiz{
 		ModuleID:       newModule.ID,
 		NumOfQuestions: len(req.Questions),
@@ -212,17 +235,55 @@ func quizModuleCreate(c *gin.Context) {
 
 func scoreCalculation(c *gin.Context) {
 	// validate student
+	email, ok := c.Get("email")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	student := Student{}
+	result := DB.Where("email = ?", email).First(&student)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+
+	// validate course
+	courseId, err := strconv.Atoi(c.Param("courseID"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not found",
+		})
+		return
+	}
+	// check if course is valid
+	if !courseExist(courseId, c) {
+		return
+	}
+	// check if course is published
+	if !isPublished(courseId, c) {
+		return
+	}
+	// check if  student is enrolled
+	if !isEnrolled(student.ID, courseId) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "student not enrolled",
+		})
+		return
+	}
 	// student response
 	// on submit score will be shown
 	type Req struct {
 		// Module object with json list
-		StudentID uint `json:"studentId" binding:"required,min=1"`
-		QuizID    uint `json:"quizId" binding:"required,min=1"`
-		// OptionID  uint   `json:"quizId" binding:"required,min=1"`
-		Response []uint `json:"response" binding:"required"`
+		StudentID uint   `json:"studentId" binding:"required,min=1"`
+		QuizID    uint   `json:"quizId" binding:"required,min=1"`
+		Response  []uint `json:"response" binding:"required"`
 	}
 	req := Req{}
-	err := c.ShouldBindJSON(&req)
+	err = c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "incorrect parameters",
@@ -233,8 +294,7 @@ func scoreCalculation(c *gin.Context) {
 	for _, opt := range req.Response {
 		options := Option{}
 		result := DB.Where("id=?", opt).Find(&options)
-		// fmt.Println(options)
-		// fmt.Println(111111111)
+
 		if result.Error != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": "internal server error",
@@ -251,10 +311,8 @@ func scoreCalculation(c *gin.Context) {
 		QuizID:     req.QuizID,
 		ScoreValue: uint(count),
 	}
-	// newScore.StudentID = req.StudentID
-	// newScore.QuizID = req.QuizID
-	// newScore.ScoreValue = uint(count)
-	result := DB.Create(&newScore)
+
+	result = DB.Create(&newScore)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "internal server error",
