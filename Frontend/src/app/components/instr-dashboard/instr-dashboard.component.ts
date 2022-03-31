@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CourseTitleDialogComponent } from '../course-title-dialog/course-title-dialog.component';
 import { CourseService } from 'src/app/services/course.mock.service';
 import { HttpService } from 'src/app/services/http-service.mock.service';
-import { SharedService } from '../course-details/services/shared.service';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-instr-dashboard',

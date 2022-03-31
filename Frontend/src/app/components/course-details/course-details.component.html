@@ -8,7 +8,7 @@
          <a [routerLink]="'description'" mat-button routerLinkActive="active"> Description </a>
        </section>
        <section class = "tp-section">
-         <a [routerLink]="'curriculum'" mat-button routerLinkActive="active"> Curriculum </a>
+         <a (click)="loadCurriculum()" mat-button routerLinkActive="active"> Curriculum </a>
        </section>
     </mat-sidenav>
 <mat-sidenav-content>

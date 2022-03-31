@@ -7,7 +7,6 @@ import { instrCourses } from "src/assets/data/instructorCourses";
 import { uploadQuiz } from "src/assets/data/uploadQuiz";
 
 export const apiUrls = {
-    baseUrl : '../../assets/data/',
     getAllCourses : allCourses,
     createCourse : createCourse,
     uploadVideo : uploadVideo,     

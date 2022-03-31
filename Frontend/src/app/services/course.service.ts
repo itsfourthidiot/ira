@@ -25,7 +25,7 @@ export class CourseService implements ICourseService{
     return this.httpclient.post<any>(url, obj);
   }
 
-  getAllCourses(): Observable<Course[]> {
+  getAllCourses(): Observable<any> {
     console.log("Test");
     throw new Error('Method not implemented.');
   }
