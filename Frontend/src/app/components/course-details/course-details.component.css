@@ -8,7 +8,7 @@
     background: #eee;
  }
 
- .tp-section {
+ .tp-section, mat-expansion-panel-header {
     display: flex;
     align-content: center;
     align-items: center;
@@ -18,6 +18,47 @@
     color: aliceblue;
  }
 
- mat-sidenav{
-    width: 19%;
+ .moduleLink{
+    display: flex;
  }
+
+ .moduleItem{
+   color: black;
+   width: 100%;   
+ }
+
+ mat-button{
+    width: 100% !important;
+ }
+
+mat-panel-title{
+   color: #eee;
+}
+
+mat-sidenav{
+    width: 30%;
+}
+
+.mat-success {
+   background-color: green;
+   color: #fff;
+}
+
+.container {
+ height: 200px;
+ position: relative;
+}
+
+.mat-icon{
+   float: right;
+   margin-top: 5px;  
+   justify-self: end; 
+}
+
+.vertical-center {
+ margin: 0;
+ position: absolute;
+ top: 50%;
+ -ms-transform: translateY(-50%);
+ transform: translateY(-50%);
+}

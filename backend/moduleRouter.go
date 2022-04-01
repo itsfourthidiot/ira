@@ -96,6 +96,7 @@ func videoModuleCreate(c *gin.Context) {
 		Title:     req.Title,
 		Type:      "video",
 		IsPrivate: isPrivate,
+		CourseID:  uint(courseId),
 	}
 	dbRes = DB.Create(&newModule)
 	if dbRes.Error != nil {
@@ -104,9 +105,9 @@ func videoModuleCreate(c *gin.Context) {
 		})
 		return
 	}
-	url := awsRes.Location
+	key := awsRes.Key
 	newVideo := Video{
-		Url:      url,
+		Key:      key,
 		ModuleID: newModule.ID,
 	}
 	dbRes = DB.Create(&newVideo)
@@ -121,6 +122,7 @@ func videoModuleCreate(c *gin.Context) {
 }
 
 func quizModuleCreate(c *gin.Context) {
+
 	type OptionStruct struct {
 		Content   string `json:"content" binding:"required"`
 		IsCorrect bool   `json:"isCorrect" binding:"required"`
@@ -146,10 +148,31 @@ func quizModuleCreate(c *gin.Context) {
 		})
 		return
 	}
+	email, _ := c.Get("email")
+	courseId, err := strconv.Atoi(c.Param("courseId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect parameters",
+		})
+		return
+	}
+	course := Course{}
+	dbRes := DB.Model(&Course{}).Select("courses.*").
+		Joins("inner join instructors on courses.instructor_id = instructors.id").
+		Where("instructors.email = ?", email).
+		Where("courses.id = ?", courseId).
+		First(&course)
+	if dbRes.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "course not found",
+		})
+		return
+	}
 	// Add entry to database
 	// Create new Module
-	courseId, _ := strconv.Atoi(c.Param("courseId"))
-	fmt.Println(courseId)
+
+	// courseId, _ = strconv.Atoi(c.Param("courseId"))
+
 	newModule := Module{
 		Title:     req.Title,
 		Type:      "quiz",
@@ -164,7 +187,7 @@ func quizModuleCreate(c *gin.Context) {
 		return
 	}
 	// Create new Quiz
-	// numQuestions, _ := strconv.Atoi(len(req.Questions))
+
 	newQuiz := Quiz{
 		ModuleID:       newModule.ID,
 		NumOfQuestions: len(req.Questions),
@@ -290,5 +313,12 @@ func scoreCalculation(c *gin.Context) {
 		ScoreValue: uint(count),
 	}
 
-	c.JSON(http.StatusOK, req)
+	result = DB.Create(&newScore)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, newScore)
 }

@@ -5,6 +5,7 @@ import { apiUrls } from '../constants/apiConstants';
 // import { Course } from '../models/Course';
 import { IHttpService } from './http-service.service.interface';
 import { finalize } from 'rxjs/operators';
+import { Question } from '../models/Question';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,13 @@ export class HttpService implements IHttpService{
         reportProgress: true,
         observe: 'events'
     });
+  }
+
+  uploadQuiz(courseID: string, questArray: Question[], courseTitle: string): Observable<any>{
+    let urlStr = apiUrls.uploadVideo.replace('<courseId>', courseID)
+    let url = this.baseUrl+urlStr;
+    let obj = {"title" : courseTitle, "questions" : questArray}
+    return this.http.post(url, obj)
   }
 
 }

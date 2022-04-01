@@ -25,28 +25,36 @@ export class CourseService implements ICourseService{
     return this.httpclient.post<any>(url, obj);
   }
 
-  getAllCourses(): Observable<Course[]> {
-    console.log("Test");
-    throw new Error('Method not implemented.');
+  getAllCourses(): Observable<any> {
+    return this.httpclient.get<any>(this.baseUrl + apiUrls.getAllCourses)
   }
 
-  getCourseDescriptionById(id:string): Observable<any>{
-    console.log("get description of course with course id :" + id);
-    return this.httpclient.get<any>(this.baseUrl + apiUrls.updateDescription + "?courseId=" + id);
+  getCourseDescriptionById(courseId:string): Observable<any>{
+    console.log("get description of course with course id :" + courseId);
+    return this.httpclient.get<any>(this.baseUrl + apiUrls.getCourseDescription.replace('<courseId>', courseId));
   }
 
-  updateCourseDescriptionById(id:string, description:string): Observable<any>{
-    var obj = {"courseId": id, "description": description};
+  updateCourseDescriptionById(courseId:string, description:string): Observable<any>{
+    var obj = {"description": description};
     console.log(obj);
-    return this.httpclient.put<any>(this.baseUrl + "updateDescription", obj);
+    return this.httpclient.put<any>(this.baseUrl + apiUrls.updateDescription.replace('<courseId>', courseId), obj);
   }
 
-  checkEnrollMent(courseId:string): Observable<boolean>{
-    return this.httpclient.get<any>(this.baseUrl + "checkEnrollMent" + "?courseId=" + courseId);
+  checkEnrollMent(courseId:string): Observable<any>{
+    return this.httpclient.get<any>(this.baseUrl + apiUrls.checkEnroll.replace('<courseId>', courseId));
   }
 
-  studentEnroll(courseId: string): Observable<boolean>{
-    var obj = {"courseId" : courseId};
-    return this.httpclient.post<any>(this.baseUrl + "studentEnrol", obj);
+  studentEnroll(courseId: string): Observable<any>{
+    // var obj = {"courseId" : courseId};
+    //return this.httpclient.post<any>(this.baseUrl + "studentEnrol", obj);
+    return this.httpclient.post<any>(this.baseUrl + apiUrls.studentEnroll.replace('<courseId>', courseId), null);
+  }
+
+  getCourseDetails(courseId: string): Observable<any>{
+    return this.httpclient.get<any>(this.baseUrl + apiUrls.getCourseDetails.replace('<courseId>', courseId))
+  }
+
+  publishCourse(courseId: string): Observable<any>{
+    return this.httpclient.put<any>(this.baseUrl + apiUrls.publishCourse.replace('<courseId>', courseId), null)
   }
 }

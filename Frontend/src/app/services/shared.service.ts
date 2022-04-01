@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 export class SharedService {
 
   courseID: string = "";
-
+  courseTitle : string = "";
+  role : string = "";
+  
   constructor() { }
 }

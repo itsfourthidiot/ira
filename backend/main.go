@@ -58,13 +58,14 @@ func verifyToken(c *gin.Context) {
 		})
 		return
 	}
-	email, err := validateToken(token)
+	email, role, err := validateToken(token)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "user unauthorized",
 		})
 	}
 	c.Set("email", email)
+	c.Set("role", role)
 	c.Next()
 }
 
@@ -130,10 +131,11 @@ func main() {
 		instructorRoutes.POST("/login", instructorLogin)
 		instructorRoutes.POST("/course", verifyToken, courseCreate)
 		instructorRoutes.POST("/course/:courseId/module/video", verifyToken, videoModuleCreate)
-		instructorRoutes.POST("/course/:courseId/module/quiz", quizModuleCreate)
+		instructorRoutes.POST("/course/:courseId/module/quiz", verifyToken, quizModuleCreate)
 		instructorRoutes.GET("/course/:courseID/description", verifyToken, getDescription)
 		instructorRoutes.PUT("/course/:courseID/description", verifyToken, courseDescriptionUpdate)
 		instructorRoutes.GET("/courses", verifyToken, instructorCourses)
+		instructorRoutes.PUT("/course/:courseID/publish", verifyToken, publishCourse)
 	}
 	studentRoutes := r.Group("/student")
 	{
@@ -142,9 +144,12 @@ func main() {
 		studentRoutes.GET("/course/:courseID/enroll", verifyToken, checkEnrollCourse)
 		studentRoutes.POST("/course/:courseID/enroll", verifyToken, enrollCourse)
 		studentRoutes.GET("/courses", verifyToken, studentCourses)
+		studentRoutes.POST("/course/:courseID/module/quiz/score", verifyToken, scoreCalculation)
 	}
 	r.POST("/enroll", verifyToken, enrollCourse)
 	r.GET("/courses", listAllCourses)
+	r.GET("/course/:courseId", getCourseDetails)
+	r.GET("/course/:courseId/module/:moduleId", verifyToken, getModuleDetails)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)

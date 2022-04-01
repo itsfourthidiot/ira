@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'courseDetails/:courseID', loadChildren: () => import(`./components/course-details/course-details.module`).then(m => m.CourseDetailsModule)},
   { path: 'userCourseDetails', component: UserCourseDetailsComponent},
   { path: 'studentDashboard/:email', component: StudentDashboardComponent},
-  { path: 'userCourseDetails', component: UserCourseDetailsComponent}
+  { path: 'userCourseDetails', component: UserCourseDetailsComponent},
+
 
 ];
 

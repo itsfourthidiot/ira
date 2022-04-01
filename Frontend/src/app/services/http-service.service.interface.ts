@@ -1,4 +1,5 @@
 import { Observable } from "rxjs";
+import { Question } from "../models/Question";
 
 export interface IHttpService {
 
@@ -7,4 +8,6 @@ export interface IHttpService {
 
   //get instructor courses
   getInstrCourses() : Observable<any>;
+
+  uploadQuiz(courseID: string, questArray: Question[], courseTitle: string): Observable<any>
 }
