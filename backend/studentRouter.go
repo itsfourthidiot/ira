@@ -147,6 +147,9 @@ func checkEnrollCourse(c *gin.Context) {
 
 	// check if course is published
 	if !isPublished(courseId, c) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not published",
+		})
 		return
 	}
 
@@ -191,6 +194,9 @@ func enrollCourse(c *gin.Context) {
 	}
 	// check if course is Published
 	if !isPublished(courseId, c) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not published",
+		})
 		return
 	}
 

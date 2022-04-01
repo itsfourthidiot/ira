@@ -116,7 +116,8 @@ func videoModuleCreate(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, newVideo)
+	DB.Preload("Video").Find(&newModule)
+	c.JSON(http.StatusCreated, newModule)
 }
 
 func quizModuleCreate(c *gin.Context) {
@@ -205,6 +206,88 @@ func quizModuleCreate(c *gin.Context) {
 
 		}
 
+	}
+	DB.Preload("Quiz.Questions.Options").Find(&newModule)
+	c.JSON(http.StatusCreated, newModule)
+}
+
+func scoreCalculation(c *gin.Context) {
+	// validate student
+	email, ok := c.Get("email")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	student := Student{}
+	result := DB.Where("email = ?", email).First(&student)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+
+	// validate course
+	courseId, err := strconv.Atoi(c.Param("courseID"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not found",
+		})
+		return
+	}
+	// check if course is valid
+	if !courseExist(courseId, c) {
+		return
+	}
+	// check if course is published
+	if !isPublished(courseId, c) {
+		return
+	}
+	// check if  student is enrolled
+	if !isEnrolled(student.ID, courseId) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "student not enrolled",
+		})
+		return
+	}
+	// student response
+	// on submit score will be shown
+	type Req struct {
+		// Module object with json list
+		StudentID uint   `json:"studentId" binding:"required,min=1"`
+		QuizID    uint   `json:"quizId" binding:"required,min=1"`
+		Response  []uint `json:"response" binding:"required"`
+	}
+	req := Req{}
+	err = c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect parameters",
+		})
+		return
+	}
+	count := 0
+	for _, opt := range req.Response {
+		options := Option{}
+		result := DB.Where("id=?", opt).Find(&options)
+
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "internal server error",
+			})
+			return
+		}
+		if options.IsCorrect {
+			count += 1
+		}
+	}
+	// update scores Table in to db
+	newScore := Score{
+		StudentID:  req.StudentID,
+		QuizID:     req.QuizID,
+		ScoreValue: uint(count),
 	}
 
 	c.JSON(http.StatusOK, req)
