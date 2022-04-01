@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from 'src/app/services/course.mock.service';
 import { SharedService } from '../../services/shared.service';
+import { AuthService } from 'src/app/services/auth.mock.service';
 
 @Component({
   selector: 'app-course-details',
@@ -18,8 +19,12 @@ export class CourseDetailsComponent implements OnInit {
   hideIcon = false;
   modules: any[] = [];
   module1: string = "";
+
+
+
   constructor(
     private courseService : CourseService,
+    private authService: AuthService,
     private sharedService: SharedService,
     private router: Router,
     private route: ActivatedRoute
@@ -31,6 +36,14 @@ export class CourseDetailsComponent implements OnInit {
     this.role = this.sharedService.role;
     this.hideIcon = false;
     console.log("hideIcon  "+this.hideIcon)
+    if (this.role == "student"){
+      this.courseService.checkEnrollMent(this.courseID).subscribe(
+        (data) => {
+          this.enrolled = data.isEnrolled
+        }
+      )
+    }
+    
     this.courseService.getCourseDetails(this.courseID).subscribe(
       (data) => {
         this.modules = data.modules
@@ -40,7 +53,7 @@ export class CourseDetailsComponent implements OnInit {
         }else{
           this.module1 = this.modules[0].ID;
         }
-        // this.isPublished = data.isPublished;
+        this.isPublished = data.isPublished;
       }
     )
   
@@ -74,5 +87,19 @@ export class CourseDetailsComponent implements OnInit {
     // else{
       this.router.navigate([`.././module/${moduleID}`], {relativeTo: this.route});
     // }
+  }
+
+  enroll(){
+    if (this.authService.isLoggedIn){
+      this.courseService.studentEnroll(this.courseID).subscribe(
+        (data) => {
+            console.log(data);
+        }
+      )
+      this.enrolled = true;
+    } else {
+      this.router.navigate(['studentLogin'], {queryParams: {returnUrl : this.router.routerState.snapshot.url}})
+    }
+
   }
 }

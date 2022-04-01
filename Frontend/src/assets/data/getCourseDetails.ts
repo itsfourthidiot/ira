@@ -5,7 +5,7 @@ export const CourseDetails:any = {
     "DeletedAt": null,
     "title": "My first course",
     "description": null,
-    "isPublished": true,
+    "isPublished": false,
     "publishedAt": null,
     "instructorId": 1,
     "modules": [

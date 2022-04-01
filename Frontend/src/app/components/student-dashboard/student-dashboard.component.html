@@ -3,7 +3,7 @@
 
 <div class="row card-group">
     <div class="col-4"  *ngFor="let course of courses">
-        <mat-card class="example-card">
+        <mat-card (click)="goToCourse(course.ID, course.title)" class="example-card">
             <img mat-card-image src="assets/CourseImages/SE_img.png" alt="Course Image">
             <mat-card-title>{{course.title}}</mat-card-title>
             <!-- <mat-card-subtitle></mat-card-subtitle> -->

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 // import { AuthService } from 'src/app/services/auth.service';
 import { AuthService } from 'src/app/services/auth.mock.service';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from 'src/app/models/Course';
+import { SharedService } from 'src/app/services/shared.service';
 
 
 
@@ -16,11 +17,13 @@ export class StudentDashboardComponent implements OnInit {
 
   email!: string
   currentStudentDb: Object = {}
-  courses!: Course[] 
+  courses!: any[] 
 
   constructor(
     private authService: AuthService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private sharedService: SharedService,
+    private router: Router) { }
 
   ngOnInit(): void {
       this.route.params.subscribe(params => {
@@ -36,6 +39,12 @@ export class StudentDashboardComponent implements OnInit {
       )
     });
     
+  }
+
+  goToCourse(courseID: string, courseTitle: string){
+    this.sharedService.courseID = courseID;
+    this.sharedService.courseTitle = courseTitle;   
+    this.router.navigate([`/courseDetails/${courseID}`]);
   }
 
 }
