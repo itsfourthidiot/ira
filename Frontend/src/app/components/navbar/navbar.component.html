@@ -20,9 +20,9 @@
         <!-- <a *ngIf="type=='instructor'" mat-button [routerLink]=""> My Courses</a> -->
         <!-- <a *ngIf="type=='instructor'" mat-button [routerLink]=""> Drafts</a> -->
         <!-- <a *ngIf="type=='instructor'" mat-button [routerLink]=""> Create New Course</a> -->
-        <a *ngIf="type=='instructor'" mat-button [routerLink]="'/'"> Logout</a>
+        <a *ngIf="type!='guest'" mat-button (click)="logout()" > Logout</a>
 
-        <a *ngIf="type=='student'" mat-button [routerLink]="'/'"> Logout</a>
+        <!-- <a *ngIf="type=='student'" mat-button [routerLink]="'/'"> Logout</a> -->
 
       </div>
     </mat-toolbar-row>
