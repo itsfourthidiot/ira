@@ -10,7 +10,7 @@ export const CourseDetails:any = {
     "instructorId": 1,
     "modules": [
         {
-            "ID": 1,
+            "ID": 5,
             "CreatedAt": "2022-03-29T14:14:27.192313455-04:00",
             "UpdatedAt": "2022-03-29T14:14:27.192313455-04:00",
             "DeletedAt": null,

@@ -11,13 +11,13 @@ const routes: Routes = [
         path: 'description', component: CourseDescriptionComponent
       },
       {
-        path: 'module/:moduleID', component: ModuleComponent
-      },
-      {
         path: 'curriculum', loadChildren: () => import(`./curriculum/curriculum.module`).then(m => m.CurriculumModule)
       },
       {
         path: '', redirectTo: 'description', pathMatch: 'full'
+      },
+      {
+        path: 'module/:moduleID', component: ModuleComponent
       }
       // { path: '**', component: Page404leavesComponent }
     ]
