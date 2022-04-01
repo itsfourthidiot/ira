@@ -19,8 +19,7 @@ export class CourseDetailsComponent implements OnInit {
   hideIcon = false;
   modules: any[] = [];
   module1: string = "";
-
-
+  description: string = "";
 
   constructor(
     private courseService : CourseService,
@@ -35,6 +34,8 @@ export class CourseDetailsComponent implements OnInit {
     this.courseTitle = this.sharedService.courseTitle;
     this.role = this.sharedService.role;
     this.hideIcon = false;
+    this.description = this.sharedService.description;
+
     console.log("hideIcon  "+this.hideIcon)
     if (this.role == "student"){
       this.courseService.checkEnrollMent(this.courseID).subscribe(
@@ -46,6 +47,8 @@ export class CourseDetailsComponent implements OnInit {
     
     this.courseService.getCourseDetails(this.courseID).subscribe(
       (data) => {
+        console.log("Course Details "+data.description)
+        this.sharedService.description = data.description;
         this.modules = data.modules
         if(this.modules.length==0){
           console.log("LENGTH "+ this.modules.length )
