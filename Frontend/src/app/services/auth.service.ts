@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { IAuthService } from './auth.service.interface';
 import { apiUrls } from '../constants/apiConstants';
+import { SharedService } from './shared.service';
 
 
 var AuthorizationString = "Bearer "+ localStorage.getItem("ACCESS_TOKEN")
@@ -33,7 +34,8 @@ export class AuthService implements IAuthService {
   constructor(
     private http: HttpClient,
     public router: Router,
-    private profile: ProfileService
+    private profile: ProfileService,
+    private sharedService: SharedService
   ) {
     this.subscription = this.profile.currentType.subscribe(
       type => this.type = type
@@ -65,7 +67,7 @@ export class AuthService implements IAuthService {
     
     //change type according to logged in user
     this.profile.changeType(role);
-
+    this.sharedService.role = role;
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
     return this.http.post<any>(this.apiUrl + "/" + role + "/login", obj).pipe(
       tap((res) => {
@@ -88,7 +90,9 @@ export class AuthService implements IAuthService {
   }
 
   logOut(){
+    console.log("Logged out")
     localStorage.removeItem("ACCESS_TOKEN");
+    this.sharedService.role = "guest";
     // this.authSubject.next(false);
     // return this.http.post<any>(this.apiUrl + "logout", null, httpOptions);
   }
