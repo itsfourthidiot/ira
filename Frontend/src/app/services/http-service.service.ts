@@ -36,10 +36,11 @@ export class HttpService implements IHttpService{
   }
 
   uploadQuiz(courseID: string, questArray: Question[], courseTitle: string): Observable<any>{
-    let urlStr = apiUrls.uploadVideo.replace('<courseId>', courseID)
+    console.log("Upload quiz!");
+    let urlStr = apiUrls.uploadQuiz.replace('<courseId>', courseID)
     let url = this.baseUrl+urlStr;
     let obj = {"title" : courseTitle, "questions" : questArray}
-    return this.http.post(url, obj)
+    return this.http.post(url, obj);
   }
 
 }

@@ -102,7 +102,7 @@ export class AuthService implements IAuthService {
     var obj = {"email": username, "password": password};
     console.log(obj);
 
-    console.log(this.apiUrl + "register");
+    console.log(this.apiUrl + "/register");
     return this.http.post<any>(this.apiUrl + "/" + role + "/register", obj);
 
 
