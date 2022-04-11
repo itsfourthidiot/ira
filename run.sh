@@ -1,9 +1,9 @@
 #!/bin/bash
 cd /home/ubuntu/ira/Frontend/
-npm install
+/home/ubuntu/.nvm/versions/node/v14.19.1/bin/npm install
 ./node_modules/.bin/ng build
 cd /home/ubuntu/ira/backend/
-go build
+/usr/local/go/bin/go build
 echo "SECRET_KEY=$SECRET_KEY" >> .env
 echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
 echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
