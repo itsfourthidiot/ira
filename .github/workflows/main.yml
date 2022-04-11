@@ -79,7 +79,7 @@ jobs:
 
   continuous-deployment:
     runs-on: ubuntu-latest
-    needs: [continuous-integration]
+    needs: [build, api-testing]
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Configure AWS credentials
@@ -98,7 +98,7 @@ jobs:
         id: deploy
         run: |
           aws deploy create-deployment \
-            --application-name application-name \
-            --deployment-group-name AppDeploymentGroupName \
+            --application-name ira-elearning-platform \
+            --deployment-group-name Git_Application \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
