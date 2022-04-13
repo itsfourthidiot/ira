@@ -234,6 +234,7 @@ func quizModuleCreate(c *gin.Context) {
 }
 
 func scoreCalculation(c *gin.Context) {
+
 	// validate student
 	email, ok := c.Get("email")
 	if !ok {
@@ -261,10 +262,16 @@ func scoreCalculation(c *gin.Context) {
 	}
 	// check if course is valid
 	if !courseExist(courseId, c) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": " course doesnot exist",
+		})
 		return
 	}
 	// check if course is published
 	if !isPublished(courseId, c) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "course not published",
+		})
 		return
 	}
 	// check if  student is enrolled
@@ -278,9 +285,9 @@ func scoreCalculation(c *gin.Context) {
 	// on submit score will be shown
 	type Req struct {
 		// Module object with json list
-		StudentID uint   `json:"studentId" binding:"required,min=1"`
-		QuizID    uint   `json:"quizId" binding:"required,min=1"`
-		Response  []uint `json:"response" binding:"required"`
+		// StudentID uint   `json:"studentId" binding:"required,min=1"`
+		ModuleID uint   `json:"moduleId" binding:"required,min=1"`
+		Response []uint `json:"response" binding:"required"`
 	}
 	req := Req{}
 	err = c.ShouldBindJSON(&req)
@@ -290,6 +297,30 @@ func scoreCalculation(c *gin.Context) {
 		})
 		return
 	}
+	module := Module{}
+	result = DB.Where("id = ?", req.ModuleID).First(&module)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+	// fmt.Println(module.Type)
+	if module.Type != "quiz" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "incorrect module type",
+		})
+		return
+	}
+	quiz := Quiz{}
+	result = DB.Where("module_id = ?", req.ModuleID).First(&quiz)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
+
 	count := 0
 	for _, opt := range req.Response {
 		options := Option{}
@@ -307,8 +338,8 @@ func scoreCalculation(c *gin.Context) {
 	}
 	// update scores Table in to db
 	newScore := Score{
-		StudentID:  req.StudentID,
-		QuizID:     req.QuizID,
+		StudentID:  student.ID,
+		QuizID:     quiz.ID,
 		ScoreValue: uint(count),
 	}
 
