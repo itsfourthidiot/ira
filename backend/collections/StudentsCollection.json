@@ -6,14 +6,14 @@
 	},
 	"item": [
 		{
-			"name": "Student Registration",
+			"name": "StudentRegistration",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"const atStep = pm.collectionVariables.get(\"atStep\");",
-							"switch(atStep) {",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
 							"    case \"noEmail\":",
 							"        console.log(\"Generating a request without email in the body...\");",
 							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
@@ -55,8 +55,8 @@
 							"    case \"alreadyRegisteredEmail\":",
 							"        console.log(\"Generating request body with an already registered email...\");",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
-							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
-							"            password: pm.collectionVariables.get(\"registeredPassword\")",
+							"            email: pm.collectionVariables.get(\"studentEmail\"),",
+							"            password: pm.collectionVariables.get(\"studentPassword\")",
 							"        }));",
 							"        break;",
 							"}"
@@ -68,50 +68,50 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const atStep = pm.collectionVariables.get(\"atStep\");",
-							"switch(atStep) {",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
 							"    case \"noEmail\":",
 							"        pm.test(\"Email not present in the request body\", function (){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"incorrectEmailFormat\");",
-							"            postman.setNextRequest(\"Student Registration\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectEmailFormat\");",
+							"            postman.setNextRequest(\"StudentRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectEmailFormat\":",
 							"        pm.test(\"Incorrect email format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"noPassword\");",
-							"            postman.setNextRequest(\"Student Registration\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"noPassword\");",
+							"            postman.setNextRequest(\"StudentRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"noPassword\":",
 							"        pm.test(\"Password not present in the request body\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"incorrectPasswordFormat\");",
-							"            postman.setNextRequest(\"Student Registration\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectPasswordFormat\");",
+							"            postman.setNextRequest(\"StudentRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectPasswordFormat\":",
 							"        pm.test(\"Incorrect password format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"correctRequest\");",
-							"            postman.setNextRequest(\"Student Registration\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"StudentRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"correctRequest\":",
 							"        pm.test(\"Correct request\", function(){",
 							"            pm.response.to.have.status(201);",
-							"            pm.collectionVariables.set(\"atStep\", \"alreadyRegisteredEmail\");",
-							"            pm.collectionVariables.set(\"registeredEmail\", pm.collectionVariables.get(\"email\"));",
-							"            pm.collectionVariables.set(\"registeredPassword\", pm.collectionVariables.get(\"password\"));",
-							"            postman.setNextRequest(\"Student Registration\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"alreadyRegisteredEmail\");",
+							"            pm.collectionVariables.set(\"studentEmail\", pm.collectionVariables.get(\"email\"));",
+							"            pm.collectionVariables.set(\"studentPassword\", pm.collectionVariables.get(\"password\"));",
+							"            postman.setNextRequest(\"StudentRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"alreadyRegisteredEmail\":",
 							"        pm.test(\"Email already registered\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"noEmail\");",
-							"            postman.setNextRequest(\"Student Login\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"noEmail\");",
+							"            postman.setNextRequest(\"StudentLogin\");",
 							"        });",
 							"}"
 						],
@@ -132,11 +132,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/register",
+					"raw": "{{baseUrl}}/student/register",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
+						"student",
 						"register"
 					]
 				}
@@ -144,14 +145,14 @@
 			"response": []
 		},
 		{
-			"name": "Student Login",
+			"name": "StudentLogin",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"const atStep = pm.collectionVariables.get(\"atStep\");",
-							"switch(atStep) {",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
 							"    case \"noEmail\":",
 							"        console.log(\"Generating a request without email in the body...\");",
 							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
@@ -194,15 +195,15 @@
 							"    case \"incorrectPassword\":",
 							"        console.log(\"Generating a request with wrong password...\");",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
-							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
+							"            email: pm.collectionVariables.get(\"studentEmail\"),",
 							"            password: pm.collectionVariables.get(\"password\")",
 							"        }));",
 							"        break;",
 							"    case \"correctRequest\":",
 							"        console.log(\"Generating a correct request body...\");",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
-							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
-							"            password: pm.collectionVariables.get(\"registeredPassword\")",
+							"            email: pm.collectionVariables.get(\"studentEmail\"),",
+							"            password: pm.collectionVariables.get(\"studentPassword\")",
 							"        }));",
 							"        break;",
 							"}"
@@ -214,55 +215,57 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const atStep = pm.collectionVariables.get(\"atStep\");",
-							"switch(atStep) {",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
 							"    case \"noEmail\":",
 							"        pm.test(\"Email not present in the request body\", function (){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"incorrectEmailFormat\");",
-							"            postman.setNextRequest(\"Student Login\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectEmailFormat\");",
+							"            postman.setNextRequest(\"StudentLogin\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectEmailFormat\":",
 							"        pm.test(\"Incorrect email format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"noPassword\");",
-							"            postman.setNextRequest(\"Student Login\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"noPassword\");",
+							"            postman.setNextRequest(\"StudentLogin\");",
 							"        });",
 							"        break;",
 							"    case \"noPassword\":",
 							"        pm.test(\"Password not present in the request body\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"incorrectPasswordFormat\");",
-							"            postman.setNextRequest(\"Student Login\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectPasswordFormat\");",
+							"            postman.setNextRequest(\"StudentLogin\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectPasswordFormat\":",
 							"        pm.test(\"Incorrect password format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"atStep\", \"unregisteredEmail\");",
-							"            postman.setNextRequest(\"Student Login\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"unregisteredEmail\");",
+							"            postman.setNextRequest(\"StudentLogin\");",
 							"        });",
 							"        break;",
 							"    case \"unregisteredEmail\":",
 							"        pm.test(\"Email not registered\", function(){",
 							"            pm.response.to.have.status(404);",
-							"            pm.collectionVariables.set(\"atStep\", \"incorrectPassword\");",
-							"            postman.setNextRequest(\"Student Login\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectPassword\");",
+							"            postman.setNextRequest(\"StudentLogin\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectPassword\":",
 							"        pm.test(\"Incorrect password\", function(){",
 							"            pm.response.to.have.status(401);",
-							"            pm.collectionVariables.set(\"atStep\", \"correctRequest\");",
-							"            postman.setNextRequest(\"Student Login\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"StudentLogin\");",
 							"        });",
 							"        break;",
 							"    case \"correctRequest\":",
 							"        pm.test(\"Correct request\", function(){",
 							"            pm.response.to.have.status(200);",
-							"            pm.collectionVariables.set(\"atStep\", \"noEmail\");",
-							"            postman.setNextRequest(null);",
+							"            pm.collectionVariables.set(\"studentJwtToken\", pm.response.json()[\"token\"]);",
+							"            pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            postman.setNextRequest(\"Enrollment\");",
 							"        });",
 							"        break;",
 							"}"
@@ -284,12 +287,443 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/login",
+					"raw": "{{baseUrl}}/student/login",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
+						"student",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enrollment",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without token in the header...\");",
+							"        console.log(\"Register as an instructor, login, and create a course\");",
+							"        pm.collectionVariables.set(\"instructorEmail\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
+							"        pm.collectionVariables.set(\"instructorPassword\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"        pm.sendRequest({",
+							"            url: pm.collectionVariables.get(\"instructorRegistrationUrl\"),",
+							"            method: 'POST',",
+							"            header: {",
+							"                'content-type': 'application/json'",
+							"            },",
+							"            body: {",
+							"                mode: 'raw',",
+							"                raw: JSON.stringify({",
+							"                    email: pm.collectionVariables.get(\"instructorEmail\"),",
+							"                    password: pm.collectionVariables.get(\"instructorPassword\")",
+							"                })",
+							"            }",
+							"        }, function (err, res) {",
+							"            console.log(\"Logging in as the same instructor\");",
+							"            pm.sendRequest({",
+							"                url: pm.collectionVariables.get(\"instructorLoginUrl\"),",
+							"                method: 'POST',",
+							"                header: {",
+							"                    'content-type': 'application/json'",
+							"                },",
+							"                body: {",
+							"                    mode: 'raw',",
+							"                    raw: JSON.stringify({",
+							"                        email: pm.collectionVariables.get(\"instructorEmail\"),",
+							"                        password: pm.collectionVariables.get(\"instructorPassword\")",
+							"                    })",
+							"                }",
+							"            }, function(err, res) {",
+							"                pm.collectionVariables.set(\"instructorJwtToken\", res.json()[\"token\"]);",
+							"                console.log(\"creating a course\");",
+							"                pm.collectionVariables.set(\"firstTitle\", pm.variables.replaceIn(\"{{$randomCatchPhrase}}\"));",
+							"                pm.collectionVariables.set(\"title\", pm.collectionVariables.get(\"firstTitle\"));",
+							"                pm.sendRequest({",
+							"                    url: pm.collectionVariables.get(\"courseCreationUrl\"),",
+							"                    method: 'POST',",
+							"                    header: {",
+							"                        'content-type': 'application/json',",
+							"                        'Authorization': 'Bearer ' + pm.collectionVariables.get('instructorJwtToken')",
+							"                    },",
+							"                    body: {",
+							"                        mode: 'raw',",
+							"                        raw: JSON.stringify({",
+							"                            title: pm.collectionVariables.get(\"title\")",
+							"                        })",
+							"                    }",
+							"                }, function(err, res) {",
+							"                    pm.collectionVariables.set(\"firstCourseId\", res.json()[\"ID\"]);",
+							"                    pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"                    pm.sendRequest({",
+							"                        url: pm.collectionVariables.get('baseUrl') + \"/instructor/course/\" + pm.collectionVariables.get(\"courseId\") + \"/module/quiz\",",
+							"                        method: 'POST',",
+							"                        header: {",
+							"                            'content-type': 'application/json',",
+							"                            'Authorization': 'Bearer ' + pm.collectionVariables.get('instructorJwtToken')",
+							"                        },",
+							"                        body: {",
+							"                            mode: 'raw',",
+							"                            raw: JSON.stringify({",
+							"                                title: \"Sample Quiz\",",
+							"                                questions: [{",
+							"                                    content: \"Question 1\",",
+							"                                    options: [{",
+							"                                        content: \"Option 1\",",
+							"                                        isCorrect: true",
+							"                                    }, {",
+							"                                        content: \"Option 2\",",
+							"                                        isCorrect: false",
+							"                                    }]",
+							"                                }]",
+							"                            })",
+							"                        }",
+							"                    }, function(err, res){",
+							"                        pm.collectionVariables.set(\"firstModuleId\", res.json()['ID']);",
+							"                        pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"firstModuleId\"));",
+							"                        pm.sendRequest({",
+							"                            url: pm.collectionVariables.get('baseUrl') + \"/instructor/course/\" + pm.collectionVariables.get(\"courseId\") + \"/publish\",",
+							"                            method: 'PUT',",
+							"                            header: {",
+							"                                'content-type': 'application/json',",
+							"                                'Authorization': 'Bearer ' + pm.collectionVariables.get('instructorJwtToken')",
+							"                            }",
+							"                        }, function(err, res) {",
+							"                            pm.collectionVariables.set(\"jwtToken\", null);",
+							"                        })",
+							"                    })",
+							"                })",
+							"            })",
+							"        });",
+							"        break;",
+							"    case \"InvalidCourseIdFormat\":",
+							"        console.log(\"Generating a request with incorrect course id format...\");",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"))",
+							"        pm.collectionVariables.set(\"courseId\", pm.variables.replaceIn(\"{{$randomWord}}\"));",
+							"        break;",
+							"    case \"CourseNotPresent\":",
+							"        console.log(\"Generating a request with course id for which course is not created...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\") + 1);",
+							"        break;",
+							"    case \"CorrectRequest\":",
+							"        console.log(\"Generating the correct request...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        break;",
+							"    case \"AlreadyEnrolled\":",
+							"        console.log(\"Generating a request to enroll in an already enrolled course...\");",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the body\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"InvalidCourseIdFormat\");",
+							"            postman.setNextRequest(\"Enrollment\");",
+							"        });",
+							"        break;",
+							"    case \"InvalidCourseIdFormat\":",
+							"        pm.test(\"Invalid course id format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"CourseNotPresent\");",
+							"            postman.setNextRequest(\"Enrollment\");",
+							"        });",
+							"        break;",
+							"    case \"CourseNotPresent\":",
+							"        pm.test(\"Course not found\", function(){",
+							"            pm.response.to.have.status(404);",
+							"            pm.collectionVariables.set(\"currentCase\", \"CorrectRequest\");",
+							"            postman.setNextRequest(\"Enrollment\");",
+							"        });",
+							"        break;",
+							"    case \"CorrectRequest\":",
+							"        pm.test(\"Correct request\", function(){",
+							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"currentCase\", \"AlreadyEnrolled\");",
+							"            postman.setNextRequest(\"Enrollment\");",
+							"        });",
+							"        break;",
+							"    case \"AlreadyEnrolled\":",
+							"        pm.test(\"Enrolling in an already enrolled course\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            postman.setNextRequest(\"GetModuleDetails\");",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/student/course/:courseId/enroll",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"student",
+						"course",
+						":courseId",
+						"enroll"
+					],
+					"variable": [
+						{
+							"key": "courseId",
+							"value": "{{courseId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetModuleDetails",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// No token",
+							"// Invalid course Id format",
+							"// Invalid module Id format",
+							"// Course not found",
+							"// Module not found",
+							"// Not enrolled in the course",
+							"// Correct request",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without token in the header...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"firstModuleId\"));",
+							"        pm.collectionVariables.set(\"jwtToken\", null);",
+							"        break;",
+							"    case \"InvalidCourseIdFormat\":",
+							"        console.log(\"Generating a request with invalid course id format...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.variables.replaceIn(\"{{$randomWord}}\"));",
+							"        pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"firstModuleId\"));",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"));",
+							"        break;",
+							"    case \"InvalidModuleIdFormat\":",
+							"        console.log(\"Generating a request with invalid module id format...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        pm.collectionVariables.set(\"moduleId\", pm.variables.replaceIn(\"{{$randomWord}}\"));",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"));",
+							"        break;",
+							"    case \"CourseNotPresent\":",
+							"        console.log(\"Generating a request with course id for which course is not created...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\") + 1);",
+							"        pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"firstModuleId\"));",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"));",
+							"        break;",
+							"    case \"ModuleNotPresent\":",
+							"        console.log(\"Generating a request with module id for which module is not created...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"firstModuleId\") + 1);",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"));",
+							"        break;",
+							"    case \"NotEnrolled\":",
+							"        console.log(\"Generating a request for which student is not enrolled in a course\");",
+							"        console.log(\"Create 2nd course\");",
+							"        pm.collectionVariables.set(\"secondTitle\", pm.variables.replaceIn(\"{{$randomCatchPhrase}}\"));",
+							"        pm.collectionVariables.set(\"title\", pm.collectionVariables.get(\"secondTitle\"));",
+							"        pm.sendRequest({",
+							"            url: pm.collectionVariables.get(\"courseCreationUrl\"),",
+							"            method: 'POST',",
+							"            header: {",
+							"                'content-type': 'application/json',",
+							"                'Authorization': 'Bearer ' + pm.collectionVariables.get('instructorJwtToken')",
+							"            },",
+							"            body: {",
+							"                mode: 'raw',",
+							"                raw: JSON.stringify({",
+							"                    title: pm.collectionVariables.get(\"title\")",
+							"                })",
+							"            }",
+							"        }, function(err, res) {",
+							"            pm.collectionVariables.set(\"secondCourseId\", res.json()[\"ID\"]);",
+							"            pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"secondCourseId\"));",
+							"            pm.sendRequest({",
+							"                url: pm.collectionVariables.get('baseUrl') + \"/instructor/course/\" + pm.collectionVariables.get(\"courseId\") + \"/module/quiz\",",
+							"                method: 'POST',",
+							"                header: {",
+							"                    'content-type': 'application/json',",
+							"                    'Authorization': 'Bearer ' + pm.collectionVariables.get('instructorJwtToken')",
+							"                },",
+							"                body: {",
+							"                    mode: 'raw',",
+							"                    raw: JSON.stringify({",
+							"                        title: \"Sample Quiz\",",
+							"                        questions: [{",
+							"                            content: \"Question 1\",",
+							"                            options: [{",
+							"                                content: \"Option 1\",",
+							"                                isCorrect: true",
+							"                            }, {",
+							"                                content: \"Option 2\",",
+							"                                isCorrect: false",
+							"                            }]",
+							"                        }]",
+							"                    })",
+							"                }",
+							"            }, function(err, res){",
+							"                pm.collectionVariables.set(\"secondModuleId\", res.json()['ID']);",
+							"                pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"secondModuleId\"));",
+							"                pm.sendRequest({",
+							"                    url: pm.collectionVariables.get('baseUrl') + \"/instructor/course/\" + pm.collectionVariables.get(\"courseId\") + \"/publish\",",
+							"                    method: 'PUT',",
+							"                    header: {",
+							"                        'content-type': 'application/json',",
+							"                        'Authorization': 'Bearer ' + pm.collectionVariables.get('instructorJwtToken')",
+							"                    }",
+							"                }, function(err, res) {",
+							"                    pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"secondCourseId\"));",
+							"                    pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"secondModuleId\"));",
+							"                    pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"));",
+							"                })",
+							"            })",
+							"        })",
+							"    case \"CorrectRequest\":",
+							"        console.log(\"Generating the correct request...\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        pm.collectionVariables.set(\"moduleId\", pm.collectionVariables.get(\"firstModuleId\"));",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"studentJwtToken\"));",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// No token",
+							"// Invalid course Id format",
+							"// Invalid module Id format",
+							"// Course not found",
+							"// Module not found",
+							"// Not enrolled in the course",
+							"// Correct request",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the body\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"InvalidCourseIdFormat\");",
+							"            postman.setNextRequest(\"GetModuleDetails\");",
+							"        });",
+							"        break;",
+							"    case \"InvalidCourseIdFormat\":",
+							"        pm.test(\"Invalid course id format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"InvalidModuleIdFormat\");",
+							"            postman.setNextRequest(\"GetModuleDetails\");",
+							"        });",
+							"        break;",
+							"    case \"InvalidModuleIdFormat\":",
+							"        pm.test(\"Invalid module id format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"CourseNotPresent\");",
+							"            postman.setNextRequest(\"GetModuleDetails\");",
+							"        });",
+							"        break;",
+							"    case \"CourseNotPresent\":",
+							"        pm.test(\"Course not found\", function(){",
+							"            pm.response.to.have.status(404);",
+							"            pm.collectionVariables.set(\"currentCase\", \"ModuleNotPresent\");",
+							"            postman.setNextRequest(\"GetModuleDetails\");",
+							"        });",
+							"        break;",
+							"    case \"ModuleNotPresent\":",
+							"        pm.test(\"Module not found\", function(){",
+							"            pm.response.to.have.status(404);",
+							"            pm.collectionVariables.set(\"currentCase\", \"NotEnrolled\");",
+							"            postman.setNextRequest(\"GetModuleDetails\");",
+							"        });",
+							"        break;",
+							"    case \"NotEnrolled\":",
+							"        pm.test(\"Student not enrolled for a course\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"CorrectRequest\");",
+							"            postman.setNextRequest(\"GetModuleDetails\");",
+							"        });",
+							"        break;",
+							"    case \"CorrectRequest\":",
+							"        pm.test(\"Correct request\", function(){",
+							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"currentCase\", null);",
+							"            postman.setNextRequest(null);",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/course/:courseId/module/:moduleId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"course",
+						":courseId",
+						"module",
+						":moduleId"
+					],
+					"variable": [
+						{
+							"key": "courseId",
+							"value": "{{courseId}}"
+						},
+						{
+							"key": "moduleId",
+							"value": "{{moduleId}}"
+						}
 					]
 				}
 			},
@@ -319,11 +753,15 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://localhost:8080/student"
+			"value": "http://localhost:8080"
 		},
 		{
-			"key": "atStep",
+			"key": "currentCase",
 			"value": "noEmail"
+		},
+		{
+			"key": "requestBody",
+			"value": ""
 		},
 		{
 			"key": "email",
@@ -334,16 +772,97 @@
 			"value": ""
 		},
 		{
-			"key": "registeredEmail",
+			"key": "jwtToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "studentEmail",
 			"value": ""
 		},
 		{
-			"key": "registeredPassword",
+			"key": "studentPassword",
 			"value": ""
 		},
 		{
-			"key": "requestBody",
-			"value": ""
+			"key": "studentJwtToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "instructorEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "instructorPassword",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "instructorJwtToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "title",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "courseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "moduleId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstTitle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstCourseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstModuleId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondTitle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondCourseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondModuleId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "instructorRegistrationUrl",
+			"value": "http://localhost:8080/instructor/register",
+			"type": "string"
+		},
+		{
+			"key": "instructorLoginUrl",
+			"value": "http://localhost:8080/instructor/login",
+			"type": "string"
+		},
+		{
+			"key": "courseCreationUrl",
+			"value": "http://localhost:8080/instructor/course",
+			"type": "string"
 		}
 	]
 }

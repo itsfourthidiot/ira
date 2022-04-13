@@ -54,7 +54,7 @@ func courseCreate(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, newCourse)
+	c.JSON(http.StatusCreated, newCourse)
 }
 
 func courseDescriptionUpdate(c *gin.Context) {
@@ -180,7 +180,7 @@ func getCourseDetails(c *gin.Context) {
 	course := Course{}
 	result := DB.Preload("Modules").Where("ID = ?", courseId).First(&course)
 	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "course id not found",
 		})
 		return
@@ -202,12 +202,12 @@ func getModuleDetails(c *gin.Context) {
 	course := Course{}
 	result := DB.Preload("Modules.Video").Preload("Modules.Quiz.Questions.Options").Preload("Modules", "ID = ?", moduleId).Where("ID = ?", courseId).First(&course)
 	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "course id not found",
 		})
 		return
 	} else if len(course.Modules) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "module id not found",
 		})
 		return

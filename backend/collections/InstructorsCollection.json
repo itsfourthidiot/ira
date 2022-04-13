@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7be57902-bf66-4a76-b267-09ae6d038b1d",
+		"_postman_id": "ebecc349-fdd2-4da2-86c7-970187103279",
 		"name": "Instructors",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -12,8 +12,8 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"const currentcase = pm.collectionVariables.get(\"currentcase\");",
-							"switch(currentcase){",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase){",
 							"    case \"noEmail\":",
 							"        console.log(\"Generating a request without email in the body...\");",
 							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
@@ -31,7 +31,6 @@
 							"        break;",
 							"    case \"noPassword\":",
 							"        console.log(\"Generating a request without password in the body...\");",
-							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
 							"            email: pm.collectionVariables.get(\"email\")",
 							"        }));",
@@ -46,7 +45,6 @@
 							"        break;",
 							"    case \"correctRequest\":",
 							"        console.log(\"Generating a correct request body...\");",
-							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
 							"            email: pm.collectionVariables.get(\"email\"),",
 							"            password: pm.collectionVariables.get(\"password\")",
@@ -55,8 +53,8 @@
 							"    case \"alreadyRegisteredEmail\":",
 							"        console.log(\"Generating request body with an already registered email...\");",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
-							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
-							"            password: pm.collectionVariables.get(\"registeredPassword\")",
+							"            email: pm.collectionVariables.get(\"firstEmail\"),",
+							"            password: pm.collectionVariables.get(\"firstPassword\")",
 							"        }));",
 							"        break;",
 							"",
@@ -70,49 +68,51 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const currentcase = pm.collectionVariables.get(\"currentcase\");",
-							"switch(currentcase) {",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
 							"    case \"noEmail\":",
 							"        pm.test(\"Email not present in the request body\", function (){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"incorrectEmailFormat\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectEmailFormat\");",
 							"            postman.setNextRequest(\"InstructorRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectEmailFormat\":",
 							"        pm.test(\"Incorrect email format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"noPassword\");",
+							"            pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"noPassword\");",
 							"            postman.setNextRequest(\"InstructorRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"noPassword\":",
 							"        pm.test(\"Password not present in the request body\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"incorrectPasswordFormat\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectPasswordFormat\");",
 							"            postman.setNextRequest(\"InstructorRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectPasswordFormat\":",
 							"        pm.test(\"Incorrect password format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"correctRequest\");",
+							"            pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
 							"            postman.setNextRequest(\"InstructorRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"correctRequest\":",
 							"        pm.test(\"Correct request\", function(){",
 							"            pm.response.to.have.status(201);",
-							"            pm.collectionVariables.set(\"currentcase\", \"alreadyRegisteredEmail\");",
-							"            pm.collectionVariables.set(\"registeredEmail\", pm.collectionVariables.get(\"email\"));",
-							"            pm.collectionVariables.set(\"registeredPassword\", pm.collectionVariables.get(\"password\"));",
+							"            pm.collectionVariables.set(\"firstEmail\", pm.collectionVariables.get(\"email\"));",
+							"            pm.collectionVariables.set(\"firstPassword\", pm.collectionVariables.get(\"password\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"alreadyRegisteredEmail\");",
 							"            postman.setNextRequest(\"InstructorRegistration\");",
 							"        });",
 							"        break;",
 							"    case \"alreadyRegisteredEmail\":",
 							"        pm.test(\"Email already registered\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"noEmail\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"noEmail\");",
 							"            postman.setNextRequest(\"InstructorLogin\");",
 							"        });",
 							"}"
@@ -134,11 +134,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseurl}}/register",
+					"raw": "{{baseUrl}}/instructor/register",
 					"host": [
-						"{{baseurl}}"
+						"{{baseUrl}}"
 					],
 					"path": [
+						"instructor",
 						"register"
 					]
 				}
@@ -152,11 +153,10 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"const currentcase = pm.collectionVariables.get(\"currentcase\");",
-							"switch(currentcase) {",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
 							"    case \"noEmail\":",
 							"        console.log(\"Generating a request without email in the body...\");",
-							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
 							"            password: pm.collectionVariables.get(\"password\")",
 							"        }));",
@@ -171,7 +171,6 @@
 							"        break;",
 							"    case \"noPassword\":",
 							"        console.log(\"Generating a request without password in the body...\");",
-							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
 							"            email: pm.collectionVariables.get(\"email\")",
 							"        }));",
@@ -187,7 +186,6 @@
 							"    case \"unregisteredEmail\":",
 							"        console.log(\"Generating a request with unregistered email...\");",
 							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
-							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
 							"            email: pm.collectionVariables.get(\"email\"),",
 							"            password: pm.collectionVariables.get(\"password\")",
@@ -195,16 +193,17 @@
 							"        break;",
 							"    case \"incorrectPassword\":",
 							"        console.log(\"Generating a request with wrong password...\");",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPhoneNumber}}\"));",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
-							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
+							"            email: pm.collectionVariables.get(\"email\"),",
 							"            password: pm.collectionVariables.get(\"password\")",
 							"        }));",
 							"        break;",
 							"    case \"correctRequest\":",
 							"        console.log(\"Generating a correct request body...\");",
 							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
-							"            email: pm.collectionVariables.get(\"registeredEmail\"),",
-							"            password: pm.collectionVariables.get(\"registeredPassword\")",
+							"            email: pm.collectionVariables.get(\"firstEmail\"),",
+							"            password: pm.collectionVariables.get(\"firstPassword\")",
 							"        }));",
 							"        break;",
 							"}"
@@ -216,55 +215,59 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const currentcase = pm.collectionVariables.get(\"currentcase\");",
-							"switch(currentcase) {",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
 							"    case \"noEmail\":",
 							"        pm.test(\"Email not present in the request body\", function (){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"incorrectEmailFormat\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectEmailFormat\");",
 							"            postman.setNextRequest(\"InstructorLogin\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectEmailFormat\":",
 							"        pm.test(\"Incorrect email format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"noPassword\");",
+							"            pm.collectionVariables.set(\"email\", pm.collectionVariables.get(\"firstEmail\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"noPassword\");",
 							"            postman.setNextRequest(\"InstructorLogin\");",
 							"        });",
 							"        break;",
 							"    case \"noPassword\":",
 							"        pm.test(\"Password not present in the request body\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"incorrectPasswordFormat\");",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectPasswordFormat\");",
 							"            postman.setNextRequest(\"InstructorLogin\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectPasswordFormat\":",
 							"        pm.test(\"Incorrect password format\", function(){",
 							"            pm.response.to.have.status(400);",
-							"            pm.collectionVariables.set(\"currentcase\", \"unregisteredEmail\");",
+							"            pm.collectionVariables.set(\"password\", pm.collectionVariables.get(\"firstPassword\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"unregisteredEmail\");",
 							"            postman.setNextRequest(\"InstructorLogin\");",
 							"        });",
 							"        break;",
 							"    case \"unregisteredEmail\":",
 							"        pm.test(\"Email not registered\", function(){",
 							"            pm.response.to.have.status(404);",
-							"            pm.collectionVariables.set(\"currentcase\", \"incorrectPassword\");",
+							"            pm.collectionVariables.set(\"email\", pm.collectionVariables.get(\"firstEmail\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectPassword\");",
 							"            postman.setNextRequest(\"InstructorLogin\");",
 							"        });",
 							"        break;",
 							"    case \"incorrectPassword\":",
 							"        pm.test(\"Incorrect password\", function(){",
 							"            pm.response.to.have.status(401);",
-							"            pm.collectionVariables.set(\"currentcase\", \"correctRequest\");",
+							"            pm.collectionVariables.set(\"password\", pm.collectionVariables.get(\"firstPassword\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
 							"            postman.setNextRequest(\"InstructorLogin\");",
 							"        });",
 							"        break;",
 							"    case \"correctRequest\":",
 							"        pm.test(\"Correct request\", function(){",
 							"            pm.response.to.have.status(200);",
-							"            pm.collectionVariables.set(\"currentcase\", \"noEmail\");",
-							"            postman.setNextRequest(null);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            postman.setNextRequest(\"CourseCreation\");",
 							"        });",
 							"        break;",
 							"}"
@@ -286,12 +289,754 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseurl}}/login",
+					"raw": "{{baseUrl}}/instructor/login",
 					"host": [
-						"{{baseurl}}"
+						"{{baseUrl}}"
 					],
 					"path": [
+						"instructor",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CourseCreation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase){",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without JWT token in the header...\");",
+							"        pm.collectionVariables.set(\"jwtToken\", null);",
+							"        pm.collectionVariables.set(\"title\", pm.variables.replaceIn(\"{{$randomWords}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            title: pm.collectionVariables.get(\"title\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        console.log(\"Logging in as an instructor...\");",
+							"        pm.sendRequest({",
+							"            url: pm.collectionVariables.get(\"instructorLoginUrl\"),",
+							"            method: 'POST',",
+							"            header: {",
+							"                'content-type': 'application/json'",
+							"            },",
+							"            body: {",
+							"                mode: 'raw',",
+							"                raw: JSON.stringify({",
+							"                    email: pm.collectionVariables.get(\"firstEmail\"),",
+							"                    password: pm.collectionVariables.get(\"firstPassword\")",
+							"                })",
+							"            }",
+							"        }, function (err, res) {",
+							"            console.log(\"Generating a request with incorrect title format...\");",
+							"            pm.collectionVariables.set(\"firstJwtToken\", res.json()[\"token\"]);",
+							"            pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"            pm.collectionVariables.set(\"title\", \"\");",
+							"            pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"                title: pm.collectionVariables.get(\"title\")",
+							"            }));",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request body...\");",
+							"        pm.collectionVariables.set(\"title\", pm.variables.replaceIn(\"{{$randomWords}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            title: pm.collectionVariables.get(\"title\")",
+							"        }));",
+							"        break;",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the request header\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectTitleFormat\");",
+							"            postman.setNextRequest(\"CourseCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        pm.test(\"Incorrect title format\", function(){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"title\", pm.collectionVariables.get(\"firstTitle\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"CourseCreation\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"Correct request\", function(){",
+							"            pm.response.to.have.status(201);",
+							"            pm.collectionVariables.set(\"firstCourseId\", pm.response.json()[\"ID\"]);",
+							"            pm.collectionVariables.set(\"firstTitle\", pm.response.json()[\"title\"]);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            postman.setNextRequest(\"UpdateCourseDescription\");",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/instructor/course",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"instructor",
+						"course"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateCourseDescription",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase){",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without JWT token in the header...\");",
+							"        pm.collectionVariables.set(\"jwtToken\", null);",
+							"        pm.collectionVariables.set(\"description\", pm.collectionVariables.get(\"firstDescription\"))",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            description: pm.collectionVariables.get(\"description\")",
+							"        }));",
+							"        break;",
+							"    case \"incorrectCourseIdFormat\":",
+							"        console.log(\"Generating a request with incorrect course id format...\");",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"        pm.collectionVariables.set(\"courseId\", pm.variables.replaceIn(\"{{$randomWord}}\"));",
+							"        break;",
+							"    case \"incorrectCourseInstructorCombination\":",
+							"        console.log(\"Generating a request with incorrect instructor and course combination...\");",
+							"        pm.collectionVariables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));",
+							"        pm.collectionVariables.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+							"        pm.sendRequest({",
+							"            url: pm.collectionVariables.get(\"instructorRegistrationUrl\"),",
+							"            method: 'POST',",
+							"            header: {",
+							"                'content-type': 'application/json'",
+							"            },",
+							"            body: {",
+							"                mode: 'raw',",
+							"                raw: JSON.stringify({",
+							"                    email: pm.collectionVariables.get(\"email\"),",
+							"                    password: pm.collectionVariables.get(\"password\")",
+							"                })",
+							"            }",
+							"        }, function (err, res) {",
+							"            console.log(\"Logging in as an instructor...\");",
+							"            pm.collectionVariables.set(\"secondEmail\", pm.collectionVariables.get(\"email\"));",
+							"            pm.collectionVariables.set(\"secondPassword\", pm.collectionVariables.get(\"password\"));",
+							"            pm.sendRequest({",
+							"                url: pm.collectionVariables.get(\"instructorLoginUrl\"),",
+							"                method: 'POST',",
+							"                header: {",
+							"                    'content-type': 'application/json'",
+							"                },",
+							"                body: {",
+							"                    mode: 'raw',",
+							"                    raw: JSON.stringify({",
+							"                        email: pm.collectionVariables.get(\"secondEmail\"),",
+							"                        password: pm.collectionVariables.get(\"secondPassword\")",
+							"                    })",
+							"                }",
+							"            }, function (err, res) {",
+							"                console.log(\"Creating a course...\");",
+							"                pm.collectionVariables.set(\"secondJwtToken\", res.json()[\"token\"]);",
+							"                pm.collectionVariables.set(\"secondTitle\", pm.variables.replaceIn(\"{{$randomWords}}\"));",
+							"                pm.collectionVariables.set(\"title\", pm.collectionVariables.get(\"secondTitle\"));",
+							"                pm.sendRequest({",
+							"                    url: pm.collectionVariables.get(\"courseCreationUrl\"),",
+							"                    method: 'POST',",
+							"                    header: {",
+							"                        'content-type': 'application/json',",
+							"                        'Authorization': 'Bearer ' + pm.collectionVariables.get('secondJwtToken')",
+							"                    },",
+							"                    body: {",
+							"                        mode: 'raw',",
+							"                        raw: JSON.stringify({",
+							"                            title: pm.collectionVariables.get(\"title\")",
+							"                        })",
+							"                    }",
+							"                }, function (err, res) {",
+							"                    pm.collectionVariables.set(\"secondCourseId\", res.json()[\"ID\"]);",
+							"                    pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"secondCourseId\"));",
+							"                    pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"                });",
+							"            });",
+							"        });        ",
+							"        break;",
+							"    case \"incorrectCourseDescriptionFormat\":",
+							"        console.log(\"Generating a request with incorrect instructor and course combination...\");",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        pm.collectionVariables.set(\"description\", \"\");",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            description: pm.collectionVariables.get(\"description\")",
+							"        }));",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request to update course description\");",
+							"        pm.collectionVariables.set(\"description\", pm.variables.replaceIn(\"{{$randomLoremParagraph}}\"));",
+							"        pm.collectionVariables.set(\"requestBody\", JSON.stringify({",
+							"            description: pm.collectionVariables.get(\"description\")",
+							"        }));",
+							"        break;",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the request header\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectCourseIdFormat\");",
+							"            postman.setNextRequest(\"UpdateCourseDescription\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectCourseIdFormat\":",
+							"        pm.test(\"Incorrect course id format\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectCourseInstructorCombination\");",
+							"            postman.setNextRequest(\"UpdateCourseDescription\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectCourseInstructorCombination\":",
+							"        pm.test(\"Instructor don't have access to update a particular course\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectCourseDescriptionFormat\");",
+							"            postman.setNextRequest(\"UpdateCourseDescription\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectCourseDescriptionFormat\":",
+							"        pm.test(\"Incorrect course description format\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"description\", pm.variables.replaceIn(\"{{$randomLoremParagraphs}}\"))",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"UpdateCourseDescription\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"Correct request to update course description\", function (){",
+							"            pm.response.to.have.status(200);",
+							"            pm.collectionVariables.set(\"firstDescription\", pm.collectionVariables.get(\"description\"))",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/instructor/course/:courseId/description",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"instructor",
+						"course",
+						":courseId",
+						"description"
+					],
+					"variable": [
+						{
+							"key": "courseId",
+							"value": "{{courseId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VideoModuleCreation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const title = {",
+							"    \"key\": \"title\",",
+							"    \"type\": \"text\",",
+							"    \"value\": pm.variables.replaceIn(\"{{$randomWords}}\"),",
+							"}",
+							"",
+							"const correctFile = {",
+							"    \"key\": \"file\",",
+							"    \"type\": \"file\",",
+							"    \"src\": \"./collections/correctFile.mkv\"",
+							"}",
+							"",
+							"const incorrectFile = {",
+							"    \"key\": \"file\",",
+							"    \"type\": \"file\",",
+							"    \"src\": \"./collections/incorrectFile.txt\"",
+							"}",
+							"",
+							"const isPrivate = {",
+							"    \"key\": \"isPrivate\",",
+							"    \"type\": \"text\",",
+							"    \"value\": String(pm.variables.replaceIn(\"{{$randomBoolean}}\")),",
+							"}",
+							"",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase){",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without JWT token in the header...\");",
+							"        pm.collectionVariables.set(\"jwtToken\", null);",
+							"        break;",
+							"    case \"noTitle\":",
+							"        console.log(\"Generating a request with no title in the request body\");",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"noFile\":",
+							"        console.log(\"Generating a request with no file in the request body\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"noIsPrivate\":",
+							"        console.log(\"Generating a request with no isPrivate in the request body\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, correctFile]",
+							"        }",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        console.log(\"Generating a request with incorrect title format\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [",
+							"                {",
+							"                    \"key\": \"title\",",
+							"                    \"type\": \"text\",",
+							"                    \"value\": \"\"",
+							"                },",
+							"                correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"incorrectIsPrivateFormat\":",
+							"        console.log(\"Generating a request with incorrect isPrivate format\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [",
+							"                title, correctFile,",
+							"                {",
+							"                    \"key\": \"isPrivate\",",
+							"                    \"type\": \"text\",",
+							"                    \"value\": \"\",",
+							"                }",
+							"            ]",
+							"        }",
+							"        break;",
+							"    case \"courseNotPresent\":",
+							"        console.log(\"Generating a request with course not present for an instructor\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"courseId\") + 1);",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"incorrectFileFormat\":",
+							"        console.log(\"Generating a request with course not present for an instructor\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, incorrectFile, isPrivate]",
+							"        }",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request\");",
+							"        pm.request.body = {",
+							"            \"mode\": \"formdata\",",
+							"            \"formdata\": [title, correctFile, isPrivate]",
+							"        }",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the request header\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noTitle\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"noTitle\":",
+							"        pm.test(\"Title not present in the the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noFile\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"noFile\":",
+							"        pm.test(\"File not present in the the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noIsPrivate\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"noIsPrivate\":",
+							"        pm.test(\"isPrivate not present in the the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectTitleFormat\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        pm.test(\"Incorrect title format\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectIsPrivateFormat\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectIsPrivateFormat\":",
+							"        pm.test(\"Incorrect isPrivate format\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"courseNotPresent\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"courseNotPresent\":",
+							"        pm.test(\"Course not present for an instructor\", function (){",
+							"            pm.response.to.have.status(404);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectFileFormat\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectFileFormat\":",
+							"        pm.test(\"Incorrect file format for video module\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"VideoModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"correct request for video module creation\", function (){",
+							"            pm.response.to.have.status(201);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noToken\");",
+							"            postman.setNextRequest(\"QuizModuleCreation\");",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/instructor/course/:courseId/module/video",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"instructor",
+						"course",
+						":courseId",
+						"module",
+						"video"
+					],
+					"variable": [
+						{
+							"key": "courseId",
+							"value": "{{courseId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "QuizModuleCreation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// No token",
+							"// Incorrect course id format",
+							"// Course not found",
+							"// Correct request",
+							"",
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase){",
+							"    case \"noToken\":",
+							"        console.log(\"Generating a request without JWT token in the header...\");",
+							"        pm.collectionVariables.set(\"jwtToken\", null);",
+							"        break;",
+							"    case \"noTitle\":",
+							"        console.log(\"Generating a request with no title in the request body\");",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"        pm.request.body = {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                questions: [{",
+							"                    content: \"Question 1\",",
+							"                    options: [{",
+							"                        content: \"Option 1\",",
+							"                        isCorrect: true",
+							"                    }, {",
+							"                        content: \"Option 2\",",
+							"                        isCorrect: false",
+							"                    }]",
+							"                }]",
+							"            })",
+							"        }",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        console.log(\"Generating a request with incorrect title format\");",
+							"        pm.request.body = {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                title: \"\",",
+							"                questions: [{",
+							"                    content: \"Question 1\",",
+							"                    options: [{",
+							"                        content: \"Option 1\",",
+							"                        isCorrect: true",
+							"                    }, {",
+							"                        content: \"Option 2\",",
+							"                        isCorrect: false",
+							"                    }]",
+							"                }]",
+							"            })",
+							"        }",
+							"        break;",
+							"    case \"courseNotPresent\":",
+							"        console.log(\"Generating a request with course not present for an instructor\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"secondCourseId\") + 1);",
+							"        pm.request.body = {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                title: \"My Quiz\",",
+							"                questions: [{",
+							"                    content: \"Question 1\",",
+							"                    options: [{",
+							"                        content: \"Option 1\",",
+							"                        isCorrect: true",
+							"                    }, {",
+							"                        content: \"Option 2\",",
+							"                        isCorrect: false",
+							"                    }]",
+							"                }]",
+							"            })",
+							"        }",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        console.log(\"Generating a correct request\");",
+							"        pm.collectionVariables.set(\"courseId\", pm.collectionVariables.get(\"firstCourseId\"));",
+							"        pm.collectionVariables.set(\"jwtToken\", pm.collectionVariables.get(\"firstJwtToken\"));",
+							"        pm.request.body = {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                title: \"My Quiz\",",
+							"                questions: [{",
+							"                    content: \"Question 1\",",
+							"                    options: [{",
+							"                        content: \"Option 1\",",
+							"                        isCorrect: true",
+							"                    }, {",
+							"                        content: \"Option 2\",",
+							"                        isCorrect: false",
+							"                    }]",
+							"                }]",
+							"            })",
+							"        }",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const currentCase = pm.collectionVariables.get(\"currentCase\");",
+							"switch(currentCase) {",
+							"    case \"noToken\":",
+							"        pm.test(\"Token not present in the request header\", function (){",
+							"            pm.response.to.have.status(401);",
+							"            pm.collectionVariables.set(\"currentCase\", \"noTitle\");",
+							"            postman.setNextRequest(\"QuizModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"noTitle\":",
+							"        pm.test(\"Title not present in the the request body\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"incorrectTitleFormat\");",
+							"            postman.setNextRequest(\"QuizModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"incorrectTitleFormat\":",
+							"        pm.test(\"Incorrect title format\", function (){",
+							"            pm.response.to.have.status(400);",
+							"            pm.collectionVariables.set(\"currentCase\", \"courseNotPresent\");",
+							"            postman.setNextRequest(\"QuizModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"courseNotPresent\":",
+							"        pm.test(\"Course not present for an instructor\", function (){",
+							"            pm.response.to.have.status(404);",
+							"            pm.collectionVariables.set(\"currentCase\", \"correctRequest\");",
+							"            postman.setNextRequest(\"QuizModuleCreation\");",
+							"        });",
+							"        break;",
+							"    case \"correctRequest\":",
+							"        pm.test(\"correct request for quiz module creation\", function (){",
+							"            pm.response.to.have.status(201);",
+							"            pm.collectionVariables.set(\"currentCase\", null);",
+							"            postman.setNextRequest(null);",
+							"        });",
+							"        break;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/instructor/course/:courseId/module/quiz",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"instructor",
+						"course",
+						":courseId",
+						"module",
+						"quiz"
+					],
+					"variable": [
+						{
+							"key": "courseId",
+							"value": "{{courseId}}"
+						}
 					]
 				}
 			},
@@ -320,12 +1065,12 @@
 	],
 	"variable": [
 		{
-			"key": "baseurl",
-			"value": "http://localhost:8080/instructor"
+			"key": "currentCase",
+			"value": "noEmail"
 		},
 		{
-			"key": "currentcase",
-			"value": "noEmail"
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
 		},
 		{
 			"key": "email",
@@ -336,16 +1081,101 @@
 			"value": ""
 		},
 		{
-			"key": "registeredEmail",
-			"value": ""
-		},
-		{
-			"key": "registeredPassword",
-			"value": ""
-		},
-		{
 			"key": "requestBody",
 			"value": ""
+		},
+		{
+			"key": "jwtToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "title",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "courseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "description",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstEmail",
+			"value": ""
+		},
+		{
+			"key": "firstPassword",
+			"value": ""
+		},
+		{
+			"key": "firstJwtToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstTitle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstCourseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstDescription",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondPassword",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondJwtToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondTitle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondCourseId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "secondDescription",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "instructorRegistrationUrl",
+			"value": "http://localhost:8080/instructor/register",
+			"type": "string"
+		},
+		{
+			"key": "instructorLoginUrl",
+			"value": "http://localhost:8080/instructor/login",
+			"type": "string"
+		},
+		{
+			"key": "courseCreationUrl",
+			"value": "http://localhost:8080/instructor/course",
+			"type": "string"
 		}
 	]
 }

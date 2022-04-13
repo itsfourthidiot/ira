@@ -117,7 +117,8 @@ func videoModuleCreate(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, newVideo)
+	DB.Preload("Video").Find(&newModule)
+	c.JSON(http.StatusCreated, newModule)
 }
 
 func quizModuleCreate(c *gin.Context) {
@@ -230,7 +231,7 @@ func quizModuleCreate(c *gin.Context) {
 
 	}
 	DB.Preload("Quiz.Questions.Options").Find(&newModule)
-	c.JSON(http.StatusOK, newModule)
+	c.JSON(http.StatusCreated, newModule)
 }
 
 func scoreCalculation(c *gin.Context) {
