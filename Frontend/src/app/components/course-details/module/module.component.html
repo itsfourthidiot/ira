@@ -1,1 +1,25 @@
 <p>module {{moduleID}} works!</p>
+
+
+<div *ngIf = "this.moduleType == 'quiz'">
+    <p>{{this.questionArray}}</p>
+    <div *ngFor = "let question of this.questionArray">
+        <p>{{question.content}}</p>
+        <div *ngFor = "let option of question.options">
+            <input type="checkbox" [value]="option.ID" (change)="fillOptions($event, option.ID)">{{option.content}}
+        </div>
+
+    </div>
+    <div class="vertical-center">
+        <button mat-stroked-button (click)="submitAnswer()" color="success">Submit</button>
+    </div>
+    <div>
+        <p>You have scored {{this.score}} marks</p>
+    </div>
+</div>
+
+
+
+<div *ngIf = "this.moduleType == 'video'">
+
+</div>

@@ -81,10 +81,10 @@ export class QuizzComponent implements OnInit {
       newQuestion.content = questionChildren[0].value;
       // console.log(newQuestion)
       let options: Option[] = []
-      let option1: Option = {content: "", isCorrect: false}
-      let option2: Option = {content: "", isCorrect: false}
-      let option3: Option = {content: "", isCorrect: false}
-      let option4: Option = {content: "", isCorrect: false}
+      let option1: Option = {content: "", isCorrect: false, ID: 1}
+      let option2: Option = {content: "", isCorrect: false, ID: 1}
+      let option3: Option = {content: "", isCorrect: false, ID: 1}
+      let option4: Option = {content: "", isCorrect: false, ID: 1}
       option1.content = questionChildren[1].value
       option1.isCorrect = questionChildren[2].checked
       option2.content = questionChildren[3].value

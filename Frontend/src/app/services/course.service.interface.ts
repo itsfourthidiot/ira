@@ -17,4 +17,8 @@ export interface ICourseService{
     getCourseDetails(courseId: string): Observable<any>;
 
     publishCourse(courseId: string): Observable<any>;
+
+    getModule(courseId: string, moduleId: string): Observable<any>;
+
+    calculateGrade(courseId: string, moduleId: string, filledOptions: []): Observable<any>;
 }
