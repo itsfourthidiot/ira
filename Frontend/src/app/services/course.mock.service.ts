@@ -53,4 +53,12 @@ export class CourseService implements ICourseService{
   publishCourse(courseId: string): Observable<any>{
     return of(apiUrls.publishCourse);
   }
+
+  getModule(courseId: string, moduleId: string): Observable<any>{
+    return of(apiUrls.getModule)
+  }
+
+  calculateGrade(courseId: string, moduleId: string, filledOptions: number[]): Observable<any>{
+    return of(apiUrls.calculateGrade)
+  }
 }

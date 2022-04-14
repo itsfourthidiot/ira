@@ -37,12 +37,14 @@ export class StudentLoginComponent implements OnInit {
     this.authService.login(this.username, this.password, "student").subscribe(
       (res) => {
         console.log("logged in successfully");
+        this.sharedService.role = "student";
         if (this.returnUrl !== '/'){
           this.router.navigateByUrl(this.returnUrl);
-        }
-        this.sharedService.role = "student";
+        } else {
+        
         console.log("before sending to user dashboard" + email);
         this.router.navigateByUrl(`/studentDashboard/${email}`);
+        }
       }
       // this.router.navigateByUrl(`/studentDashboard/swara@gmail.com`);
 
