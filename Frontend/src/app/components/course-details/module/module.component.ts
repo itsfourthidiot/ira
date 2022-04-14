@@ -57,8 +57,14 @@ export class ModuleComponent implements OnInit {
   fillOptions(event: any, optionId: number){
     if (event.target.checked){
       this.filledOptionArray.push(optionId)
-      console.log(this.filledOptionArray)
+      
+    } else {
+      const index = this.filledOptionArray.indexOf(optionId)
+      if (index > -1){
+        this.filledOptionArray.splice(index, 1)
+      }
     }
+    console.log(this.filledOptionArray)
 
   }
 
