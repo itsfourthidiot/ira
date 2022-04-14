@@ -1,1 +1,17 @@
 <p>module {{moduleID}} works!</p>
+
+
+<div *ngIf = "this.moduleType == 'quiz'">
+    <p>{{this.questionArray}}</p>
+    <div *ngFor = "let question of this.questionArray">
+        <p>{{question.content}}</p>
+        <div *ngFor = "let option of question.options">
+            <input type="checkbox" [value]="option.ID" (change)="fillOptions($event, option.ID)">{{option.content}}
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf = "this.moduleType == 'video'">
+
+</div>

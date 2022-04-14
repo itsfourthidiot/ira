@@ -11,6 +11,7 @@ import { studentEnroll } from "src/assets/data/studentEnroll";
 import { checkEnroll } from "src/assets/data/checkEnroll";
 import { updateDescription } from "src/assets/data/updateDescription";
 import { CourseDescription } from "src/assets/data/CourseDescription";
+import { getModule } from "src/assets/data/getModule";
 
 export const apiUrls = {
     getAllCourses : allCourses,
@@ -25,5 +26,6 @@ export const apiUrls = {
     studentEnroll : studentEnroll,
     checkEnroll : checkEnroll,
     updateDescription : updateDescription,
-    getCourseDescription : CourseDescription
+    getCourseDescription : CourseDescription,
+    getModule: getModule
 }

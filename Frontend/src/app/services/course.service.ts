@@ -57,4 +57,8 @@ export class CourseService implements ICourseService{
   publishCourse(courseId: string): Observable<any>{
     return this.httpclient.put<any>(this.baseUrl + apiUrls.publishCourse.replace('<courseId>', courseId), null)
   }
+
+  getModule(courseId: string, moduleId: string): Observable<any>{
+    return this.httpclient.get<any>(this.baseUrl + apiUrls.getModule.replace('<courseId>', courseId).replace('<moduleId>', moduleId))
+  }
 }
