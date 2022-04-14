@@ -23,3 +23,4 @@ echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
 echo "AWS_REGION=$AWS_REGION" >> .env
 echo "AWS_BUCKET=$AWS_BUCKET" >> .env
 ./ira &
+exit
