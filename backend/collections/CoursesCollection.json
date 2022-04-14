@@ -195,7 +195,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://localhost:8080",
+			"value": "http://localhost:8080/api",
 			"type": "string"
 		},
 		{
@@ -210,17 +210,17 @@
 		},
 		{
 			"key": "instructorRegistrationUrl",
-			"value": "http://localhost:8080/instructor/register",
+			"value": "http://localhost:8080/api/instructor/register",
 			"type": "string"
 		},
 		{
 			"key": "instructorLoginUrl",
-			"value": "http://localhost:8080/instructor/login",
+			"value": "http://localhost:8080/api/instructor/login",
 			"type": "string"
 		},
 		{
 			"key": "courseCreationUrl",
-			"value": "http://localhost:8080/instructor/course",
+			"value": "http://localhost:8080/api/instructor/course",
 			"type": "string"
 		},
 		{

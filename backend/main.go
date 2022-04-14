@@ -125,7 +125,7 @@ func main() {
 	// Create routes using gin-gonic and run the server
 	r := gin.Default()
 	r.Use(CORSMiddleware())
-	instructorRoutes := r.Group("/instructor")
+	instructorRoutes := r.Group("/api/instructor")
 	{
 		instructorRoutes.POST("/register", instructorRegister)
 		instructorRoutes.POST("/login", instructorLogin)
@@ -137,7 +137,7 @@ func main() {
 		instructorRoutes.GET("/courses", verifyToken, instructorCourses)
 		instructorRoutes.PUT("/course/:courseID/publish", verifyToken, publishCourse)
 	}
-	studentRoutes := r.Group("/student")
+	studentRoutes := r.Group("/api/student")
 	{
 		studentRoutes.POST("/register", studentRegister)
 		studentRoutes.POST("/login", studentLogin)
@@ -146,10 +146,10 @@ func main() {
 		studentRoutes.GET("/courses", verifyToken, studentCourses)
 		studentRoutes.POST("/course/:courseID/module/quiz/score", verifyToken, scoreCalculation)
 	}
-	r.POST("/enroll", verifyToken, enrollCourse)
-	r.GET("/courses", listAllCourses)
-	r.GET("/course/:courseId", getCourseDetails)
-	r.GET("/course/:courseId/module/:moduleId", verifyToken, getModuleDetails)
+	r.POST("/api/enroll", verifyToken, enrollCourse)
+	r.GET("/api/courses", listAllCourses)
+	r.GET("/api/course/:courseId", getCourseDetails)
+	r.GET("/api/course/:courseId/module/:moduleId", verifyToken, getModuleDetails)
 	webapp, err := fs.Sub(static, "static")
 	if err != nil {
 		panic(err)
