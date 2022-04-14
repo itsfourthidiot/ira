@@ -1,5 +1,5 @@
 export const apiUrls = {
-    baseUrl : 'http://10.20.106.43:8080',
+    baseUrl : 'https://iraelearning.com/api',
     updateDescription : '/instructor/course/<courseId>/description',
     createCourses : '/instructor/course',
     instrCourses : '/instructor/courses',
