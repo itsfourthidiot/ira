@@ -16,6 +16,7 @@ export class ModuleComponent implements OnInit {
   moduleType: string = "";
   questionArray: Question[] = [];
   filledOptionArray: number[] = []
+  score: number = 0
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -67,5 +68,15 @@ export class ModuleComponent implements OnInit {
     console.log(this.filledOptionArray)
 
   }
+
+  submitAnswer(){
+    this.courseService.calculateGrade(this.courseID, this.moduleID, this.filledOptionArray).subscribe(
+      data => {
+        this.score = data.scoreValue
+      }
+    )
+  }
+
+
 
 }

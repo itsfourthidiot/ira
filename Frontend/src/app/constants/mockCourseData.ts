@@ -12,6 +12,7 @@ import { checkEnroll } from "src/assets/data/checkEnroll";
 import { updateDescription } from "src/assets/data/updateDescription";
 import { CourseDescription } from "src/assets/data/CourseDescription";
 import { getModule } from "src/assets/data/getModule";
+import { grade } from "src/assets/data/data";
 
 export const apiUrls = {
     getAllCourses : allCourses,
@@ -27,5 +28,6 @@ export const apiUrls = {
     checkEnroll : checkEnroll,
     updateDescription : updateDescription,
     getCourseDescription : CourseDescription,
-    getModule: getModule
+    getModule: getModule,
+    calculateGrade: grade
 }
