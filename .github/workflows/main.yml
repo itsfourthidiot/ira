@@ -10,77 +10,81 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Node enviroment
-      uses: actions/setup-node@v2
-      with:
-        node-version: 'lts/fermium'
-    - name: Set up Go environment
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
-    - name: Build Angular project
-      run: |
-        cd Frontend
-        npm install
-        ./node_modules/.bin/ng build
-    - name: Build go project
-      run: |
-        cd backend
-        go build
-        tar -cvf build-file.tar ira
-    - uses: actions/upload-artifact@v2
-      with:
-        name: build-file
-        path: backend/build-file.tar
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node enviroment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/fermium'
+      - name: Set up Go environment
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Build Angular project
+        run: |
+          cd Frontend
+          npm install
+          ./node_modules/.bin/ng build
+      - name: Build go project
+        run: |
+          cd backend
+          go build
+          tar -cvf build-file.tar ira
+      - name: Upload build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-file
+          path: backend/build-file.tar
 
-  api-testing:
+  test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install Newman (Command line collection runner) for API testing and htmlextra reporter
-      run: |
-        npm install -g newman
-        npm install -g newman-reporter-htmlextra
-    - uses: actions/download-artifact@v2
-      with:
-        name: build-file
-        path: backend
-    - name: Setup environment to run backend server
-      env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
-      run: |
-        cd backend
-        tar -xvf build-file.tar
-        echo "SECRET_KEY=$SECRET_KEY" >> .env
-        echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
-        echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
-        echo "AWS_REGION=$AWS_REGION" >> .env
-        echo "AWS_BUCKET=$AWS_BUCKET" >> .env
-    - name: API testing using Newman
-      run: |
-        cd backend
-        ./ira &
-        sleep 5
-        newman run collections/StudentsCollection.json --working-dir $PWD --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/students-collection.html --bail
-        newman run collections/InstructorsCollection.json --working-dir $PWD --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/instructors-collection.html --bail
-        newman run collections/CoursesCollection.json --working-dir $PWD --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/courses-collection.html --bail
-        tar -cvf api-testing-report.tar api-testing-report
-        kill -9 `lsof -i:8080 -t`
-    - uses: actions/upload-artifact@v2
-      with:
-        name: api-testing-report
-        path: backend/api-testing-report.tar
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Newman (Command line collection runner) for API testing and htmlextra reporter
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+      - name: Download build
+        uses: actions/download-artifact@v2
+        with:
+          name: build-file
+          path: backend
+      - name: Setup environment to run backend server
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+        run: |
+          cd backend
+          tar -xvf build-file.tar
+          echo "SECRET_KEY=$SECRET_KEY" >> .env
+          echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
+          echo "AWS_REGION=$AWS_REGION" >> .env
+          echo "AWS_BUCKET=$AWS_BUCKET" >> .env
+      - name: API testing using Newman
+        run: |
+          cd backend
+          ./ira &
+          sleep 5
+          newman run collections/StudentsCollection.json --working-dir $PWD --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/students-collection.html --bail
+          newman run collections/InstructorsCollection.json --working-dir $PWD --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/instructors-collection.html
+          newman run collections/CoursesCollection.json --working-dir $PWD --reporters cli,htmlextra --reporter-htmlextra-export api-testing-report/courses-collection.html --bail
+          tar -cvf api-testing-report.tar api-testing-report
+          kill -9 `lsof -i:8080 -t`
+      - name: Upload API testing report
+        uses: actions/upload-artifact@v2
+        with:
+          name: api-testing-report
+          path: backend/api-testing-report.tar
 
-  continuous-deployment:
+  deploy:
     runs-on: ubuntu-latest
-    needs: [build, api-testing]
-    if: github.ref == 'refs/heads/main'
+    needs: test
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -89,13 +93,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Create CodeDeploy Deployment
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
-        id: deploy
         run: |
           aws deploy create-deployment \
             --application-name ira-elearning-platform \
