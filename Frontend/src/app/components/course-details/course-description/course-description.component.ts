@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CourseService } from 'src/app/services/course.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { CourseService } from 'src/app/services/course.mock.service';
 
 @Component({
   selector: 'app-course-description',
@@ -22,7 +22,8 @@ export class CourseDescriptionComponent implements OnInit {
     console.log(" Course Description Role "+this.sharedService.role)
     this.courseService.getCourseDetails(this.courseId).subscribe(
       (data) => {
-        console.log("Course Details "+data.description)
+        console.log("data" + data);
+        console.log("Course Details "+ data.description)
         this.description = data.description;
         this.sharedService.description = data.description;        
       }
