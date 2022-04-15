@@ -24,7 +24,6 @@ jobs:
         cd Frontend
         npm install
         ./node_modules/.bin/ng build
-        npm run e2e
     - name: Build go project
       run: |
         cd backend
