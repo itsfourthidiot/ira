@@ -35,6 +35,7 @@ jobs:
         path: backend/build-file.tar
 
   cypress-run:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
