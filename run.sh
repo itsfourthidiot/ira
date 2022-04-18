@@ -17,9 +17,4 @@ go build
 kill -9 $(lsof -t -i:8080)
 
 # Run the new application
-echo "SECRET_KEY=$SECRET_KEY" >> .env
-echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
-echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
-echo "AWS_REGION=$AWS_REGION" >> .env
-echo "AWS_BUCKET=$AWS_BUCKET" >> .env
 ./ira > /dev/null 2>&1 &

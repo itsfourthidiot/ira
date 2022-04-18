@@ -43,7 +43,9 @@ export class ModuleComponent implements OnInit {
       // )
     });
     this.courseService.getModule(this.courseID, this.moduleID).subscribe(
+      
       data => {
+        console.log("Got Modele ", data)
         this.moduleType = data.type 
         if (this.moduleType == "quiz"){
           this.questionArray = data.quiz.Questions
