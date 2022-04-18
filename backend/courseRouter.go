@@ -235,7 +235,17 @@ func getModuleDetails(c *gin.Context) {
 		} else {
 			module := course.Modules[0]
 			if module.Type == "quiz" {
+				score := Score{}
+				res = DB.Where("quiz_id=?", module.Quiz.ID).Where("student_id=?", enrollment.StudentID).First(&score)
+				if res.Error != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"error": "no Score",
+					})
+					return
+				}
+
 				c.JSON(http.StatusOK, course.Modules[0])
+				c.JSON(http.StatusOK, score.ScoreValue)
 				return
 			} else if module.Type == "video" {
 				// Generate presigned URL
