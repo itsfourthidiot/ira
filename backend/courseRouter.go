@@ -244,8 +244,11 @@ func getModuleDetails(c *gin.Context) {
 					return
 				}
 
-				c.JSON(http.StatusOK, course.Modules[0])
-				c.JSON(http.StatusOK, score.ScoreValue)
+				c.JSON(http.StatusOK, gin.H{
+					"module": course.Modules[0],
+					"score":  score.ScoreValue,
+				})
+
 				return
 			} else if module.Type == "video" {
 				// Generate presigned URL
