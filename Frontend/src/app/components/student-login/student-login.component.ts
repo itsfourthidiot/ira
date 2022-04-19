@@ -43,7 +43,8 @@ export class StudentLoginComponent implements OnInit {
         } else {
         
         console.log("before sending to user dashboard" + email);
-        this.router.navigateByUrl(`/studentDashboard/${email}`);
+        this.router.navigateByUrl("");
+        //this.router.navigateByUrl(`/studentDashboard/${email}`);
         }
       }
       // this.router.navigateByUrl(`/studentDashboard/swara@gmail.com`);

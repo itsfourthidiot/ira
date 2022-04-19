@@ -9,6 +9,7 @@ export class SharedService {
   courseTitle : string = "";
   role : string = "";
   description: string = "";
+  email : string = "";
   
   constructor() { }
 }
