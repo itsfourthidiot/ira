@@ -17,6 +17,8 @@ export class ModuleComponent implements OnInit {
   questionArray: Question[] = [];
   filledOptionArray: number[] = []
   score: number = 0
+  presignedUrl: string|null = null;
+  moduleTitle: string| null = null;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -33,28 +35,26 @@ export class ModuleComponent implements OnInit {
       this.moduleID = params.moduleID;
       console.log("MODULE COMPONENT INVOKED WITH ID "+this.moduleID)
 
-      // this.authService.getStudentDashBoard(this.email).subscribe(
-      //   (res) => {
-      //     this.currentStudentDb = res;
-      //     console.log(this.currentStudentDb)
-      //     this.courses = res.courses;
-      //     console.log("courses" + this.courses)
-      //   }
-      // )
     });
     this.courseService.getModule(this.courseID, this.moduleID).subscribe(
       
       data => {
-        console.log("Got Modele ", data)
-        this.moduleType = data.type 
+        console.log("Got Module ", data)
+        this.moduleType = data.module.type 
+        this.moduleTitle = data.module.title;
         if (this.moduleType == "quiz"){
           this.questionArray = data.quiz.Questions
-
+          console.log("Question Array: ",this.questionArray)
+        }
+        if(this.moduleType == "video"){
+          console.log("Video Module!")
+          this.presignedUrl = data.presignedUrl;
+          console.log("presignedUrl: ",this.presignedUrl);
+   
         }
 
       }
     )
-    console.log(this.questionArray)
   }
 
   fillOptions(event: any, optionId: number){

@@ -1,5 +1,5 @@
-<p>module {{moduleID}} works!</p>
 
+<h1>{{moduleTitle}}</h1>
 
 <div *ngIf = "this.moduleType == 'quiz'">
     <p>{{this.questionArray}}</p>
@@ -21,5 +21,8 @@
 
 
 <div *ngIf = "this.moduleType == 'video'">
+    <video id="vid1" class="video-js " controls preload="auto" width="640" height="265">
+        <source [src]="presignedUrl" type="video/mp4" />
+    </video>
 
 </div>
