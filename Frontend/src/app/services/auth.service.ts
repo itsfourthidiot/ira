@@ -73,6 +73,8 @@ export class AuthService implements IAuthService {
       tap((res) => {
         if (res){
           localStorage.setItem("ACCESS_TOKEN", res.token);
+          this.sharedService.email = username
+          this.profile.changeEmail(username)
           // localStorage.set("ACCESS_TOKEN", res.token);
           // this.authSubject.next(true);
         }
@@ -93,6 +95,8 @@ export class AuthService implements IAuthService {
     console.log("Logged out")
     localStorage.removeItem("ACCESS_TOKEN");
     this.sharedService.role = "guest";
+    this.sharedService.email = "";
+    this.profile.changeType("guest");
     // this.authSubject.next(false);
     // return this.http.post<any>(this.apiUrl + "logout", null, httpOptions);
   }

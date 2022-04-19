@@ -24,7 +24,7 @@ export class GuestDashboardComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.profile.changeType("guest");
+    //this.profile.changeType("guest");
     this.courseService.getAllCourses()
     .subscribe(res =>{
       this.allCourses = res.courses;   

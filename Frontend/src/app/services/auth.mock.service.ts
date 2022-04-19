@@ -65,7 +65,9 @@ export class AuthService implements IAuthService {
     
     //change type according to logged in user
     this.profile.changeType(role);
+    this.profile.changeEmail(username)
     this.sharedService.role = role;
+    this.sharedService.email = username
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
     // return this.http.post<any>(apiUrls.baseUrl + role + "/login", obj).pipe(
     //   tap((res) => {
@@ -98,6 +100,7 @@ export class AuthService implements IAuthService {
   logOut(){
     console.log("Logged out")
     this.sharedService.role = "guest";
+    this.profile.changeType("guest");
     localStorage.removeItem("ACCESS_TOKEN");
     // this.authSubject.next(false);
     // return this.http.post<any>(this.apiUrl + "logout", null, httpOptions);
