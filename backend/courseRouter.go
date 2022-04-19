@@ -227,6 +227,7 @@ func getModuleDetails(c *gin.Context) {
 			Where("students.email = ?", email).
 			Where("enrollments.course_id = ?", courseId).
 			First(&enrollment)
+		// fmt.Println(enrollment.StudentID)
 		if res.RowsAffected == 0 {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"error": "does not have valid permissions",
@@ -238,14 +239,21 @@ func getModuleDetails(c *gin.Context) {
 				score := Score{}
 				res = DB.Where("quiz_id=?", module.Quiz.ID).Where("student_id=?", enrollment.StudentID).First(&score)
 				if res.Error != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{
-						"error": "no Score",
+					c.JSON(http.StatusOK, gin.H{
+						// "module": course.Modules[0],
+						"module": module,
+						"score":  0,
 					})
 					return
+					// c.JSON(http.StatusInternalServerError, gin.H{
+					// 	// "error": "no Score",
+					// })
+					// return
 				}
 
 				c.JSON(http.StatusOK, gin.H{
-					"module": course.Modules[0],
+					// "module": course.Modules[0],
+					"module": module,
 					"score":  score.ScoreValue,
 				})
 
