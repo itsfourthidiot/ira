@@ -35,6 +35,7 @@
     "@faker-js/faker": "^6.0.0-alpha.5",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
+    "@types/video.js": "^7.3.33",
     "cypress": "^9.4.1",
     "cypress-localstorage-commands": "^1.6.1",
     "jasmine-core": "~3.8.0",
@@ -43,6 +44,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "typescript": "~4.3.5"
+    "typescript": "~4.3.5",
+    "video.js": "^7.18.1"
   }
 }
