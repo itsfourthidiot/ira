@@ -4,7 +4,7 @@ export const CourseDetails:any = {
     "UpdatedAt": "2022-03-29T14:12:29.767771669-04:00",
     "DeletedAt": null,
     "title": "My first course",
-    "description": null,
+    "description": "This is course description",
     "isPublished": false,
     "publishedAt": null,
     "instructorId": 1,
