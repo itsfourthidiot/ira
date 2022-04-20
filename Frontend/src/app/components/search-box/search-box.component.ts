@@ -40,8 +40,10 @@ export class SearchBoxComponent implements OnInit {
     return this.courses.filter(course => course.title.toLowerCase().includes(filterValue));
   }
 
-  onOptionSelected(courseID:string){
+  onOptionSelected(courseTitle:string, courseID:string){
     console.log("Course selected :",courseID)
+    this.sharedService.courseID = courseID;
+    this.sharedService.courseTitle = courseTitle;
     this.myControl.reset();
     this.router.navigate([`/courseDetails/${courseID}`]);
 

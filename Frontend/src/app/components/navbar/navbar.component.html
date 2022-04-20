@@ -14,7 +14,7 @@
       <span flex></span>
 
       <div>
-        <app-search-box></app-search-box>
+        <app-search-box *ngIf="type!='instructor'"></app-search-box>
         <a *ngIf="type=='guest'" mat-button [routerLink]="'/studentLogin'"> Student Login</a>
         <a *ngIf="type=='guest'" mat-button [routerLink]="'/instructorLogin'"> Instructor Login</a>
         <a *ngIf="type=='student'" mat-button (click)="goToDashBoard()">My DashBoard</a>
