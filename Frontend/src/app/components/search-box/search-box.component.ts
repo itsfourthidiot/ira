@@ -21,6 +21,8 @@ export class SearchBoxComponent implements OnInit {
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
+
+    
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value)),

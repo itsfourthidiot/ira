@@ -1,8 +1,19 @@
+<mat-form-field appearance="standard">
 
-<input type="text" placeholder="Search For a Course" matInput [formControl]="myControl" [matAutocomplete]="auto">
+<input floatLabel="never" type="text" placeholder="Search for Course" matInput [formControl]="myControl" [matAutocomplete]="auto">
+<button mat-button matSuffix mat-icon-button>
+  <mat-icon>search</mat-icon>
+</button>
 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
   <mat-option *ngFor="let course of filteredOptions | async" [value]="course">
     {{course}}
   </mat-option>
 </mat-autocomplete>
+</mat-form-field>
+
+  <!-- <input matInput type="text" placeholder="Clearable input">
+  <button mat-button *ngIf="value" matSuffix mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field> -->
  
