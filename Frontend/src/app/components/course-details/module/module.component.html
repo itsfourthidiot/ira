@@ -2,7 +2,6 @@
 <h1>{{moduleTitle}}</h1>
 
 <div *ngIf = "this.moduleType == 'quiz'">
-    <p>{{this.questionArray}}</p>
     <div *ngFor = "let question of this.questionArray">
         <p>{{question.content}}</p>
         <div *ngFor = "let option of question.options">
@@ -15,6 +14,7 @@
     </div>
     <div>
         <p>You have scored {{this.score}} marks</p>
+        <p>Your previous score is {{this.prevScore}} marks</p>
     </div>
 </div>
 
