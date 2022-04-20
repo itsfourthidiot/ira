@@ -13,13 +13,12 @@ import (
 func studentRegister(c *gin.Context) {
 
 	// Parse input request
-	fmt.Println("*******************************req")
+
 	type Req struct {
 		Email    string `json:"email" binding:"required,email"`
 		Password string `json:"password" binding:"required,min=8,max=20"`
 	}
 	req := Req{}
-	fmt.Println("*******************************beforebind")
 
 	err := c.ShouldBindJSON(&req)
 	fmt.Println(req.Email, req.Password)
@@ -29,7 +28,6 @@ func studentRegister(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("*******************************after req")
 
 	// Check if the student with email already exists
 	existingStudent := Student{}
@@ -42,7 +40,6 @@ func studentRegister(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("*******************************result")
 
 	// Hash password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
@@ -53,7 +50,6 @@ func studentRegister(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("*******************************hash password")
 
 	// Insert into database
 	newStudent := Student{
