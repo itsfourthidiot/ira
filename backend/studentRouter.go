@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -10,36 +11,50 @@ import (
 
 // Student registration
 func studentRegister(c *gin.Context) {
+
 	// Parse input request
+	fmt.Println("*******************************req")
 	type Req struct {
 		Email    string `json:"email" binding:"required,email"`
 		Password string `json:"password" binding:"required,min=8,max=20"`
 	}
 	req := Req{}
+	fmt.Println("*******************************beforebind")
+
 	err := c.ShouldBindJSON(&req)
+	fmt.Println(req.Email, req.Password)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "incorrect parameters",
 		})
 		return
 	}
+	fmt.Println("*******************************after req")
+
 	// Check if the student with email already exists
 	existingStudent := Student{}
+
 	result := DB.Where("email = ?", req.Email).First(&existingStudent)
+
 	if result.RowsAffected == 1 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "user with email already exists",
 		})
 		return
 	}
+	fmt.Println("*******************************result")
+
 	// Hash password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
+
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "interval server error",
 		})
 		return
 	}
+	fmt.Println("*******************************hash password")
+
 	// Insert into database
 	newStudent := Student{
 		Email:    req.Email,
@@ -47,6 +62,7 @@ func studentRegister(c *gin.Context) {
 	}
 	result = DB.Create(&newStudent)
 	if result.Error != nil {
+
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "internal server error",
 		})
