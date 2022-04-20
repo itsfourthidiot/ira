@@ -21,8 +21,11 @@
 
 
 <div *ngIf = "this.moduleType == 'video'">
-    <video id="vid1" class="video-js " controls preload="auto" width="640" height="265">
-        <source [src]="presignedUrl" type="video/mp4" />
-    </video>
+    <!-- <video id="vid1" class="video-js " controls preload="auto" width="640" height="265">
+        <source [src]="presignedUrl" preload="true" type="video/mp4" />
+    </video> -->
+
+    <video #video id="video" width="50%" height="50%"  autostart="false" controls></video>
+
 
 </div>
