@@ -19,6 +19,7 @@ export class ModuleComponent implements OnInit, AfterViewInit{
   questionArray: Question[] = [];
   filledOptionArray: number[] = []
   score: number = 0
+  prevScore: number = 0
   // @Input() presignedUrl: string|null = null;
   preSignedUrl = ""
 
@@ -57,6 +58,7 @@ public video!: ElementRef;
           this.moduleTitle = data.module.title;
           if (this.moduleType == "quiz"){
             this.questionArray = data.module.quiz.questions
+            this.prevScore = data.score
             console.log("Question Array: ",this.questionArray)
           }
           if(this.moduleType == "video"){
@@ -150,6 +152,7 @@ public video!: ElementRef;
     this.courseService.calculateGrade(this.courseID, this.moduleID, this.filledOptionArray).subscribe(
       data => {
         this.score = data.scoreValue
+        this.prevScore = data.scoreValue
       }
     )
   }
