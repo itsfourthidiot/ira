@@ -1,4 +1,22 @@
 mat-form-field{
     border-radius: 15px;
+    padding: 10px;
+    margin-right: 300px;
+    width: 400px;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 1; /* Firefox */
+    font-size: 15px;
+    margin-left: 50px;
+    color: #F0FFFF;
+}
+
+.mat-autocomplete-panel{
+    z-index: 99999;    
+}
+
+.mat-icon {
+    color: #F0FFFF;
+    font-size: 25px;
+}
