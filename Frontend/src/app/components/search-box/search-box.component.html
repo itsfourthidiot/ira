@@ -5,15 +5,10 @@
   <mat-icon>search</mat-icon>
 </button>
 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-  <mat-option *ngFor="let course of filteredOptions | async" [value]="course">
-    {{course}}
+  <mat-option *ngFor="let course of filteredOptions | async" [value]="course.title" (click)="onOptionSelected(course.ID)">
+    {{course.title}}
   </mat-option>
 </mat-autocomplete>
 </mat-form-field>
 
-  <!-- <input matInput type="text" placeholder="Clearable input">
-  <button mat-button *ngIf="value" matSuffix mat-icon-button>
-    <mat-icon>close</mat-icon>
-  </button>
-</mat-form-field> -->
  
