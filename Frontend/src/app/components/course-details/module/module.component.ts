@@ -48,10 +48,8 @@ export class ModuleComponent implements OnInit {
           if(this.moduleType == "video"){
             console.log("Video Module!")
             this.presignedUrl = data.presignedUrl;
-            console.log("presignedUrl: ",this.presignedUrl);
-     
-          }
-  
+            console.log("presignedUrl: ",this.presignedUrl);     
+          }  
         }
       )
 
