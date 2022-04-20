@@ -1,15 +1,17 @@
 import { Question } from './../../../models/Question';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, ElementRef, Input, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
 import { CourseService } from 'src/app/services/course.mock.service';
+
+
 
 @Component({
   selector: 'app-module',
   templateUrl: './module.component.html',
   styleUrls: ['./module.component.css']
 })
-export class ModuleComponent implements OnInit {
+export class ModuleComponent implements OnInit, OnChanges {
 
   moduleID: string = "";
   courseID: string = "";
@@ -17,14 +19,34 @@ export class ModuleComponent implements OnInit {
   questionArray: Question[] = [];
   filledOptionArray: number[] = []
   score: number = 0
-  presignedUrl: string|null = null;
+  // @Input() presignedUrl: string|null = null;
+  preSignedUrl = ""
+
   moduleTitle: string| null = null;
+ 
+  // videoElement = document.querySelector("#video")
+
+@ViewChild('video')
+public video!: ElementRef;
+
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private elRef: ElementRef
   ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // changes.prop contains the old and the new value...
+    console.log("ngOnChanges")
+    if (changes.presignedUrl){
+      const player = this.elRef.nativeElement.querySelector('#vid1');
+      console.log("change in video detected")
+      player.load();
+    }
+  }
 
   ngOnInit(): void {
     this.courseID = this.sharedService.courseID;
@@ -47,8 +69,13 @@ export class ModuleComponent implements OnInit {
           }
           if(this.moduleType == "video"){
             console.log("Video Module!")
-            this.presignedUrl = data.presignedUrl;
-            console.log("presignedUrl: ",this.presignedUrl);
+            this.preSignedUrl = data.presignedUrl;
+            console.log("presignedUrl: ",this.preSignedUrl);
+            this.video.nativeElement.pause()
+            console.log(this.video.nativeElement)
+            this.video.nativeElement.src = this.preSignedUrl;
+            this.video.nativeElement.load();
+            this.video.nativeElement.play();
      
           }
   
@@ -98,6 +125,15 @@ export class ModuleComponent implements OnInit {
       }
     )
   }
+
+  playVideo() {
+    console.log("video url is " + this.preSignedUrl)
+    this.video.nativeElement.src = this.preSignedUrl;
+    this.video.nativeElement.load();
+    this.video.nativeElement.play();
+  }
+
+
 
 
 
