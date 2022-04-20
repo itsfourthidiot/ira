@@ -63,8 +63,8 @@ export class CourseService implements ICourseService{
   }
 
   calculateGrade(courseId: string, moduleId: string, filledOptions: []){
-    var obj = {"moduleId": moduleId, "response": filledOptions}
-    return this.httpclient.post<any>(this.baseUrl + apiUrls.calculateGrade.replace('<courseId>', courseId), obj)
+    var obj = {"moduleId": Number(moduleId), "response": filledOptions}
+    return this.httpclient.post<any>(this.baseUrl + apiUrls.calculateGrade.replace('<courseID>', courseId), obj)
 
   }
 

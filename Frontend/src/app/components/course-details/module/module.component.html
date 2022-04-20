@@ -2,7 +2,6 @@
 <h1>{{moduleTitle}}</h1>
 
 <div *ngIf = "this.moduleType == 'quiz'">
-    <p>{{this.questionArray}}</p>
     <div *ngFor = "let question of this.questionArray">
         <p>{{question.content}}</p>
         <div *ngFor = "let option of question.options">
@@ -15,14 +14,18 @@
     </div>
     <div>
         <p>You have scored {{this.score}} marks</p>
+        <p>Your previous score is {{this.prevScore}} marks</p>
     </div>
 </div>
 
 
 
 <div *ngIf = "this.moduleType == 'video'">
-    <video id="vid1" class="video-js " controls preload="auto" width="640" height="265">
-        <source [src]="presignedUrl" type="video/mp4" />
-    </video>
+    <!-- <video id="vid1" class="video-js " controls preload="auto" width="640" height="265">
+        <source [src]="presignedUrl" preload="true" type="video/mp4" />
+    </video> -->
+
+    <video #video id="video" width="50%" height="50%"  autostart="false" controls></video>
+
 
 </div>

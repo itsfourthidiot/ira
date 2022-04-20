@@ -3,10 +3,10 @@
   <!-- <p>What's your favorite an</p> -->
   <mat-form-field appearance="fill">
     <mat-label>Course Title</mat-label>
-    <input matInput [(ngModel)]="title">
+    <input name="courseName" matInput [(ngModel)]="title">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="title" cdkFocusInitial>Create</button>
+  <button mat-button  (click)="onNoClick()">Cancel</button>
+  <button mat-button name="createButton" [mat-dialog-close]="title" cdkFocusInitial>Create</button>
 </div>

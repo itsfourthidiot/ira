@@ -6,7 +6,7 @@
 <mat-sidenav-container class = "tp-container">
     <mat-sidenav mode = "side" opened>
        <section class = "tp-section">
-         <a [routerLink]="'description'" mat-button routerLinkActive="active"> Description </a>
+         <a [routerLink]="'description'" name="courseDescription" mat-button routerLinkActive="active"> Description </a>
        </section>
 
        <mat-expansion-panel name="matExpansionPanel" hideToggle="false">
@@ -35,12 +35,12 @@
    <router-outlet></router-outlet>
    <div class="container">
     <div class="vertical-center">
-      <button mat-stroked-button *ngIf="!isPublished && role == 'instructor'" (click)="publishCourse()" color="success">Publish Course</button>
+      <button mat-stroked-button *ngIf="!isPublished && role == 'instructor'" (click)="publishCourse()" name="publishButton" color="success">Publish Course</button>
     </div>
   </div>
   <div class="container">
     <div class="vertical-center">
-      <button mat-stroked-button *ngIf="!enrolled && role != 'instructor'" (click)="enroll()" color="success">Enroll</button>
+      <button name="enrollButton" mat-stroked-button *ngIf="!enrolled && role != 'instructor'" (click)="enroll()" color="success">Enroll</button>
     </div>
   </div>
 </mat-sidenav-content>

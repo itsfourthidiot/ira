@@ -11,7 +11,7 @@ import (
 )
 
 func fakeInstructorGenerate() Instructor {
-	_db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+	_db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to the database")
 	}
@@ -66,7 +66,7 @@ func fakeCourseGenerate() Course {
 	return newCourse
 }
 func fakeStudentGenerate() Student {
-	_db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+	_db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to the database")
 	}
@@ -91,6 +91,31 @@ func fakeStudentGenerate() Student {
 	}
 	return newStudent
 }
+
+// func fakeModuleGenerate() Module{
+// 	// create fake instructor
+// 	// create fake coursefakeCourse := fakeCourseStruct{}
+// 	err := faker.FakeData(&fakeCourse)
+// 	if err != nil {
+// 		panic("Failed to create fake course")
+// 	}
+// 	// create fake module
+// 	type fakeModuleStruct struct{
+// 		Title string `faker:"word"`
+// 		Type string  `default:"quiz"`
+
+// 	}
+// }
+// func fakeQuizModuleGenerate() Quiz{
+// 	// create fake instructor
+// 	// create fake course
+// 	newCourse:= fakeCourseGenerate()
+// 	// create fake module
+
+// 	type fakeQuizStruct struct{
+
+// 	}
+// }
 func TestCourseExist(t *testing.T) {
 	// Create instructor
 	// Login
@@ -132,8 +157,8 @@ func TestPublished(t *testing.T) {
 	c := gin.Context{}
 	course := fakeCourseGenerate()
 	got := isPublished(int(course.ID), &c)
-	// want := course.IsPublished
-	want := true
+	want := course.IsPublished
+	// want := true
 	if got != want {
 		t.Errorf("Course Published test failed")
 	} else {
