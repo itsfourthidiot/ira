@@ -1,5 +1,5 @@
 import { Question } from './../../../models/Question';
-import { Component, OnChanges, OnInit, SimpleChanges, ElementRef, Input, ViewChild} from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, ElementRef, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
 import { CourseService } from 'src/app/services/course.mock.service';
@@ -11,7 +11,7 @@ import { CourseService } from 'src/app/services/course.mock.service';
   templateUrl: './module.component.html',
   styleUrls: ['./module.component.css']
 })
-export class ModuleComponent implements OnInit, OnChanges {
+export class ModuleComponent implements OnInit, AfterViewInit{
 
   moduleID: string = "";
   courseID: string = "";
@@ -38,15 +38,7 @@ public video!: ElementRef;
     private elRef: ElementRef
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // changes.prop contains the old and the new value...
-    console.log("ngOnChanges")
-    if (changes.presignedUrl){
-      const player = this.elRef.nativeElement.querySelector('#vid1');
-      console.log("change in video detected")
-      player.load();
-    }
-  }
+
 
   ngOnInit(): void {
     this.courseID = this.sharedService.courseID;
@@ -104,6 +96,42 @@ public video!: ElementRef;
     // )
   }
 
+  ngAfterViewInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      console.log("Module ID "+ params.moduleID);
+      console.log("route "+ this.activatedRoute);
+      
+      this.moduleID = params.moduleID;
+      console.log("MODULE COMPONENT INVOKED WITH ID "+this.moduleID)
+
+      this.courseService.getModule(this.courseID, this.moduleID).subscribe(
+      
+        data => {
+          console.log("Got Module ", data)
+          this.moduleType = data.module.type 
+          this.moduleTitle = data.module.title;
+          if (this.moduleType == "quiz"){
+            this.questionArray = data.module.quiz.questions
+            console.log("Question Array: ",this.questionArray)
+          }
+          if(this.moduleType == "video"){
+            console.log("Video Module!")
+            this.preSignedUrl = data.presignedUrl;
+            console.log("presignedUrl: ",this.preSignedUrl);
+            this.video.nativeElement.pause()
+            console.log(this.video.nativeElement)
+            this.video.nativeElement.src = this.preSignedUrl;
+            this.video.nativeElement.load();
+            this.video.nativeElement.play();
+     
+          }
+  
+        }
+      )
+
+    });
+      
+  }
   fillOptions(event: any, optionId: number){
     if (event.target.checked){
       this.filledOptionArray.push(optionId)
