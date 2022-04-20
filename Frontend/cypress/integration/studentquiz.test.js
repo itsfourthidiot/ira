@@ -32,7 +32,7 @@ describe('Student quiz', () => {
 
     });
 
-    it('Student should login and see his dashboard', ()=>{
+    it('Student should login and see available courses', ()=>{
 
         cy.visit('/studentLogin');
         cy.get('[name=username]').type(`${username}`);
@@ -42,8 +42,14 @@ describe('Student quiz', () => {
         cy.getLocalStorage('ACCESS_TOKEN').then((token) => {
             console.log(token);
         })
+        cy.url().should('include', '')
+        sleep(1000)
+        cy.get('[name=dashboard]').click();
+        
+        cy.url().should('include', 'Dashboard')
+
         //cy.getLocalStorage('ACCESS_TOKEN');
-        cy.url().should('include', 'studentDashboard')
+        
         
     });
 
@@ -51,6 +57,18 @@ describe('Student quiz', () => {
         cy.get('.col-4').first().click();  //
         cy.get('[name=matExpansionPanel]').click(); 
         cy.get('.moduleItem').click({multiple: true})
+        // cy.get('[name=enrollButton]').click();
+        cy.wait(2000)
+        cy.get('[name=courseDescription]').click();
+        cy.get('[name=matExpansionPanel]').click(); 
+        cy.get('.moduleItem').click({multiple: true})
+
+        Cypress.on('uncaught:exception', (err, runnable) => {
+            // returning false here prevents Cypress from
+            // failing the test
+            return false
+          })
+          
 
 
     });
