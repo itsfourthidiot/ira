@@ -65,7 +65,7 @@ public video!: ElementRef;
             console.log("Video Module!")
             this.preSignedUrl = data.presignedUrl;
             console.log("presignedUrl: ",this.preSignedUrl);
-            this.video.nativeElement.pause()
+            // this.video.nativeElement.pause()
             console.log(this.video.nativeElement)
             this.video.nativeElement.src = this.preSignedUrl;
             this.video.nativeElement.load();
@@ -120,7 +120,7 @@ public video!: ElementRef;
             console.log("Video Module!")
             this.preSignedUrl = data.presignedUrl;
             console.log("presignedUrl: ",this.preSignedUrl);
-            this.video.nativeElement.pause()
+            // this.video.nativeElement.pause()
             console.log(this.video.nativeElement)
             this.video.nativeElement.src = this.preSignedUrl;
             this.video.nativeElement.load();
