@@ -35,26 +35,46 @@ export class ModuleComponent implements OnInit {
       this.moduleID = params.moduleID;
       console.log("MODULE COMPONENT INVOKED WITH ID "+this.moduleID)
 
-    });
-    this.courseService.getModule(this.courseID, this.moduleID).subscribe(
+      this.courseService.getModule(this.courseID, this.moduleID).subscribe(
       
-      data => {
-        console.log("Got Module ", data)
-        this.moduleType = data.module.type 
-        this.moduleTitle = data.module.title;
-        if (this.moduleType == "quiz"){
-          this.questionArray = data.quiz.Questions
-          console.log("Question Array: ",this.questionArray)
+        data => {
+          console.log("Got Module ", data)
+          this.moduleType = data.module.type 
+          this.moduleTitle = data.module.title;
+          if (this.moduleType == "quiz"){
+            this.questionArray = data.module.quiz.questions
+            console.log("Question Array: ",this.questionArray)
+          }
+          if(this.moduleType == "video"){
+            console.log("Video Module!")
+            this.presignedUrl = data.presignedUrl;
+            console.log("presignedUrl: ",this.presignedUrl);
+     
+          }
+  
         }
-        if(this.moduleType == "video"){
-          console.log("Video Module!")
-          this.presignedUrl = data.presignedUrl;
-          console.log("presignedUrl: ",this.presignedUrl);
-   
-        }
+      )
 
-      }
-    )
+    });
+    // this.courseService.getModule(this.courseID, this.moduleID).subscribe(
+      
+    //   data => {
+    //     console.log("Got Module ", data)
+    //     this.moduleType = data.module.type 
+    //     this.moduleTitle = data.module.title;
+    //     if (this.moduleType == "quiz"){
+    //       this.questionArray = data.module.quiz.questions
+    //       console.log("Question Array: ",this.questionArray)
+    //     }
+    //     if(this.moduleType == "video"){
+    //       console.log("Video Module!")
+    //       this.presignedUrl = data.presignedUrl;
+    //       console.log("presignedUrl: ",this.presignedUrl);
+   
+    //     }
+
+    //   }
+    // )
   }
 
   fillOptions(event: any, optionId: number){
