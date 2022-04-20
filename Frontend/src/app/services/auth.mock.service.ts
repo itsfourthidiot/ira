@@ -28,7 +28,7 @@ export class AuthService implements IAuthService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   subscription: Subscription = new Subscription;
-  type: string= "";
+  type: string | null= "";
   constructor(
     private http: HttpClient,
     public router: Router,
@@ -68,6 +68,8 @@ export class AuthService implements IAuthService {
     this.profile.changeEmail(username)
     this.sharedService.role = role;
     this.sharedService.email = username
+    localStorage.setItem("role", role);
+    localStorage.setItem("email", username)
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
     // return this.http.post<any>(apiUrls.baseUrl + role + "/login", obj).pipe(
     //   tap((res) => {

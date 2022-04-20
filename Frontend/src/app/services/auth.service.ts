@@ -30,7 +30,7 @@ export class AuthService implements IAuthService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   subscription: Subscription = new Subscription;
-  type: string= "";
+  type: string | null= "";
   constructor(
     private http: HttpClient,
     public router: Router,
@@ -73,6 +73,8 @@ export class AuthService implements IAuthService {
       tap((res) => {
         if (res){
           localStorage.setItem("ACCESS_TOKEN", res.token);
+          localStorage.setItem("role", role);
+          localStorage.setItem("email", username)
           this.sharedService.email = username
           this.profile.changeEmail(username)
           // localStorage.set("ACCESS_TOKEN", res.token);
@@ -94,6 +96,8 @@ export class AuthService implements IAuthService {
   logOut(){
     console.log("Logged out")
     localStorage.removeItem("ACCESS_TOKEN");
+    localStorage.removeItem("role");
+    localStorage.removeItem("email");
     this.sharedService.role = "guest";
     this.sharedService.email = "";
     this.profile.changeType("guest");

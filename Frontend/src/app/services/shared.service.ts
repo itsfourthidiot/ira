@@ -7,9 +7,18 @@ export class SharedService {
 
   courseID: string = "";
   courseTitle : string = "";
-  role : string = "";
+  role : string | null= "guest";
   description: string = "";
-  email : string = "";
+  email : string | null = "";
   
-  constructor() { }
+  constructor() { 
+    if (localStorage.getItem("role") !== null){
+      this.role = localStorage.getItem("role")
+    }
+
+    if (localStorage.getItem("email") !== null){
+      this.email = localStorage.getItem("email")
+    }
+
+  }
 }

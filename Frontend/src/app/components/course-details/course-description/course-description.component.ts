@@ -11,7 +11,7 @@ export class CourseDescriptionComponent implements OnInit {
 
   @Input() courseId! : string
   description = ""
-  role= ""
+  role : string | null= ""
 
   constructor(private courseService : CourseService,
     private sharedService: SharedService) { }

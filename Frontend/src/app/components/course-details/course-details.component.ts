@@ -14,7 +14,7 @@ export class CourseDetailsComponent implements OnInit {
   courseID = "1"
   courseTitle = ""
   enrolled = false
-  role = ""
+  role : string | null= ""
   isPublished = false;
   hideIcon = false;
   modules: any[] = [];
