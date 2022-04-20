@@ -14,8 +14,8 @@ export class NavbarComponent implements OnInit {
 
   subscriptionType: Subscription = new Subscription;
   subscriptionEmail: Subscription = new Subscription
-  type: string= "";
-  email: string= "";
+  type: string | null= "";
+  email: string | null= "";
 
 
   constructor(
