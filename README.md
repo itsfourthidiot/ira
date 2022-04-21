@@ -50,9 +50,9 @@ Ira is an e-learning platform. Name of the platform *Ira* comes from the name of
 | Sprint     | wiki link | Project Board   |
 | :---:      |    :----:   |         :---: |
 | Sprint 1   | [Sprint 1 Readme](https://github.com/fourth-idiot/ira/wiki/Sprint-1)      | [Board 1](https://github.com/fourth-idiot/ira/projects/1)|
-| Sprint 2   | [Sprint 2 Readme](https://github.com/fourth-idiot/ira/wiki/Sprint-2)       |   [Board 2](https://github.com/fourth-idiot/ira/projects/1)   |
-| Sprint 3   | [Sprint 3 Readme](https://github.com/fourth-idiot/ira/wiki/Sprint-2)      | [Board 3](https://github.com/fourth-idiot/ira/projects/1)     |
-| Sprint 4   | [Sprint 4 Readme](https://github.com/fourth-idiot/ira/wiki/Sprint-2)      |[Board 4](https://github.com/fourth-idiot/ira/projects/4)     |
+| Sprint 2   | [Sprint 2 Readme](https://github.com/fourth-idiot/ira/wiki/Sprint-2)       |   [Board 2](https://github.com/fourth-idiot/ira/projects/2)   |
+| Sprint 3   | [Sprint 3 Readme](https://github.com/fourth-idiot/ira/wiki/Sprint-3)      | [Board 3](https://github.com/fourth-idiot/ira/projects/3)     |
+| Sprint 4   | [Sprint 4 Readme](https://github.com/fourth-idiot/ira/wiki/Sprint-4)      |[Board 4](https://github.com/fourth-idiot/ira/projects/4)     |
   
 ## Testing
 
