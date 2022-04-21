@@ -52,8 +52,13 @@ The project has been deployed at the following link: [https://iraelearning.com/]
   
 ## Demo videos:
 ### Application functionality testing:
+https://user-images.githubusercontent.com/89497585/164366883-812c5482-6c77-4553-a2ca-b7f5a2232868.mp4
+
 ### Frontend Cypress testing:
+https://user-images.githubusercontent.com/89497585/164366699-444572b8-6dd3-446a-b852-5d435375d617.mp4
+
 ### Backend Unit and API testing:
+https://user-images.githubusercontent.com/89497585/164366720-24bb4b85-271a-405e-b567-917a3cd34de0.mp4
 
 ## Technology Stack
 * Backend : Golang, gin-gonic, GORM
