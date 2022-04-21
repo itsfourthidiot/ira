@@ -3,8 +3,6 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.mock.service';
 import { Router } from '@angular/router';
-import { SharedService } from 'src/app/services/shared.service';
-import { SearchBoxComponent } from '../search-box/search-box.component';
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +21,7 @@ export class NavbarComponent implements OnInit {
     private profile: ProfileService,
     private auth: AuthService,
     private router: Router,
-    private sharedService: SharedService) { }
+    ) { }
 
   ngOnInit(): void {
     this.subscriptionType = this.profile.currentType.subscribe(
@@ -32,7 +30,6 @@ export class NavbarComponent implements OnInit {
     this.subscriptionEmail = this.profile.currentEmail.subscribe(
       email => this.email = email
     )
-    //this.subscriptionEmail = this.pro
   }
 
   logout(){    
