@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { SharedService } from 'src/app/services/shared.service';
 import { Router } from '@angular/router';
+import { CourseService } from 'src/app/services/course.mock.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-search-box',
@@ -20,13 +21,18 @@ export class SearchBoxComponent implements OnInit {
 
   
   constructor(
-    private sharedService: SharedService,
-    private router: Router) { }
+    private courseService: CourseService,
+    private router: Router,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    
-    this.courses =  this.sharedService.allCourses;
-    console.log("NavBar allCourses ",this.courses)
+    this.courseService.getAllCourses()
+    .subscribe(res=>{
+      console.log(" RESULT ",res.courses)
+      this.courses = res.courses;      
+      console.log("Search-BOX allCourses ",this.courses)
+
+    });
     
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -46,7 +52,6 @@ export class SearchBoxComponent implements OnInit {
     this.sharedService.courseTitle = courseTitle;
     this.myControl.reset();
     this.router.navigate([`/courseDetails/${courseID}`]);
-
   }
 
 }

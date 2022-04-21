@@ -42,20 +42,6 @@ export class AuthService implements IAuthService {
     )
   }
 
-  // authSubject  =  new  BehaviorSubject(false);
-  // loginObject! : JSON
-
-  //future use;
-  // signIn(user: User) {
-  //   return this.http.post<any>(`${this.apiUrl}/signin`, user)
-  //     .subscribe((res: any) => {
-  //       localStorage.setItem('access_token', res.token)
-  //       // this.getUserProfile(res._id).subscribe((res) => {
-  //       //   this.currentUser = res;
-  //       //   this.router.navigate(['user-profile/' + res.msg._id]);
-  //       // })
-  //     })
-  // }
 
   login(username: string, password: string, role: string): Observable<any>{
     console.log("in service");
@@ -65,9 +51,7 @@ export class AuthService implements IAuthService {
     var obj = {"email": username, "password": password};
     console.log(obj);
     
-    //change type according to logged in user
-    this.profile.changeType(role);
-    this.sharedService.role = role;
+  
     // return this.http.post<any>(this.apiUrl, obj, httpOptions);
     return this.http.post<any>(this.apiUrl + "/" + role + "/login", obj).pipe(
       tap((res) => {
@@ -77,6 +61,9 @@ export class AuthService implements IAuthService {
           localStorage.setItem("email", username)
           this.sharedService.email = username
           this.profile.changeEmail(username)
+          //change type according to logged in user
+          this.profile.changeType(role);
+          this.sharedService.role = role;
           // localStorage.set("ACCESS_TOKEN", res.token);
           // this.authSubject.next(true);
         }
