@@ -68,7 +68,11 @@ mat-sidenav{
    background-color: #e6b800;
    color: #eee;
    font-size: large;
-   height: 100px;
-   /* padding-top: 15px; */
-   padding-bottom: 15px;
+   height: 60px;
+   padding-bottom: 10px;
+}
+
+h1{
+   padding-top: 10px;
+   margin-left: 500px;
 }
