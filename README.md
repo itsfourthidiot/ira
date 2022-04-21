@@ -17,7 +17,7 @@ Course project for the graduate level course CEN5035 - Software Engineering.
 Ira is an e-learning platform. Name of the platform *Ira* comes from the name of Hindu goddess Saraswati (Goddess of wisdom and knowledge). Using this platform, instructors can share their knowledge with the world without worrying about the difficulties involved in hosting a platform of their own. On the other hand, students can learn at their own pace, have lifetime access to the courses, select courses from the plethora of available options, and can gain knowledge about wide range of topics as per their interests.
 
 ## Deployment:
-The project has been deployed at the following link: [https://iraelearning.com/](https://iraelearning.com/). It is deployed on AWS EC2 where NGINX is used for reverse proxy.
+The project has been deployed at the following link: [https://iraelearning.com/](https://iraelearning.com/). It is deployed on AWS EC2 where NGINX is used for reverse proxy. Read more here: [[Link](https://github.com/fourth-idiot/ira/wiki/CI-CD-pipeline-using-GitHub-Actions)]
 
 ## Application Description (User Roles and Corresponding Functionality):
 ### Guests (Without login):
