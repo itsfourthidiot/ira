@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.mock.service';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
+import { SearchBoxComponent } from '../search-box/search-box.component';
 
 @Component({
   selector: 'app-navbar',

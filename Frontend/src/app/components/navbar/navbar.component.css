@@ -1,3 +1,13 @@
 .example-spacer {
     flex: 1 1 auto;
-  }
+}
+
+app-search-box{
+    height: 100px;
+    margin-top: 5px;
+    border-radius: 15px;    
+}
+
+.active-list-item {
+    color: orange !important; /* Note: You could also use a custom theme */
+}

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CourseService } from './course.mock.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ export class SharedService {
   role : string | null= "guest";
   description: string = "";
   email : string | null = "";
-  
-  constructor() { 
+  allCourses: [] = [];
+  constructor(private courseService: CourseService) { 
     if (localStorage.getItem("role") !== null){
       this.role = localStorage.getItem("role")
     }
@@ -19,6 +20,12 @@ export class SharedService {
     if (localStorage.getItem("email") !== null){
       this.email = localStorage.getItem("email")
     }
+
+    this.courseService.getAllCourses()
+    .subscribe(res => { 
+      this.allCourses = res.courses;
+      console.log(this.allCourses);
+    });
 
   }
 }

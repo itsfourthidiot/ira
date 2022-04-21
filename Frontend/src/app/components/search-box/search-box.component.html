@@ -1,14 +1,13 @@
-<div class="m-3">
-    <h3>Angular search by filter</h3>
-    <div class="wrap">
-      <div class="search">
-        <input type="text" [(ngModel)]="term" class="searchTerm" placeholder="What are you looking for?">
-      </div>
-  
-      <div *ngFor="let course of courses | filter:term">
-        <p>
-          {{ course.name }}
-        </p>
-      </div>
-    </div>
-  </div>
+<mat-form-field appearance="standard">
+  <input floatLabel="never" type="text" placeholder="Search for Course" matInput [formControl]="myControl" [matAutocomplete]="auto">
+  <button mat-button  matSuffix mat-icon-button>
+    <mat-icon>search</mat-icon>
+  </button>
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-option *ngFor="let course of filteredOptions | async  | slice : 0 : 4" [value]="course.title" (click)="onOptionSelected(course.title, course.ID)">
+      {{course.title}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+ 

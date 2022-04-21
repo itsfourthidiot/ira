@@ -1,34 +1,19 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <!-- <button mat-icon-button>
-        <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-      </button> -->
+
       <h1 [routerLink]="''">IRA</h1>
-      <!-- <span class="menu-spacer"></span>
-      <div>
-        <a mat-button [routerLink]="'/accounts'"> Accounts </a>
-        <a mat-button [routerLink]="'/create-account'"> Create Account </a>
-        <a mat-button [routerLink]="'/contacts'"> Contacts </a>
-      </div> -->
+ 
       <span class="example-spacer"></span>
       <span flex></span>
 
       <div>
-        <a *ngIf="type=='guest'" mat-button [routerLink]="'/studentLogin'"> Student Login</a>
-        <a *ngIf="type=='guest'" mat-button [routerLink]="'/instructorLogin'"> Instructor Login</a>
-        <a *ngIf="type=='student'" name="dashboard" mat-button (click)="goToDashBoard()">My DashBoard</a>
-        
-        <!-- <a *ngIf="type=='instructor'" mat-button [routerLink]=""> My Courses</a> -->
-        <!-- <a *ngIf="type=='instructor'" mat-button [routerLink]=""> Drafts</a> -->
-        <!-- <a *ngIf="type=='instructor'" mat-button [routerLink]=""> Create New Course</a> -->
-        <a *ngIf="type!='guest'" mat-button (click)="logout()" > Logout</a>
-
-        <!-- <a *ngIf="type=='student'" mat-button [routerLink]="'/'"> Logout</a> -->
-
+        <app-search-box *ngIf="type!='instructor'"></app-search-box>
+        <a *ngIf="type=='guest'" mat-button [routerLink]="'/studentLogin'" routerLinkActive="active-list-item"> Student Login</a>
+        <a *ngIf="type=='guest'" mat-button [routerLink]="'/instructorLogin'" routerLinkActive="active-list-item"> Instructor Login</a>
+        <a *ngIf="type=='student'" mat-button (click)="goToDashBoard()" routerLinkActive="active-list-item">My DashBoard</a>
+        <a *ngIf="type=='instructor'" mat-button [routerLink]="'/instrDashboard'" routerLinkActive="active-list-item"> My Courses</a>     
+        <a *ngIf="type!='guest'" mat-button (click)="logout()"> Logout</a>
       </div>
     </mat-toolbar-row>
   
-    <!-- <mat-toolbar-row>
-        <span style="font-size: 12px;">SimpleCRM helps you easily manage your contacts</span> -->
-    <!-- </mat-toolbar-row> -->
   </mat-toolbar>
