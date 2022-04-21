@@ -21,7 +21,7 @@ import { InstructorLoginComponent } from './components/instructor-login/instruct
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { StudentLoginComponent } from './components/student-login/student-login.component';
 import { GuestDashboardComponent } from './components/guest-dashboard/guest-dashboard.component';
 import { UserCourseDetailsComponent } from './components/user-course-details/user-course-details.component';
