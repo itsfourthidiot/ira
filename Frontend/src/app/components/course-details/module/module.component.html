@@ -1,31 +1,24 @@
+<div id="modules">
+    <h1>{{moduleTitle}}</h1>
 
-<h1>{{moduleTitle}}</h1>
+    <div *ngIf = "this.moduleType == 'quiz'">
+        <div *ngFor = "let question of this.questionArray">
+            <p>{{question.content}}</p>
+            <div *ngFor = "let option of question.options">
+                <input type="checkbox" [value]="option.ID" (change)="fillOptions($event, option.ID)">{{option.content}}
+            </div>
 
-<div *ngIf = "this.moduleType == 'quiz'">
-    <div *ngFor = "let question of this.questionArray">
-        <p>{{question.content}}</p>
-        <div *ngFor = "let option of question.options">
-            <input type="checkbox" [value]="option.ID" (change)="fillOptions($event, option.ID)">{{option.content}}
         </div>
-
+        <div class="vertical-center">
+            <button mat-stroked-button (click)="submitAnswer()" color="success">Submit</button>
+        </div>
+        <div>
+            <p>You have scored {{this.score}} marks</p>
+            <p>Your previous score is {{this.prevScore}} marks</p>
+        </div>
     </div>
-    <div class="vertical-center">
-        <button mat-stroked-button (click)="submitAnswer()" color="success">Submit</button>
+
+    <div *ngIf = "this.moduleType == 'video'">
+        <video #video id="video" width="50%" height="50%"  autostart="false" controls></video>
     </div>
-    <div>
-        <p>You have scored {{this.score}} marks</p>
-        <p>Your previous score is {{this.prevScore}} marks</p>
-    </div>
-</div>
-
-
-
-<div *ngIf = "this.moduleType == 'video'">
-    <!-- <video id="vid1" class="video-js " controls preload="auto" width="640" height="265">
-        <source [src]="presignedUrl" preload="true" type="video/mp4" />
-    </video> -->
-
-    <video #video id="video" width="50%" height="50%"  autostart="false" controls></video>
-
-
 </div>

@@ -12,5 +12,14 @@
     width: 100%;
   }
 
+  #textDesc{
+    margin-left: 5%;
+    margin-top: 2%;
+    font-size: 20px;
+  }
 
+#updateDesc{
+  margin-left: 5%;
+  margin-top: 2%;
+}
 

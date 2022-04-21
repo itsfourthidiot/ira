@@ -9,5 +9,9 @@ app-search-box{
 }
 
 .active-list-item {
-    color: orange !important; /* Note: You could also use a custom theme */
+    color: #e6b800 !important; /* Note: You could also use a custom theme */
+}
+
+mat-toolbar{
+    padding-bottom: 5px;
 }
