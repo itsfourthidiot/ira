@@ -28,15 +28,8 @@ export class CourseDescriptionComponent implements OnInit {
         this.sharedService.description = data.description;        
       }
     )
-    // this.description = this.sharedService.description;
 
     console.log("Description "+ this.sharedService.description)
-    // send a get request to update course description
-    // this.courseService.getCourseDescriptionById(this.courseId).subscribe(
-    //   (data) => {
-    //     this.description = data.description;
-    //   }
-    // )    
   }
 
   updateDesc(){

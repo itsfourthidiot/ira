@@ -14,7 +14,8 @@
     align-items: center;
     height: 60px;
     width:100%;   
-    background-color: cornflowerblue;
+    /* background-color: cornflowerblue; */
+    background-color: #673ab7;
     color: aliceblue;
  }
 
@@ -61,4 +62,17 @@ mat-sidenav{
  top: 50%;
  -ms-transform: translateY(-50%);
  transform: translateY(-50%);
+}
+
+#title{
+   background-color: #e6b800;
+   color: #eee;
+   font-size: large;
+   height: 60px;
+   padding-bottom: 10px;
+}
+
+h1{
+   padding-top: 10px;
+   margin-left: 500px;
 }
