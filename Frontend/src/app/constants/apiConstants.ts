@@ -1,5 +1,5 @@
 export const apiUrls = {
-    baseUrl : 'https://iraelearning.com/api',
+    baseUrl : 'http://18.232.29.65/api',
     updateDescription : '/instructor/course/<courseId>/description',
     createCourses : '/instructor/course',
     instrCourses : '/instructor/courses',
@@ -13,5 +13,4 @@ export const apiUrls = {
     getCourseDescription : '/instructor/course/<courseId>/description',
     getModule: '/course/<courseId>/module/<moduleId>',
     calculateGrade: '/student/course/<courseID>/module/quiz/score'
-
 }
