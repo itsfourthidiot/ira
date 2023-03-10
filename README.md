@@ -65,3 +65,4 @@ https://user-images.githubusercontent.com/89497585/164366720-24bb4b85-271a-405e-
 * Frontend : Angular 2+
 * Storage: SQLite, AWS S3
 * Deployment: GitHub Actions, Newman (Postman CLI tool), AWS CodeDeploy, AWS EC2, NGINX
+
